@@ -1,19 +1,13 @@
 #pragma once
 #include "nomad.hpp"
+#include <unordered_map>
 
-class My_Evaluator : public NOMAD::Evaluator
+class Evaluator : public NOMAD::Evaluator
 {
-public:
-    My_Evaluator(const NOMAD::Parameters& p) :
-        NOMAD::Evaluator(p) {}
+private:
 
-    ~My_Evaluator(void) {}
-
-    bool eval_x(NOMAD::Eval_Point& x,
-        const NOMAD::Double& h_max,
-        bool& count_eval) const
+    bool eval_x(NOMAD::Eval_Point& x, const NOMAD::Double& h_max, bool& count_eval) const
     {
-
         NOMAD::Double c1 = 0.0, c2 = 0.0;
         for (int i = 0; i < 5; i++)
         {
@@ -27,5 +21,17 @@ public:
         count_eval = true; // count a black-box evaluation
 
         return true;       // the evaluation succeeded
+    }
+
+public:
+    Evaluator(const NOMAD::Parameters& p) :
+        NOMAD::Evaluator(p)
+    {
+
+    }
+
+    ~Evaluator(void)
+    {
+
     }
 };

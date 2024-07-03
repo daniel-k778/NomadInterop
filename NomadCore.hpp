@@ -1,15 +1,21 @@
 #pragma once
 #include "nomad.hpp"
+#include "Evaluator.hpp"
 
-class MainWrapper
+class NomadCore
 {
 private:
 
 	int argc;
 	char** argv;
 
+	const char* outputPath;
+
 	int numVars = 0;
-	int numIterations;
+	int numIterations = 100;
+
+	int numberPBConstraints = 0;
+	int numberEBConstraints = 0;
 
 	std::vector<double> initialVars;
 	std::vector<double> upperBoundValueVec;
@@ -17,15 +23,19 @@ private:
 	std::vector<double> lowerBoundValueVec;
 	std::vector<bool> lowerBoundIsGivenVec;
 
-	vector<NOMAD::bb_output_type> bbot;
-
-	NOMAD::Evaluator* interimEvaluator;
+	std::vector<double> m_FinalVariables;
 
 
 public:
 
-	MainWrapper(int argc, char** argv);
-	~MainWrapper();
+	NomadCore(int argc, char** argv);
+	~NomadCore();
+
+	/**
+	 * @brief Set the output file path.
+	 * @param outputPath Path to the output file.
+	 */
+	void SetOutputPath(const char* outputFilePath);
 
 	/**
 	 * @brief Set the number of iterations.
@@ -37,7 +47,11 @@ public:
 	 * @brief Set the values for the initial variables.
 	 * @param initialVariables vector of initial variables values.
 	 */
-	void SetVariables(std::vector<double> initialVariables);
+	void SetNumberVariables(int numberVariables);
+	void SetInitialVariable(int index, double value);
+
+	void SetNumberPBConstraints(int numPBConstraints);
+	void SetNumberEBConstraints(int numEBConstraints);
 
 	/**
 	 * @brief Set the upper bounds.
@@ -46,7 +60,7 @@ public:
 	 * 
 	 * @param upperBounds vector of upper bound for each variable
 	 */
-	void SetUpperBounds(std::vector<double> upperBounds);
+	void SetUpperBound(int index, double value);
 
 	/**
 	 * @brief Set the lower bounds.
@@ -55,19 +69,11 @@ public:
 	 * 
 	 * @param lowerBounds vector of lower bound for each variable.
 	 */
-	void SetLowerBounds(std::vector<double> lowerBounds);
+	void SetLowerBound(int index, double value);
 
 	/**
-	 * @brief Set the output types.
-	 * 
-	 * OBJ: objective value.
-	 * EB: extreme barrier.
-	 * PB: progressive barrier.
-	 * 
-	 * @param outputTypes vector of output types.
+	 * @brief Optimize the problem.
 	 */
-	void SetOutputTypes(vector<const char*> outputTypes);
-
 	void Optimize();
 	
 };

@@ -142,15 +142,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="EvaluatorWrapper.cpp" />
+    <ClCompile Include="Evaluator.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MainWrapper.cpp" />
+    <ClCompile Include="NomadCore.cpp" />
     <ClCompile Include="NomadOpt.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="EvaluatorWrapper.hpp" />
-    <ClInclude Include="MainWrapper.hpp" />
-    <ClInclude Include="NomadEvaluator.hpp" />
+    <ClInclude Include="Evaluator.hpp" />
+    <ClInclude Include="NomadCore.hpp" />
+    <ClInclude Include="WrapperEvaluator.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

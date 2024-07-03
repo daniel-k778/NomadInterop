@@ -18,10 +18,10 @@
     <ClCompile Include="NomadOpt.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MainWrapper.cpp">
+    <ClCompile Include="NomadCore.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="EvaluatorWrapper.cpp">
+    <ClCompile Include="Evaluator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
@@ -29,13 +29,13 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MainWrapper.hpp">
+    <ClInclude Include="NomadCore.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="EvaluatorWrapper.hpp">
+    <ClInclude Include="Evaluator.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="NomadEvaluator.hpp">
+    <ClInclude Include="WrapperEvaluator.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
