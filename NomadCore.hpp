@@ -1,6 +1,6 @@
 #pragma once
 #include "nomad.hpp"
-#include "Evaluator.hpp"
+#include "BaseEvaluator.hpp"
 
 class NomadCore
 {
@@ -9,21 +9,23 @@ private:
 	int argc;
 	char** argv;
 
-	const char* outputPath;
+	const char* m_OutputPath;
 
-	int numVars = 0;
-	int numIterations = 100;
+	int m_NumVars = 0;
+	int m_NumIterations = 100;
 
-	int numberPBConstraints = 0;
-	int numberEBConstraints = 0;
+	int m_NumPBConstraints = 0;
+	int m_NumEBConstraints = 0;
 
-	std::vector<double> initialVars;
-	std::vector<double> upperBoundValueVec;
-	std::vector<bool> upperBoundIsGivenVec;
-	std::vector<double> lowerBoundValueVec;
-	std::vector<bool> lowerBoundIsGivenVec;
+	std::vector<double> m_InitialVarsVec;
+	std::vector<double> m_UpperBoundValueVec;
+	std::vector<bool> m_UpperBoundIsGivenVec;
+	std::vector<double> m_LowerBoundValueVec;
+	std::vector<bool> m_LowerBoundIsGivenVec;
 
 	std::vector<double> m_FinalVariables;
+
+	BaseEvaluator* m_Evaluator = nullptr;
 
 
 public:
@@ -37,43 +39,26 @@ public:
 	 */
 	void SetOutputPath(const char* outputFilePath);
 
-	/**
-	 * @brief Set the number of iterations.
-	 * @param numIters Number of iterations.
-	 */
-	void SetNumberOfIterations(int numIters);
 
-	/**
-	 * @brief Set the values for the initial variables.
-	 * @param initialVariables vector of initial variables values.
-	 */
+	void SetNumberOfIterations(int numIters);
+	int GetNumberOfIterations();
+
 	void SetNumberVariables(int numberVariables);
+	int GetNumberOfVariables();
+
 	void SetInitialVariable(int index, double value);
 
 	void SetNumberPBConstraints(int numPBConstraints);
+	int GetNumberPBConstraints();
+
 	void SetNumberEBConstraints(int numEBConstraints);
+	int GetNumberEBConstraints();
 
-	/**
-	 * @brief Set the upper bounds.
-	 * 
-	 * Not all variables need to have upper bounds.
-	 * 
-	 * @param upperBounds vector of upper bound for each variable
-	 */
 	void SetUpperBound(int index, double value);
-
-	/**
-	 * @brief Set the lower bounds.
-	 * 
-	 * Not all variables need to have lower bounds.
-	 * 
-	 * @param lowerBounds vector of lower bound for each variable.
-	 */
 	void SetLowerBound(int index, double value);
 
-	/**
-	 * @brief Optimize the problem.
-	 */
+	void SetEvaluator(BaseEvaluator* eval);
+
 	void Optimize();
 	
 };

@@ -1,5 +1,5 @@
 #include "NomadCore.hpp"
-#include "Evaluator.hpp"
+#include "NomadEvaluator.hpp"
 
 NomadCore::NomadCore(int argc, char** argv)
 {
@@ -14,62 +14,87 @@ NomadCore::~NomadCore()
 
 void NomadCore::SetInitialVariable(int index, double value)
 {
-    if (index >= numVars || index < 0)
+    if (index >= m_NumVars || index < 0)
 	{
 		throw std::invalid_argument("Index out of bounds");
 	}
-	initialVars[index] = value;
+	m_InitialVarsVec[index] = value;
 }
 
 void NomadCore::SetNumberVariables(int numberVariables)
 {
-    numVars = numberVariables;
-    upperBoundIsGivenVec.resize(numVars, false);
-    lowerBoundIsGivenVec.resize(numVars, false);
-    upperBoundValueVec.resize(numVars, 0.0);
-    lowerBoundValueVec.resize(numVars, 0.0);
-    initialVars.resize(numVars, 0.0);
-    m_FinalVariables.resize(numVars, 0.0);
+    m_NumVars = numberVariables;
+    m_UpperBoundIsGivenVec.resize(m_NumVars, false);
+    m_LowerBoundIsGivenVec.resize(m_NumVars, false);
+    m_UpperBoundValueVec.resize(m_NumVars, 0.0);
+    m_LowerBoundValueVec.resize(m_NumVars, 0.0);
+    m_InitialVarsVec.resize(m_NumVars, 0.0);
+    m_FinalVariables.resize(m_NumVars, 0.0);
+}
+
+int NomadCore::GetNumberOfVariables()
+{
+	return m_NumVars;
 }
 
 void NomadCore::SetUpperBound(int index, double value)
 {
-    if (index >= numVars || index < 0)
+    if (index >= m_NumVars || index < 0)
     {
         throw std::invalid_argument("Index out of bounds");
     }
-    upperBoundIsGivenVec[index] = true;
-    upperBoundValueVec[index] = value;
+    m_UpperBoundIsGivenVec[index] = true;
+    m_UpperBoundValueVec[index] = value;
 }
 
 void NomadCore::SetLowerBound(int index, double value)
 {
-    if (index >= numVars || index < 0)
+    if (index >= m_NumVars || index < 0)
     {
         throw std::invalid_argument("Index out of bounds");
     }
-	lowerBoundIsGivenVec[index] = true;
-	lowerBoundValueVec[index] = value;
+	m_LowerBoundIsGivenVec[index] = true;
+	m_LowerBoundValueVec[index] = value;
 }
 
 void NomadCore::SetNumberOfIterations(int numIters)
 {
-	numIterations = numIters;
+	m_NumIterations = numIters;
+}
+
+int NomadCore::GetNumberOfIterations()
+{
+	return m_NumIterations;
 }
 
 void NomadCore::SetOutputPath(const char* outputFilePath)
 {
-	outputPath = outputFilePath;
+	m_OutputPath = outputFilePath;
 }
 
 void NomadCore::SetNumberPBConstraints(int numPBConstraints)
 {
-	numberPBConstraints = numPBConstraints;
+	m_NumPBConstraints = numPBConstraints;
+}
+
+int NomadCore::GetNumberPBConstraints()
+{
+	return m_NumPBConstraints;
 }
 
 void NomadCore::SetNumberEBConstraints(int numEBConstraints)
 {
-	numberEBConstraints = numEBConstraints;
+	m_NumEBConstraints = numEBConstraints;
+}
+
+int NomadCore::GetNumberEBConstraints()
+{
+	return m_NumEBConstraints;
+}
+
+void NomadCore::SetEvaluator(BaseEvaluator* eval)
+{
+    m_Evaluator = eval;
 }
 
 void NomadCore::Optimize()
@@ -83,18 +108,18 @@ void NomadCore::Optimize()
         //NOMAD::Parameters params(out);
 
         NOMAD::Parameters* params = new NOMAD::Parameters(*out);
-        params->set_DIMENSION(numVars);
+        params->set_DIMENSION(m_NumVars);
 
         vector<NOMAD::bb_output_type> bbot;
-        bbot.resize(numberPBConstraints + numberEBConstraints + 1);
+        bbot.resize(m_NumPBConstraints + m_NumEBConstraints + 1);
         bbot[0] = NOMAD::OBJ; // 0 always obj
 
-        for (int i = 1; i < numberPBConstraints + 1; i++)
+        for (int i = 1; i < m_NumPBConstraints + 1; i++)
         {
             bbot[i] = NOMAD::PB;
         }
 
-        for (int i = numberPBConstraints + 1; i < numberPBConstraints + numberEBConstraints + 1; i++)
+        for (int i = m_NumPBConstraints + 1; i < m_NumPBConstraints + m_NumEBConstraints + 1; i++)
         {
             bbot[i] = NOMAD::EB;
         }
@@ -105,36 +130,36 @@ void NomadCore::Optimize()
         params->set_DISPLAY_STATS("bbe ( sol ) obj");
 
 
-        NOMAD::Point x0(numVars);
-        NOMAD::Point lb(numVars);
-        NOMAD::Point ub(numVars);
-        for (int i = 0; i < numVars; i++)
+        NOMAD::Point x0(m_NumVars);
+        NOMAD::Point lb(m_NumVars);
+        NOMAD::Point ub(m_NumVars);
+        for (int i = 0; i < m_NumVars; i++)
         {
-            x0[i] = initialVars[i];
+            x0[i] = m_InitialVarsVec[i];
 
-            if (lowerBoundIsGivenVec[i])
+            if (m_LowerBoundIsGivenVec[i])
             {
-                lb[i] = lowerBoundValueVec[i];
+                lb[i] = m_LowerBoundValueVec[i];
             }
 
-            if (upperBoundIsGivenVec[i])
+            if (m_UpperBoundIsGivenVec[i])
             {
-                ub[i] = upperBoundValueVec[i];
+                ub[i] = m_UpperBoundValueVec[i];
             }
         }
         params->set_X0(x0);
         params->set_LOWER_BOUND(lb);
         params->set_UPPER_BOUND(ub);
 
-        params->set_MAX_BB_EVAL(numIterations);
+        params->set_MAX_BB_EVAL(m_NumIterations);
         params->set_DISPLAY_DEGREE(2);
-        params->set_SOLUTION_FILE(outputPath);
+        params->set_SOLUTION_FILE(m_OutputPath);
 
         // parameters validation:
         params->check();
 
         // custom evaluator creation:
-        Evaluator* evaluatorPtr = new Evaluator(*params);
+        NomadEvaluator* evaluatorPtr = new NomadEvaluator(*params, m_Evaluator, this);
 
         // algorithm creation and execution:
         NOMAD::Mads* mads = new NOMAD::Mads(*params, evaluatorPtr);

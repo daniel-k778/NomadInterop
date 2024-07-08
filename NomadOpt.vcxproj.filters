@@ -21,9 +21,6 @@
     <ClCompile Include="NomadCore.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Evaluator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -32,10 +29,10 @@
     <ClInclude Include="NomadCore.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Evaluator.hpp">
+    <ClInclude Include="BaseEvaluator.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="WrapperEvaluator.hpp">
+    <ClInclude Include="NomadEvaluator.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
