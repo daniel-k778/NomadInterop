@@ -1,10 +1,9 @@
 #include "NomadCore.hpp"
 #include "NomadEvaluator.hpp"
 
-NomadCore::NomadCore(int argc, char** argv)
+NomadCore::NomadCore()
 {
-    this->argc = argc;
-    this->argv = argv;
+
 }
 
 NomadCore::~NomadCore()
@@ -99,13 +98,16 @@ void NomadCore::SetEvaluator(BaseEvaluator* eval)
 
 void NomadCore::Optimize()
 {
+    if (m_NumVars == 0)
+	{
+		throw std::exception("Number of variables not set.");
+	}
     NOMAD::Display* out = new NOMAD::Display(std::cout);
 
     try {
         out->precision(NOMAD::DISPLAY_PRECISION_STD);
 
-        NOMAD::begin(argc, argv);
-        //NOMAD::Parameters params(out);
+        NOMAD::begin(0, NULL);
 
         NOMAD::Parameters* params = new NOMAD::Parameters(*out);
         params->set_DIMENSION(m_NumVars);
@@ -153,7 +155,10 @@ void NomadCore::Optimize()
 
         params->set_MAX_BB_EVAL(m_NumIterations);
         params->set_DISPLAY_DEGREE(2);
-        params->set_SOLUTION_FILE(m_OutputPath);
+        if (m_OutputPath)
+        {
+            params->set_SOLUTION_FILE(m_OutputPath);
+        }
 
         // parameters validation:
         params->check();
@@ -165,7 +170,9 @@ void NomadCore::Optimize()
         NOMAD::Mads* mads = new NOMAD::Mads(*params, evaluatorPtr);
         mads->run();
 
-        double vals = mads->get_best_feasible()->value(0);
+        for (int i = 0; i < m_NumVars; i++) {
+            m_FinalVariables[i] = mads->get_best_feasible()->value(i);
+        }
     }
     catch (exception& e) {
 		std::cerr << "\nNOMAD has been interrupted (" << e.what() << ")\n\n";
@@ -173,4 +180,9 @@ void NomadCore::Optimize()
 
     NOMAD::Slave::stop_slaves(*out);
     NOMAD::end();
+}
+
+std::vector<double> NomadCore::GetResults()
+{
+    return m_FinalVariables;
 }

@@ -5,10 +5,6 @@
 class NomadCore
 {
 private:
-
-	int argc;
-	char** argv;
-
 	const char* m_OutputPath;
 
 	int m_NumVars = 0;
@@ -27,10 +23,9 @@ private:
 
 	BaseEvaluator* m_Evaluator = nullptr;
 
-
 public:
 
-	NomadCore(int argc, char** argv);
+	NomadCore();
 	~NomadCore();
 
 	/**
@@ -60,5 +55,6 @@ public:
 	void SetEvaluator(BaseEvaluator* eval);
 
 	void Optimize();
-	
+
+	std::vector<double> GetResults();
 };
