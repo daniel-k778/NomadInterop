@@ -23,10 +23,17 @@ namespace csExample
             NomadCore.SetNumberEBConstraints(nomadCore, 2);
             NomadCore.SetNumberPBConstraints(nomadCore, 3);
 
-            myEvaluator userEvaluator = new myEvaluator();
+            myEvaluator myEval = new myEvaluator();
 
-            NomadCore.SetEvaluator(nomadCore, userEvaluator);
+            NomadCore.SetEvaluator(nomadCore, myEval);
             NomadCore.Optimize(nomadCore);
+
+            double[] results = NomadCore.GetResults(nomadCore);
+
+            foreach (double r in results)
+            {
+                Console.WriteLine(r);
+            }
 
         }
     }

@@ -14,42 +14,44 @@ namespace NomadLibrary
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate void GetConstraintsDelegate(IntPtr constraints);
 
-        // Import the CreateNomadCore function from the DLL
-        [DllImport("cppwrapper.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("C:\\Users\\Daniel\\OneDrive\\Desktop\\Nomad\\NomadOpt\\x64\\Debug\\cppwrapper.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr CreateNomadCore();
 
-        [DllImport("cppwrapper.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("C:\\Users\\Daniel\\OneDrive\\Desktop\\Nomad\\NomadOpt\\x64\\Debug\\cppwrapper.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern void SetOutputPath(IntPtr nomadCore, string path);
 
-        [DllImport("cppwrapper.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("C:\\Users\\Daniel\\OneDrive\\Desktop\\Nomad\\NomadOpt\\x64\\Debug\\cppwrapper.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern void SetNumberVariables(IntPtr nomadCore, int numVars);
 
-        [DllImport("cppwrapper.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("C:\\Users\\Daniel\\OneDrive\\Desktop\\Nomad\\NomadOpt\\x64\\Debug\\cppwrapper.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern void SetInitialVariable(IntPtr nomadCore, int index, double value);
 
-        [DllImport("cppwrapper.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("C:\\Users\\Daniel\\OneDrive\\Desktop\\Nomad\\NomadOpt\\x64\\Debug\\cppwrapper.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern void SetUpperBound(IntPtr nomadCore, int index, double value);
 
-        [DllImport("cppwrapper.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("C:\\Users\\Daniel\\OneDrive\\Desktop\\Nomad\\NomadOpt\\x64\\Debug\\cppwrapper.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern void SetLowerBound(IntPtr nomadCore, int index, double value);
 
-        [DllImport("cppwrapper.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("C:\\Users\\Daniel\\OneDrive\\Desktop\\Nomad\\NomadOpt\\x64\\Debug\\cppwrapper.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern void SetVariableType(IntPtr nomadCore, int index, string type);
 
-        [DllImport("cppwrapper.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("C:\\Users\\Daniel\\OneDrive\\Desktop\\Nomad\\NomadOpt\\x64\\Debug\\cppwrapper.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern void SetNumberOfIterations(IntPtr nomadCore, int numIterations);
 
-        [DllImport("cppwrapper.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("C:\\Users\\Daniel\\OneDrive\\Desktop\\Nomad\\NomadOpt\\x64\\Debug\\cppwrapper.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern void SetNumberEBConstraints(IntPtr nomadCore, int numEBConstraints);
 
-        [DllImport("cppwrapper.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("C:\\Users\\Daniel\\OneDrive\\Desktop\\Nomad\\NomadOpt\\x64\\Debug\\cppwrapper.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern void SetNumberPBConstraints(IntPtr nomadCore, int numPBConstraints);
 
-        [DllImport("cppwrapper.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("C:\\Users\\Daniel\\OneDrive\\Desktop\\Nomad\\NomadOpt\\x64\\Debug\\cppwrapper.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void SetEvaluator(IntPtr nomadCore, IntPtr evaluator, IntPtr getObjectiveFunction, IntPtr getConstraints);
 
-        [DllImport("cppwrapper.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("C:\\Users\\Daniel\\OneDrive\\Desktop\\Nomad\\NomadOpt\\x64\\Debug\\cppwrapper.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern void Optimize(IntPtr nomadCore);
+
+        [DllImport("C:\\Users\\Daniel\\OneDrive\\Desktop\\Nomad\\NomadOpt\\x64\\Debug\\cppwrapper.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr GetResults(IntPtr nomadCore, ref int size);
 
         public static void SetEvaluator(IntPtr nomadCore, IUserEvaluator evaluator)
         {
@@ -62,6 +64,17 @@ namespace NomadLibrary
             IntPtr getConstraintsPtr = Marshal.GetFunctionPointerForDelegate(getConstraintsDelegate);
 
             SetEvaluator(nomadCore, evalPtr, getObjFuncPtr, getConstraintsPtr);
+        }
+
+        public static double[] GetResults(IntPtr nomadCore)
+        {
+            int size = 0;
+            IntPtr resultPtr = GetResults(nomadCore, ref size);
+
+            double[] results = new double[size];
+            Marshal.Copy(resultPtr, results, 0, size);
+
+            return results;
         }
 
 

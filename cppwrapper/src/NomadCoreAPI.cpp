@@ -1,29 +1,29 @@
-#include "w_NomadCore.h"
+#include "NomadCoreAPI.hpp"
 
 extern "C" {
 
     class EvaluatorWrapper : public BaseEvaluator {
     public:
-        EvaluateDelegate evaluate;
-        GetObjectiveFunctionDelegate getObjectiveFunction;
-        GetConstraintsDelegate getConstraints;
+        EvaluateDelegate m_Evaluate;
+        GetObjectiveFunctionDelegate m_GetObjectiveFunction;
+        GetConstraintsDelegate m_GetConstraints;
 
-        double m_obj = 0.0;
-        std::vector<double> m_constraints;
+        double m_Obj = 0.0;
+        std::vector<double> m_Constraints;
 
         void Evaluate(double* x, int m_NumVars, int numConstraints) override {
-            evaluate(x, m_NumVars, numConstraints);
-            m_obj = getObjectiveFunction();
-            m_constraints.resize(numConstraints);
-            getConstraints(m_constraints.data());
+            m_Evaluate(x, m_NumVars, numConstraints);
+            m_Obj = m_GetObjectiveFunction();
+            m_Constraints.resize(numConstraints);
+            m_GetConstraints(m_Constraints.data());
         }
 
         double GetObjectiveFunction() override {
-            return m_obj;
+            return m_Obj;
         }
 
         std::vector<double> GetConstraints() override {
-            return m_constraints;
+            return m_Constraints;
         }
     };
 
@@ -67,15 +67,21 @@ extern "C" {
         nomadCore->SetNumberPBConstraints(numPBConstraints);
     }
 
-    void SetEvaluator(NomadCore* nomadCore, EvaluateDelegate evaluator, GetObjectiveFunctionDelegate getObjectiveFunction, GetConstraintsDelegate getConstraints) {
+    void SetEvaluator(NomadCore* nomadCore, EvaluateDelegate evaluator, GetObjectiveFunctionDelegate m_GetObjectiveFunction, GetConstraintsDelegate m_GetConstraints) {
         EvaluatorWrapper* wrapper = new EvaluatorWrapper();
-        wrapper->evaluate = evaluator;
-        wrapper->getObjectiveFunction = getObjectiveFunction;
-        wrapper->getConstraints = getConstraints;
+        wrapper->m_Evaluate = evaluator;
+        wrapper->m_GetObjectiveFunction = m_GetObjectiveFunction;
+        wrapper->m_GetConstraints = m_GetConstraints;
         nomadCore->SetEvaluator(wrapper);
     }
 
     void Optimize(NomadCore* nomadCore) {
         nomadCore->Optimize();
+    }
+
+    double* GetResults(NomadCore* nomadCore, int* size) {
+        static std::vector<double> results = nomadCore->GetResults();
+        *size = static_cast<int>(results.size());
+        return results.data();
     }
 }

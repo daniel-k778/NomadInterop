@@ -4,7 +4,7 @@ namespace NomadLibrary
 {
     public interface IUserEvaluator
     {
-        void Evaluate(IntPtr x, int m_NumVars, int numConstraints);
+        void Evaluate(IntPtr x, int numVars, int numConstraints);
         double GetObjectiveFunction();
         void GetConstraints(IntPtr constraintsPtr);
     }

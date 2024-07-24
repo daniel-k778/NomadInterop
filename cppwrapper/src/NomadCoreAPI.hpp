@@ -36,7 +36,9 @@ extern "C" {
 
     NOMADCORE_API void SetNumberPBConstraints(NomadCore* nomadCore, int numPBConstraints);
 
-    NOMADCORE_API void SetEvaluator(NomadCore* nomadCore, EvaluateDelegate evaluator, GetObjectiveFunctionDelegate getObjectiveFunction, GetConstraintsDelegate getConstraints);
+    NOMADCORE_API void SetEvaluator(NomadCore* nomadCore, EvaluateDelegate evaluator, GetObjectiveFunctionDelegate m_GetObjectiveFunction, GetConstraintsDelegate m_GetConstraints);
 
     NOMADCORE_API void Optimize(NomadCore* nomadCore);
+
+    NOMADCORE_API double* GetResults(NomadCore* nomadCore, int* size);
 }
