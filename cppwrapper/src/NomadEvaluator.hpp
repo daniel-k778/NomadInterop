@@ -33,8 +33,12 @@ public:
 
 		m_Evaluator->Evaluate(paramsPtr, m_NomadCore->GetNumberOfVariables(), m_NomadCore->GetNumberEBConstraints() + m_NomadCore->GetNumberPBConstraints());
 		x.set_bb_output(0, m_Evaluator->GetObjectiveFunction()); // objective value
-		x.set_bb_output(1, m_Evaluator->GetConstraints().at(0)); // constraint 1
-		x.set_bb_output(2, m_Evaluator->GetConstraints().at(1)); // constraint 2
+
+		auto constraints = m_Evaluator->GetConstraints();
+
+		for (int i = 0; i < constraints.size(); i++) {
+			x.set_bb_output(i + 1, constraints.at(i)); // add each constraint
+			}
 
 		count_eval = true; // count a black-box evaluation
 		delete[] paramsPtr;
