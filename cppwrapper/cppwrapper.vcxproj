@@ -22,13 +22,13 @@
     <ClInclude Include="src\BaseEvaluator.hpp" />
     <ClInclude Include="src\NomadCore.hpp" />
     <ClInclude Include="src\NomadEvaluator.hpp" />
-    <ClInclude Include="wrapper\w_NomadCore.h" />
+    <ClInclude Include="src\w_NomadCore.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\NomadCore.cpp" />
     <ClCompile Include="src\NomadOpt.cpp" />
-    <ClCompile Include="wrapper\w_NomadCore.cpp" />
+    <ClCompile Include="src\w_NomadCore.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
@@ -125,7 +125,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>x64;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\cppwrapper\wrapper;$(SolutionDir)\cppwrapper\include\sgtelib\src;$(SolutionDir)\cppwrapper\src;$(SolutionDir)\cppwrapper\include\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\cppwrapper\include\sgtelib\src;$(SolutionDir)\cppwrapper\src;$(SolutionDir)\cppwrapper\include\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Disabled</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -149,7 +149,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>x64;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\cppwrapper\wrapper;$(SolutionDir)\cppwrapper\include\sgtelib\src;$(SolutionDir)\cppwrapper\src;$(SolutionDir)\cppwrapper\include\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\cppwrapper\include\sgtelib\src;$(SolutionDir)\cppwrapper\src;$(SolutionDir)\cppwrapper\include\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>

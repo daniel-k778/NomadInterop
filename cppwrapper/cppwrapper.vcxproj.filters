@@ -24,7 +24,7 @@
     <ClInclude Include="src\NomadEvaluator.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wrapper\w_NomadCore.h">
+    <ClInclude Include="src\w_NomadCore.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -38,7 +38,7 @@
     <ClCompile Include="src\NomadOpt.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="wrapper\w_NomadCore.cpp">
+    <ClCompile Include="src\w_NomadCore.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

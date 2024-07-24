@@ -5,7 +5,7 @@
 class NomadCore
 {
 private:
-	const char* m_OutputPath;
+	const char* m_OutputPath = nullptr;
 
 	int m_NumVars = 0;
 	int m_NumIterations = 100;
@@ -13,13 +13,16 @@ private:
 	int m_NumPBConstraints = 0;
 	int m_NumEBConstraints = 0;
 
-	std::vector<double> m_InitialVarsVec;
-	std::vector<double> m_UpperBoundValueVec;
-	std::vector<bool> m_UpperBoundIsGivenVec;
-	std::vector<double> m_LowerBoundValueVec;
-	std::vector<bool> m_LowerBoundIsGivenVec;
+	std::vector<double> m_InitialVarsVec = { };
+	std::vector<double> m_UpperBoundValueVec = { };
+	std::vector<bool> m_UpperBoundIsGivenVec = { };
+	std::vector<double> m_LowerBoundValueVec = { };
+	std::vector<bool> m_LowerBoundIsGivenVec = { };
 
-	std::vector<double> m_FinalVariables;
+	std::vector<double> m_FinalVariables = { };
+
+	std::vector<bool> m_ParamaterTypeIsGivenVec = { };
+	std::vector<std::string> m_ParamaterTypeVec = { };
 
 	BaseEvaluator* m_Evaluator = nullptr;
 
@@ -51,6 +54,8 @@ public:
 
 	void SetUpperBound(int index, double value);
 	void SetLowerBound(int index, double value);
+
+	void SetVariableType(int index, const char* type);
 
 	void SetEvaluator(BaseEvaluator* eval);
 

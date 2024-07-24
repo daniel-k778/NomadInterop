@@ -29,6 +29,8 @@ void NomadCore::SetNumberVariables(int numberVariables)
     m_LowerBoundValueVec.resize(m_NumVars, 0.0);
     m_InitialVarsVec.resize(m_NumVars, 0.0);
     m_FinalVariables.resize(m_NumVars, 0.0);
+    m_ParamaterTypeIsGivenVec.resize(m_NumVars, false);
+    m_ParamaterTypeVec.resize(m_NumVars, "");
 }
 
 int NomadCore::GetNumberOfVariables()
@@ -55,6 +57,16 @@ void NomadCore::SetLowerBound(int index, double value)
 	m_LowerBoundIsGivenVec[index] = true;
 	m_LowerBoundValueVec[index] = value;
 }
+
+void NomadCore::SetVariableType(int index, const char* type) {
+    if (index >= m_NumVars || index < 0)
+    {
+        throw std::invalid_argument("Index out of bounds");
+    }
+    m_ParamaterTypeIsGivenVec[index] = true;
+    m_ParamaterTypeVec[index] = type;
+}
+
 
 void NomadCore::SetNumberOfIterations(int numIters)
 {
@@ -127,6 +139,27 @@ void NomadCore::Optimize()
         }
 
         params->set_BB_OUTPUT_TYPE(bbot);
+
+        for (int i = 0; i < m_NumVars; i++)
+		{
+            if (m_ParamaterTypeIsGivenVec[i]) {
+                if (m_ParamaterTypeVec[i] == "CATEGORICAL") {
+                    params->set_BB_INPUT_TYPE(i, NOMAD::bb_input_type::CATEGORICAL);
+                }
+                else if (m_ParamaterTypeVec[i] == "INTEGER") {
+                    params->set_BB_INPUT_TYPE(i, NOMAD::bb_input_type::INTEGER);
+                }
+                else if (m_ParamaterTypeVec[i] == "CONTINUOUS") {
+                    params->set_BB_INPUT_TYPE(i, NOMAD::bb_input_type::CONTINUOUS);
+                }
+                else if (m_ParamaterTypeVec[i] == "BINARY") {
+					params->set_BB_INPUT_TYPE(i, NOMAD::bb_input_type::BINARY);
+				}
+                else {
+                    throw std::invalid_argument("Invalid parameter type");
+                }
+			}
+		}
 
         //    p.set_DISPLAY_ALL_EVAL(true);   // displays all evaluations.
         params->set_DISPLAY_STATS("bbe ( sol ) obj");
