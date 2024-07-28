@@ -35,7 +35,7 @@
     <ProjectGuid>{08b353f2-2796-437e-b196-ccbade5d8ee7}</ProjectGuid>
     <RootNamespace>NomadOpt</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>cppwrapper</ProjectName>
+    <ProjectName>NomadInteropCpp</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

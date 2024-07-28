@@ -11,6 +11,9 @@
     <Reference Include="cswrapper">
       <HintPath>..\cswrapper\bin\Debug\net8.0\cswrapper.dll</HintPath>
     </Reference>
+    <Reference Include="NomadInteropCs">
+      <HintPath>..\NomadInteropCs\bin\Debug\net8.0\NomadInteropCs.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

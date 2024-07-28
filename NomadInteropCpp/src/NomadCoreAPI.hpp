@@ -22,11 +22,11 @@ extern "C" {
 
     NOMADCORE_API void SetNumberVariables(NomadCore* nomadCore, int numVars);
 
-    NOMADCORE_API void SetInitialVariable(NomadCore* nomadCore, int index, double value);
+    NOMADCORE_API void SetInitialVariableValue(NomadCore* nomadCore, int index, double value);
 
-    NOMADCORE_API void SetUpperBound(NomadCore* nomadCore, int index, double value);
+    NOMADCORE_API void SetVariableUpperBound(NomadCore* nomadCore, int index, double value);
 
-    NOMADCORE_API void SetLowerBound(NomadCore* nomadCore, int index, double value);
+    NOMADCORE_API void SetVariableLowerBound(NomadCore* nomadCore, int index, double value);
 
     NOMADCORE_API void SetVariableType(NomadCore* nomadCore, int index, const char* type);
 

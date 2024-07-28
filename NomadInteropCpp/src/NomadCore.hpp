@@ -44,7 +44,7 @@ public:
 	void SetNumberVariables(int numberVariables);
 	int GetNumberOfVariables();
 
-	void SetInitialVariable(int index, double value);
+	void SetInitialVariableValue(int index, double value);
 
 	void SetNumberPBConstraints(int numPBConstraints);
 	int GetNumberPBConstraints();
@@ -52,8 +52,8 @@ public:
 	void SetNumberEBConstraints(int numEBConstraints);
 	int GetNumberEBConstraints();
 
-	void SetUpperBound(int index, double value);
-	void SetLowerBound(int index, double value);
+	void SetVariableUpperBound(int index, double value);
+	void SetVariableLowerBound(int index, double value);
 
 	void SetVariableType(int index, const char* type);
 

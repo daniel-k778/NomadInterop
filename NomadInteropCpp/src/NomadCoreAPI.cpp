@@ -39,16 +39,16 @@ extern "C" {
         nomadCore->SetNumberVariables(numVars);
     }
 
-    void SetInitialVariable(NomadCore* nomadCore, int index, double value) {
-        nomadCore->SetInitialVariable(index, value);
+    void SetInitialVariableValue(NomadCore* nomadCore, int index, double value) {
+        nomadCore->SetInitialVariableValue(index, value);
     }
 
-    void SetUpperBound(NomadCore* nomadCore, int index, double value) {
-        nomadCore->SetUpperBound(index, value);
+    void SetVariableUpperBound(NomadCore* nomadCore, int index, double value) {
+        nomadCore->SetVariableUpperBound(index, value);
     }
 
-    void SetLowerBound(NomadCore* nomadCore, int index, double value) {
-        nomadCore->SetLowerBound(index, value);
+    void SetVariableLowerBound(NomadCore* nomadCore, int index, double value) {
+        nomadCore->SetVariableLowerBound(index, value);
     }
 
     void SetVariableType(NomadCore* nomadCore, int index, const char* type) {

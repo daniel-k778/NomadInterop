@@ -11,7 +11,7 @@ NomadCore::~NomadCore()
 
 }
 
-void NomadCore::SetInitialVariable(int index, double value)
+void NomadCore::SetInitialVariableValue(int index, double value)
 {
     if (index >= m_NumVars || index < 0)
 	{
@@ -38,7 +38,7 @@ int NomadCore::GetNumberOfVariables()
 	return m_NumVars;
 }
 
-void NomadCore::SetUpperBound(int index, double value)
+void NomadCore::SetVariableUpperBound(int index, double value)
 {
     if (index >= m_NumVars || index < 0)
     {
@@ -48,7 +48,7 @@ void NomadCore::SetUpperBound(int index, double value)
     m_UpperBoundValueVec[index] = value;
 }
 
-void NomadCore::SetLowerBound(int index, double value)
+void NomadCore::SetVariableLowerBound(int index, double value)
 {
     if (index >= m_NumVars || index < 0)
     {
@@ -206,6 +206,8 @@ void NomadCore::Optimize()
         for (int i = 0; i < m_NumVars; i++) {
             m_FinalVariables[i] = mads->get_best_feasible()->value(i);
         }
+
+
     }
     catch (exception& e) {
 		std::cerr << "\nNOMAD has been interrupted (" << e.what() << ")\n\n";
