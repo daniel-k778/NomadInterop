@@ -1,26 +1,27 @@
 #include "NomadCore.hpp"
 #include "NomadEvaluator.hpp"
 
-NomadCore::NomadCore()
+NomadCore::NomadCore( void )
 {
 
 }
 
-NomadCore::~NomadCore()
+NomadCore::~NomadCore( void )
 {
 
 }
 
-void NomadCore::SetInitialVariableValue(int index, double value)
+void NomadCore::SetInitialVariableValue( int index, double value )
 {
     if (index >= m_NumVars || index < 0)
 	{
 		throw std::invalid_argument("Index out of bounds");
 	}
+
 	m_InitialVarsVec[index] = value;
 }
 
-void NomadCore::SetNumberVariables(int numberVariables)
+void NomadCore::SetNumberVariables( int numberVariables )
 {
     m_NumVars = numberVariables;
     m_UpperBoundIsGivenVec.resize(m_NumVars, false);
@@ -33,97 +34,100 @@ void NomadCore::SetNumberVariables(int numberVariables)
     m_ParamaterTypeVec.resize(m_NumVars, "");
 }
 
-int NomadCore::GetNumberOfVariables()
+int NomadCore::GetNumberOfVariables( void )
 {
 	return m_NumVars;
 }
 
-void NomadCore::SetVariableUpperBound(int index, double value)
+void NomadCore::SetVariableUpperBound( int index, double value )
 {
     if (index >= m_NumVars || index < 0)
     {
         throw std::invalid_argument("Index out of bounds");
     }
+
     m_UpperBoundIsGivenVec[index] = true;
     m_UpperBoundValueVec[index] = value;
 }
 
-void NomadCore::SetVariableLowerBound(int index, double value)
+void NomadCore::SetVariableLowerBound( int index, double value )
 {
     if (index >= m_NumVars || index < 0)
     {
         throw std::invalid_argument("Index out of bounds");
     }
+
 	m_LowerBoundIsGivenVec[index] = true;
 	m_LowerBoundValueVec[index] = value;
 }
 
-void NomadCore::SetVariableType(int index, const char* type) {
+void NomadCore::SetVariableType( int index, const char* type ) {
     if (index >= m_NumVars || index < 0)
     {
         throw std::invalid_argument("Index out of bounds");
     }
+
     m_ParamaterTypeIsGivenVec[index] = true;
     m_ParamaterTypeVec[index] = type;
 }
 
 
-void NomadCore::SetNumberOfIterations(int numIters)
+void NomadCore::SetNumberOfIterations( int numIters )
 {
 	m_NumIterations = numIters;
 }
 
-int NomadCore::GetNumberOfIterations()
+int NomadCore::GetNumberOfIterations( void )
 {
 	return m_NumIterations;
 }
 
-void NomadCore::SetOutputPath(const char* outputFilePath)
+void NomadCore::SetOutputPath( const char* outputFilePath )
 {
 	m_OutputPath = outputFilePath;
 }
 
-void NomadCore::SetNumberPBConstraints(int numPBConstraints)
+void NomadCore::SetNumberPBConstraints( int numPBConstraints )
 {
 	m_NumPBConstraints = numPBConstraints;
 }
 
-int NomadCore::GetNumberPBConstraints()
+int NomadCore::GetNumberPBConstraints( void )
 {
 	return m_NumPBConstraints;
 }
 
-void NomadCore::SetNumberEBConstraints(int numEBConstraints)
+void NomadCore::SetNumberEBConstraints( int numEBConstraints )
 {
 	m_NumEBConstraints = numEBConstraints;
 }
 
-int NomadCore::GetNumberEBConstraints()
+int NomadCore::GetNumberEBConstraints(void )
 {
 	return m_NumEBConstraints;
 }
 
-void NomadCore::SetSingleObjEvaluator(BaseSingleObjEvaluator* eval)
+void NomadCore::SetSingleObjEvaluator( BaseSingleObjEvaluator* eval )
 {
     m_SingleObjEvaluator = eval;
 }
 
-void NomadCore::SetMultiObjEvaluator(BaseMultiObjEvaluator* eval)
+void NomadCore::SetMultiObjEvaluator( BaseMultiObjEvaluator* eval )
 {
     m_MultiObjEvaluator = eval;
 }
 
-void NomadCore::SetNumberObjFunctions(int numObjFunctions)
+void NomadCore::SetNumberObjFunctions( int numObjFunctions )
 {
 	m_NumObjFunctions = numObjFunctions;
 }
 
-int NomadCore::GetNumberObjFunctions()
+int NomadCore::GetNumberObjFunctions( void )
 {
 	return m_NumObjFunctions;
 }
 
-void NomadCore::OptimizeSingleObj()
+void NomadCore::OptimizeSingleObj( void )
 {
     if (m_NumVars <= 0)
     {
@@ -134,9 +138,11 @@ void NomadCore::OptimizeSingleObj()
     {
         throw std::exception("Only one objective function can be optimized.");
     }
+
     NOMAD::Display* out = new NOMAD::Display(std::cout);
 
-    try {
+    try
+    {
         out->precision(NOMAD::DISPLAY_PRECISION_STD);
 
         NOMAD::begin(0, NULL);
@@ -162,20 +168,26 @@ void NomadCore::OptimizeSingleObj()
 
         for (int i = 0; i < m_NumVars; i++)
 		{
-            if (m_ParamaterTypeIsGivenVec[i]) {
-                if (m_ParamaterTypeVec[i] == "CATEGORICAL") {
+            if (m_ParamaterTypeIsGivenVec[i])
+            {
+                if (m_ParamaterTypeVec[i] == "CATEGORICAL")
+                {
                     params->set_BB_INPUT_TYPE(i, NOMAD::bb_input_type::CATEGORICAL);
                 }
-                else if (m_ParamaterTypeVec[i] == "INTEGER") {
+                else if (m_ParamaterTypeVec[i] == "INTEGER")
+                {
                     params->set_BB_INPUT_TYPE(i, NOMAD::bb_input_type::INTEGER);
                 }
-                else if (m_ParamaterTypeVec[i] == "CONTINUOUS") {
+                else if (m_ParamaterTypeVec[i] == "CONTINUOUS")
+                {
                     params->set_BB_INPUT_TYPE(i, NOMAD::bb_input_type::CONTINUOUS);
                 }
-                else if (m_ParamaterTypeVec[i] == "BINARY") {
+                else if (m_ParamaterTypeVec[i] == "BINARY")
+                {
 					params->set_BB_INPUT_TYPE(i, NOMAD::bb_input_type::BINARY);
 				}
-                else {
+                else
+                {
                     throw std::invalid_argument("Invalid parameter type");
                 }
 			}
@@ -188,6 +200,7 @@ void NomadCore::OptimizeSingleObj()
         NOMAD::Point x0(m_NumVars);
         NOMAD::Point lb(m_NumVars);
         NOMAD::Point ub(m_NumVars);
+
         for (int i = 0; i < m_NumVars; i++)
         {
             x0[i] = m_InitialVarsVec[i];
@@ -202,6 +215,7 @@ void NomadCore::OptimizeSingleObj()
                 ub[i] = m_UpperBoundValueVec[i];
             }
         }
+
         params->set_X0(x0);
         params->set_LOWER_BOUND(lb);
         params->set_UPPER_BOUND(ub);
@@ -223,13 +237,15 @@ void NomadCore::OptimizeSingleObj()
         NOMAD::Mads* mads = new NOMAD::Mads(*params, evaluatorPtr);
         mads->run();
 
-        for (int i = 0; i < m_NumVars; i++) {
+        for (int i = 0; i < m_NumVars; i++) 
+        {
             m_FinalVariables[i] = mads->get_best_feasible()->value(i);
         }
 
 
     }
-    catch (exception& e) {
+    catch (exception& e)
+    {
 		std::cerr << "\nNOMAD has been interrupted (" << e.what() << ")\n\n";
 	}
 
@@ -237,7 +253,7 @@ void NomadCore::OptimizeSingleObj()
     NOMAD::end();
 }
 
-void NomadCore::OptimizeMultiObj()
+void NomadCore::OptimizeMultiObj( void )
 {
     if (m_NumVars <= 0)
     {
@@ -251,7 +267,8 @@ void NomadCore::OptimizeMultiObj()
 
     NOMAD::Display* out = new NOMAD::Display(std::cout);
 
-    try {
+    try
+    {
         out->precision(NOMAD::DISPLAY_PRECISION_STD);
 
         NOMAD::begin(0, NULL);
@@ -262,7 +279,8 @@ void NomadCore::OptimizeMultiObj()
         vector<NOMAD::bb_output_type> bbot;
         bbot.resize(m_NumPBConstraints + m_NumEBConstraints + m_NumObjFunctions);
 
-        for (int i = 0; i < m_NumObjFunctions; i++) {
+        for (int i = 0; i < m_NumObjFunctions; i++)
+        {
             bbot[i] = NOMAD::OBJ;
         }
 
@@ -280,20 +298,26 @@ void NomadCore::OptimizeMultiObj()
 
         for (int i = 0; i < m_NumVars; i++)
         {
-            if (m_ParamaterTypeIsGivenVec[i]) {
-                if (m_ParamaterTypeVec[i] == "CATEGORICAL") {
+            if (m_ParamaterTypeIsGivenVec[i])
+            {
+                if (m_ParamaterTypeVec[i] == "CATEGORICAL")
+                {
                     params->set_BB_INPUT_TYPE(i, NOMAD::bb_input_type::CATEGORICAL);
                 }
-                else if (m_ParamaterTypeVec[i] == "INTEGER") {
+                else if (m_ParamaterTypeVec[i] == "INTEGER")
+                {
                     params->set_BB_INPUT_TYPE(i, NOMAD::bb_input_type::INTEGER);
                 }
-                else if (m_ParamaterTypeVec[i] == "CONTINUOUS") {
+                else if (m_ParamaterTypeVec[i] == "CONTINUOUS")
+                {
                     params->set_BB_INPUT_TYPE(i, NOMAD::bb_input_type::CONTINUOUS);
                 }
-                else if (m_ParamaterTypeVec[i] == "BINARY") {
+                else if (m_ParamaterTypeVec[i] == "BINARY")
+                {
                     params->set_BB_INPUT_TYPE(i, NOMAD::bb_input_type::BINARY);
                 }
-                else {
+                else
+                {
                     throw std::invalid_argument("Invalid parameter type");
                 }
             }
@@ -306,6 +330,7 @@ void NomadCore::OptimizeMultiObj()
         NOMAD::Point x0(m_NumVars);
         NOMAD::Point lb(m_NumVars);
         NOMAD::Point ub(m_NumVars);
+
         for (int i = 0; i < m_NumVars; i++)
         {
             x0[i] = m_InitialVarsVec[i];
@@ -320,6 +345,7 @@ void NomadCore::OptimizeMultiObj()
                 ub[i] = m_UpperBoundValueVec[i];
             }
         }
+
         params->set_X0(x0);
         params->set_LOWER_BOUND(lb);
         params->set_UPPER_BOUND(ub);
@@ -341,13 +367,15 @@ void NomadCore::OptimizeMultiObj()
         NOMAD::Mads* mads = new NOMAD::Mads(*params, evaluatorPtr);
         mads->multi_run();
 
-        for (int i = 0; i < m_NumVars; i++) {
+        for (int i = 0; i < m_NumVars; i++)
+        {
             m_FinalVariables[i] = mads->get_best_feasible()->value(i);
         }
 
 
     }
-    catch (exception& e) {
+    catch (exception& e)
+    {
         std::cerr << "\nNOMAD has been interrupted (" << e.what() << ")\n\n";
     }
 
@@ -355,7 +383,7 @@ void NomadCore::OptimizeMultiObj()
     NOMAD::end();
 }
 
-std::vector<double> NomadCore::GetResults()
+std::vector<double> NomadCore::GetResults( void )
 {
     return m_FinalVariables;
 }

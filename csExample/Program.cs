@@ -48,6 +48,8 @@ namespace csExample
         private double[] obj;
         private double[] constraints;
 
+        private bool objStatus;
+
         public void Initialize(int numConstraints, int numObjFunctions)
         {
             constraints = new double[numConstraints];
@@ -69,6 +71,8 @@ namespace csExample
             obj[0] = xArray[4];
             obj[1] = c1 - 25;
             constraints[0] = 25 - c2;
+
+            objStatus = true;
         }
 
         public void GetObjectiveFunction(IntPtr objFunctionsPtr)
@@ -77,6 +81,11 @@ namespace csExample
             {
                 Marshal.Copy(obj, 0, objFunctionsPtr, obj.Length);
             }
+        }
+
+        public bool GetObjectiveFunctionStatus()
+        {
+            return objStatus;
         }
 
         public void GetConstraints(IntPtr constraintsPtr)
@@ -92,6 +101,8 @@ namespace csExample
     {
         private double obj = 0;
         private double[] constraints;
+
+        private bool objStatus;
 
         public myEvaluator2()
         {
@@ -121,11 +132,18 @@ namespace csExample
             {
                 obj += Math.Abs(excelYValues[i] - (xArray[0] * Math.Log10(Math.Pow(excelXValues[i], xArray[1])) + xArray[2]));
             }
+
+            objStatus = true;
         }
 
         public double GetObjectiveFunction()
         {
             return obj;
+        }
+
+        public bool GetObjectiveFunctionStatus()
+        {
+            return objStatus;
         }
 
         public void GetConstraints(IntPtr constraintsPtr)

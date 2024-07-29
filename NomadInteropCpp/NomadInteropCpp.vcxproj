@@ -25,9 +25,11 @@
     <ClInclude Include="src\NomadCoreAPI.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\BaseEvaluator.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\NomadCore.cpp" />
     <ClCompile Include="src\NomadCoreAPI.cpp" />
+    <ClCompile Include="src\NomadEvaluator.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

@@ -1,117 +1,154 @@
 #include "NomadCoreAPI.hpp"
 
-extern "C" {
+extern "C"
+{
 
-    void SingleObjEvaluatorWrapper::Initialize( int numConstraints ) {
+    void SingleObjEvaluatorWrapper::Initialize( int numConstraints )
+    {
 		m_Constraints.resize(numConstraints);
-		m_Init(numConstraints);
+		m_Inititialize(numConstraints);
 	}
 
-    void SingleObjEvaluatorWrapper::Evaluate( double* x, int numVars ) {
+    void SingleObjEvaluatorWrapper::Evaluate( double* x, int numVars )
+    {
 		m_Evaluate(x, numVars);
 		m_Obj = m_GetObjectiveFunction();
 		m_GetConstraints(m_Constraints.data());
 	}
 
-    double SingleObjEvaluatorWrapper::GetObjectiveFunction( void ) {
+    double SingleObjEvaluatorWrapper::GetObjectiveFunction( void )
+    {
         return m_Obj;
     }
 
-    std::vector<double> SingleObjEvaluatorWrapper::GetConstraints( void ) {
+    bool SingleObjEvaluatorWrapper::GetObjectiveFunctionStatus( void )
+    {
+        return m_ObjStatus;
+    }
+
+    std::vector<double> SingleObjEvaluatorWrapper::GetConstraints( void )
+    {
 		return m_Constraints;
 	}
 
-    void MultiObjEvaluatorWrapper::Initialize( int numConstraints, int numObjFunctions ) {
+    void MultiObjEvaluatorWrapper::Initialize( int numConstraints, int numObjFunctions )
+    {
         m_Constraints.resize(numConstraints);
         m_Obj.resize(numObjFunctions);
-        m_Init(numConstraints, numObjFunctions);
+        m_Inititialize(numConstraints, numObjFunctions);
     }
 
-    void MultiObjEvaluatorWrapper::Evaluate( double* x, int m_NumVars ) {
+    void MultiObjEvaluatorWrapper::Evaluate( double* x, int m_NumVars )
+    {
 		m_Evaluate(x, m_NumVars);
 		m_GetObjectiveFunction(m_Obj.data());
 		m_GetConstraints(m_Constraints.data());
 	}
 
-    std::vector<double> MultiObjEvaluatorWrapper::GetObjectiveFunction( void ) {
+    std::vector<double> MultiObjEvaluatorWrapper::GetObjectiveFunction( void )
+    {
 		return m_Obj;
 	}
 
-    std::vector<double> MultiObjEvaluatorWrapper::GetConstraints( void ) {
+    bool MultiObjEvaluatorWrapper::GetObjectiveFunctionStatus( void )
+    {
+		return m_ObjStatus;
+	}
+
+    std::vector<double> MultiObjEvaluatorWrapper::GetConstraints( void )
+    {
         return m_Constraints;
     }
 
-    NomadCore* CreateNomadCore( void ) {
+    NomadCore* CreateNomadCore( void )
+    {
         return new NomadCore();
     }
 
-    void SetOutputPath( NomadCore* nomadCore, const char* path ) {
+    void SetOutputPath( NomadCore* nomadCore, const char* path )
+    {
         nomadCore->SetOutputPath(path);
     }
 
-    void SetNumberVariables( NomadCore* nomadCore, int numVars ) {
+    void SetNumberVariables( NomadCore* nomadCore, int numVars )
+    {
         nomadCore->SetNumberVariables(numVars);
     }
 
-    void SetInitialVariableValue( NomadCore* nomadCore, int index, double value ) {
+    void SetInitialVariableValue( NomadCore* nomadCore, int index, double value )
+    {
         nomadCore->SetInitialVariableValue(index, value);
     }
 
-    void SetVariableUpperBound( NomadCore* nomadCore, int index, double value ) {
+    void SetVariableUpperBound( NomadCore* nomadCore, int index, double value )
+    {
         nomadCore->SetVariableUpperBound(index, value);
     }
 
-    void SetVariableLowerBound( NomadCore* nomadCore, int index, double value ) {
+    void SetVariableLowerBound( NomadCore* nomadCore, int index, double value )
+    {
         nomadCore->SetVariableLowerBound(index, value);
     }
 
-    void SetVariableType( NomadCore* nomadCore, int index, const char* type ) {
+    void SetVariableType( NomadCore* nomadCore, int index, const char* type )
+    {
 		nomadCore->SetVariableType(index, type);
 	}
 
-    void SetNumberOfIterations( NomadCore* nomadCore, int numIterations ) {
+    void SetNumberOfIterations( NomadCore* nomadCore, int numIterations )
+    {
         nomadCore->SetNumberOfIterations(numIterations);
     }
 
-    void SetNumberEBConstraints( NomadCore* nomadCore, int numEBConstraints ) {
+    void SetNumberEBConstraints( NomadCore* nomadCore, int numEBConstraints )
+    {
         nomadCore->SetNumberEBConstraints(numEBConstraints);
     }
 
-    void SetNumberPBConstraints( NomadCore* nomadCore, int numPBConstraints ) {
+    void SetNumberPBConstraints( NomadCore* nomadCore, int numPBConstraints )
+    {
         nomadCore->SetNumberPBConstraints(numPBConstraints);
     }
 
-    void SetSingleObjEvaluator( NomadCore* nomadCore, EvaluateDelegate evaluator, GetSingleObjFunctionDelegate m_GetObjectiveFunction, GetConstraintsDelegate m_GetConstraints, SingleObjInitDelegate m_Init ) {
-        SingleObjEvaluatorWrapper* wrapper = new SingleObjEvaluatorWrapper();
-        wrapper->m_Evaluate = evaluator;
-        wrapper->m_GetObjectiveFunction = m_GetObjectiveFunction;
-        wrapper->m_GetConstraints = m_GetConstraints;
-        wrapper->m_Init = m_Init;
-        nomadCore->SetSingleObjEvaluator(wrapper);
+    void SetSingleObjEvaluator( NomadCore* nomadCore, EvaluateDelegate evaluator, GetSingleObjFunctionDelegate m_GetObjectiveFunction, GetConstraintsDelegate m_GetConstraints, SingleObjInitDelegate m_Inititialize, GetObjectiveFunctionStatusDelegate m_GetObjectiveFunctionStatus )
+    {
+        SingleObjEvaluatorWrapper* w = new SingleObjEvaluatorWrapper();
+        w->m_Evaluate = evaluator;
+        w->m_GetObjectiveFunction = m_GetObjectiveFunction;
+        w->m_GetObjectiveFunctionStatus = m_GetObjectiveFunctionStatus;
+        w->m_GetConstraints = m_GetConstraints;
+        w->m_Inititialize = m_Inititialize;
+        nomadCore->SetSingleObjEvaluator(w);
     }
 
-    void SetMultiObjEvaluator( NomadCore* nomadCore, EvaluateDelegate evaluator, GetMultiObjFunctionDelegate m_GetObjectiveFunction, GetConstraintsDelegate m_GetConstraints, MultiObjInitDelegate m_Init ) {
-		MultiObjEvaluatorWrapper* wrapper = new MultiObjEvaluatorWrapper();
-		wrapper->m_Evaluate = evaluator;
-		wrapper->m_GetObjectiveFunction = m_GetObjectiveFunction;
-		wrapper->m_GetConstraints = m_GetConstraints;
-		wrapper->m_Init = m_Init;
-		nomadCore->SetMultiObjEvaluator(wrapper);
+    void SetMultiObjEvaluator( NomadCore* nomadCore, EvaluateDelegate evaluator, GetMultiObjFunctionDelegate m_GetObjectiveFunction, GetConstraintsDelegate m_GetConstraints, MultiObjInitDelegate m_Inititialize, GetObjectiveFunctionStatusDelegate m_GetObjectiveFunctionStatus )
+    {
+		MultiObjEvaluatorWrapper* w = new MultiObjEvaluatorWrapper();
+		w->m_Evaluate = evaluator;
+		w->m_GetObjectiveFunction = m_GetObjectiveFunction;
+        w->m_GetObjectiveFunctionStatus = m_GetObjectiveFunctionStatus;
+		w->m_GetConstraints = m_GetConstraints;
+		w->m_Inititialize = m_Inititialize;
+		nomadCore->SetMultiObjEvaluator(w);
 	}
 
-    void SetNumberObjFunctions( NomadCore* nomadCore, int numObjFunctions ) {
+    void SetNumberObjFunctions( NomadCore* nomadCore, int numObjFunctions )
+    {
 		nomadCore->SetNumberObjFunctions(numObjFunctions);
 	}
 
-    void OptimizeSingleObj( NomadCore* nomadCore ) {
+    void OptimizeSingleObj( NomadCore* nomadCore )
+    {
         nomadCore->OptimizeSingleObj();
     }
 
-    void OptimizeMultiObj( NomadCore* nomadCore ) {
+    void OptimizeMultiObj( NomadCore* nomadCore )
+    {
 		nomadCore->OptimizeMultiObj();
 	}
 
-    double* GetResults( NomadCore* nomadCore, int* size ) {
+    double* GetResults( NomadCore* nomadCore, int* size )
+    {
         static std::vector<double> results = nomadCore->GetResults();
         *size = static_cast<int>(results.size());
         return results.data();
