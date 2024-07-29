@@ -16,24 +16,24 @@
 class NomadCore
 {
 private:
-	const char*  m_OutputPath = nullptr;		///< Output path.
-	int		     m_NumVars = 0;				    ///< Number of variables.
-	int			 m_NumIterations = 100;		    ///< Number of iterations.
-	int			 m_NumPBConstraints = 0;		///< Number of progressive barrier constraints.
-	int			 m_NumEBConstraints = 0;		///< Number of extreme barrier constraints.
-	int			 m_NumObjFunctions = 1;		 	///< Number of objective functions.
+	const char*  _OutputPath = nullptr;			///< Output path.
+	int		     _NumVars = 0;				    ///< Number of variables.
+	int			 _NumIterations = 100;		    ///< Number of iterations.
+	int			 _NumPBConstraints = 0;			///< Number of progressive barrier constraints.
+	int			 _NumEBConstraints = 0;			///< Number of extreme barrier constraints.
+	int			 _NumObjFunctions = 1;		 	///< Number of objective functions.
 
-	std::vector<double>		 m_InitialVarsVec = { };			///< Initial variables. Stores the initial values of the variables.
-	std::vector<double>		 m_FinalVariables = { };			///< Final variables. Stores the optimizer results.
-	std::vector<double>		 m_UpperBoundValueVec = { };		///< Upper bound values of the variables.
-	std::vector<bool>		 m_UpperBoundIsGivenVec = { };		///< Flag for upper bound values.
-	std::vector<double>		 m_LowerBoundValueVec = { };		///< Lower bound values of the variables.
-	std::vector<bool>		 m_LowerBoundIsGivenVec = { };		///< Flag for lower bound values.
-	std::vector<bool>		 m_ParamaterTypeIsGivenVec = { };	///< Flag for parameter types.
-	std::vector<std::string> m_ParamaterTypeVec = { };
+	std::vector<double>		 _InitialVarsVec = { };			///< Initial variables. Stores the initial values of the variables.
+	std::vector<double>		 _FinalVariables = { };			///< Final variables. Stores the optimizer results.
+	std::vector<double>		 _UpperBoundValueVec = { };		///< Upper bound values of the variables.
+	std::vector<bool>		 _UpperBoundIsGivenVec = { };	///< Flag for upper bound values.
+	std::vector<double>		 _LowerBoundValueVec = { };		///< Lower bound values of the variables.
+	std::vector<bool>		 _LowerBoundIsGivenVec = { };	///< Flag for lower bound values.
+	std::vector<bool>		 _ParamaterTypeIsGivenVec = { };///< Flag for parameter types.
+	std::vector<std::string> _ParamaterTypeVec = { };
 
-	BaseSingleObjEvaluator*  m_SingleObjEvaluator = nullptr; ///< Single-objective evaluator.
-	BaseMultiObjEvaluator*   m_MultiObjEvaluator = nullptr;  ///< Multi-objective evaluator.
+	BaseSingleObjEvaluator*  _SingleObjEvaluator = nullptr; ///< Single-objective evaluator.
+	BaseMultiObjEvaluator*   _MultiObjEvaluator = nullptr;  ///< Multi-objective evaluator.
 
 public:
 	/// Constructor.

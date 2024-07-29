@@ -17,9 +17,9 @@
 class NomadSingleObjEvaluator : public NOMAD::Evaluator
 {
 private:
-	BaseSingleObjEvaluator*		m_SingleObjEvaluator = nullptr;  ///< Single-objective evaluator.
-	NomadCore*					m_NomadCore = nullptr;		     ///< NOMAD core.
-	const NOMAD::Parameters*    m_Params = nullptr;		         ///< Parameters.
+	BaseSingleObjEvaluator*		_SingleObjEvaluator = nullptr;  ///< Single-objective evaluator.
+	NomadCore*					_NomadCore = nullptr;		    ///< NOMAD core.
+	const NOMAD::Parameters*    _Params = nullptr;		        ///< Parameters.
 
 public:
 	/// Constructor.
@@ -49,9 +49,9 @@ public:
 class NomadMultiObjEvaluator : public NOMAD::Multi_Obj_Evaluator
 {
 private:
-	BaseMultiObjEvaluator*		m_MultiObjEvaluator = nullptr;   ///< Multi-objective evaluator.
-	NomadCore*					m_NomadCore = nullptr;		     ///< NOMAD core.
-	const NOMAD::Parameters*    m_Params = nullptr;			     ///< Parameters.
+	BaseMultiObjEvaluator*		_MultiObjEvaluator = nullptr;   ///< Multi-objective evaluator.
+	NomadCore*					_NomadCore = nullptr;		    ///< NOMAD core.
+	const NOMAD::Parameters*    _Params = nullptr;			    ///< Parameters.
 
 public:
 	/// Constructor.

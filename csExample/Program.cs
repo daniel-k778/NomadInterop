@@ -56,13 +56,13 @@ namespace csExample
             obj = new double[numObjFunctions];
         }
 
-        public void Evaluate(IntPtr x, int m_NumVars)
+        public void Evaluate(IntPtr x, int _NumVars)
         {
-            double[] xArray = new double[m_NumVars];
-            Marshal.Copy(x, xArray, 0, m_NumVars);
+            double[] xArray = new double[_NumVars];
+            Marshal.Copy(x, xArray, 0, _NumVars);
 
             double c1 = 0.0, c2 = 0.0;
-            for (int i = 0; i < m_NumVars; i++)
+            for (int i = 0; i < _NumVars; i++)
             {
                 c1 += Math.Pow((xArray[i] - 1.0), 2);
                 c2 += Math.Pow((xArray[i] + 1), 2);
@@ -115,10 +115,10 @@ namespace csExample
             obj = 0.0;
         }
 
-        public void Evaluate(IntPtr x, int m_NumVars)
+        public void Evaluate(IntPtr x, int _NumVars)
         {
-            double[] xArray = new double[m_NumVars];
-            Marshal.Copy(x, xArray, 0, m_NumVars);
+            double[] xArray = new double[_NumVars];
+            Marshal.Copy(x, xArray, 0, _NumVars);
 
             double[] excelXValues = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
             double[] excelYValues = { 11.3, 12.12912391, 12.6141303, 12.95824781, 13.22516609, 

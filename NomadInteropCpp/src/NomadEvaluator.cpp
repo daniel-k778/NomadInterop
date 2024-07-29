@@ -2,13 +2,13 @@
 
 NomadSingleObjEvaluator::NomadSingleObjEvaluator( const NOMAD::Parameters& p, BaseSingleObjEvaluator* Evaluator, NomadCore* nomadCore ) : NOMAD::Evaluator( p )
 {
-	this->m_SingleObjEvaluator = Evaluator;
-	this->m_NomadCore = nomadCore;
-	this->m_Params = &p;
+	this->_SingleObjEvaluator = Evaluator;
+	this->_NomadCore = nomadCore;
+	this->_Params = &p;
 
 	// Initialize the evaluator
-	static auto numConstraints = m_NomadCore->GetNumberEBConstraints() + m_NomadCore->GetNumberPBConstraints();
-	m_SingleObjEvaluator->Initialize(numConstraints);
+	static auto numConstraints = _NomadCore->GetNumberEBConstraints() + _NomadCore->GetNumberPBConstraints();
+	_SingleObjEvaluator->Initialize(numConstraints);
 }
 
 NomadSingleObjEvaluator::~NomadSingleObjEvaluator( void )
@@ -21,7 +21,7 @@ bool NomadSingleObjEvaluator::eval_x( NOMAD::Eval_Point& x, const NOMAD::Double&
 	// This function is called by NOMAD to evaluate the objective function and constraints
 	// The function returns true if the evaluation succeeded, and false otherwise
 
-	static auto numVars = m_NomadCore->GetNumberOfVariables();
+	static auto numVars = _NomadCore->GetNumberOfVariables();
 	double* paramsPtr = new double[numVars];
 
 	// Copy the variables to a double array
@@ -31,13 +31,13 @@ bool NomadSingleObjEvaluator::eval_x( NOMAD::Eval_Point& x, const NOMAD::Double&
 	}
 
 	// Evaluate the objective function and constraints
-	m_SingleObjEvaluator->Evaluate(paramsPtr, numVars);
+	_SingleObjEvaluator->Evaluate(paramsPtr, numVars);
 
 	// Set the objective function value
-	x.set_bb_output(0, m_SingleObjEvaluator->GetObjectiveFunction());
+	x.set_bb_output(0, _SingleObjEvaluator->GetObjectiveFunction());
 
 	// Get the constraints array
-	auto evalConstraintsArr = m_SingleObjEvaluator->GetConstraints();
+	auto evalConstraintsArr = _SingleObjEvaluator->GetConstraints();
 
 	// Set the constraints
 	for (int i = 0; i < evalConstraintsArr.size(); i++)
@@ -48,7 +48,7 @@ bool NomadSingleObjEvaluator::eval_x( NOMAD::Eval_Point& x, const NOMAD::Double&
 	delete[] paramsPtr;
 
 	// Return the evaluation status
-	if (m_SingleObjEvaluator->GetObjectiveFunctionStatus())
+	if (_SingleObjEvaluator->GetObjectiveFunctionStatus())
 	{
 		count_eval = true;
 		return true;       // the evaluation succeeded
@@ -62,14 +62,14 @@ bool NomadSingleObjEvaluator::eval_x( NOMAD::Eval_Point& x, const NOMAD::Double&
 
 NomadMultiObjEvaluator::NomadMultiObjEvaluator( const NOMAD::Parameters& p, BaseMultiObjEvaluator* Evaluator, NomadCore* nomadCore ) : NOMAD::Multi_Obj_Evaluator( p )
 {
-	this->m_MultiObjEvaluator = Evaluator;
-	this->m_NomadCore = nomadCore;
-	this->m_Params = &p;
+	this->_MultiObjEvaluator = Evaluator;
+	this->_NomadCore = nomadCore;
+	this->_Params = &p;
 
 	// Initialize the evaluator
-	static auto numConstraints = m_NomadCore->GetNumberEBConstraints() + m_NomadCore->GetNumberPBConstraints();
-	static auto numObjFunctions = m_NomadCore->GetNumberObjFunctions();
-	m_MultiObjEvaluator->Initialize(numConstraints, numObjFunctions);
+	static auto numConstraints = _NomadCore->GetNumberEBConstraints() + _NomadCore->GetNumberPBConstraints();
+	static auto numObjFunctions = _NomadCore->GetNumberObjFunctions();
+	_MultiObjEvaluator->Initialize(numConstraints, numObjFunctions);
 }
 
 NomadMultiObjEvaluator::~NomadMultiObjEvaluator( void )
@@ -82,7 +82,7 @@ bool NomadMultiObjEvaluator::eval_x( NOMAD::Eval_Point& x, const NOMAD::Double& 
 	// This function is called by NOMAD to evaluate the objective function and constraints
 	// The function returns true if the evaluation succeeded, and false otherwise
 
-	static auto numVars = m_NomadCore->GetNumberOfVariables();
+	static auto numVars = _NomadCore->GetNumberOfVariables();
 	double* paramsPtr = new double[numVars];
 
 	// Copy the variables to a double array
@@ -92,11 +92,11 @@ bool NomadMultiObjEvaluator::eval_x( NOMAD::Eval_Point& x, const NOMAD::Double& 
 	}
 
 	// Evaluate the objective function
-	m_MultiObjEvaluator->Evaluate(paramsPtr, numVars);
+	_MultiObjEvaluator->Evaluate(paramsPtr, numVars);
 
 	// Get the objective functions and constraints arrays
-	auto evalObjFunctionsArr = m_MultiObjEvaluator->GetObjectiveFunction();
-	auto evalConstraintsArr = m_MultiObjEvaluator->GetConstraints();
+	auto evalObjFunctionsArr = _MultiObjEvaluator->GetObjectiveFunction();
+	auto evalConstraintsArr = _MultiObjEvaluator->GetConstraints();
 
 	// Set the objective functions
 	for (int i = 0; i < evalObjFunctionsArr.size(); i++)
@@ -113,7 +113,7 @@ bool NomadMultiObjEvaluator::eval_x( NOMAD::Eval_Point& x, const NOMAD::Double& 
 	delete[] paramsPtr;
 
 	// Return the evaluation status
-	if (m_MultiObjEvaluator->GetObjectiveFunctionStatus())
+	if (_MultiObjEvaluator->GetObjectiveFunctionStatus())
 	{
 		count_eval = true;
 		return true;       // the evaluation succeeded

@@ -74,15 +74,15 @@ extern "C"
     class SingleObjEvaluatorWrapper : public BaseSingleObjEvaluator {
 
     public:
-        EvaluateDelegate                     m_Evaluate;                    ///< Delegate for evaluating the objective function.
-        GetSingleObjFunctionDelegate         m_GetObjectiveFunction;        ///< Delegate for retrieving the value of the objective function.
-        GetConstraintsDelegate               m_GetConstraints;              ///< Delegate for retrieving constraint values.
-        SingleObjInitDelegate                m_Inititialize;                ///< Delegate for initializing the evaluator.
-        GetObjectiveFunctionStatusDelegate   m_GetObjectiveFunctionStatus;  ///< Delegate for retrieving the status of the objective function.
+        EvaluateDelegate                     _Evaluate;                    ///< Delegate for evaluating the objective function.
+        GetSingleObjFunctionDelegate         _GetObjectiveFunction;        ///< Delegate for retrieving the value of the objective function.
+        GetConstraintsDelegate               _GetConstraints;              ///< Delegate for retrieving constraint values.
+        SingleObjInitDelegate                _Inititialize;                ///< Delegate for initializing the evaluator.
+        GetObjectiveFunctionStatusDelegate   _GetObjectiveFunctionStatus;  ///< Delegate for retrieving the status of the objective function.
 
-        double              m_Obj = 0.0;            ///< Value of the objective function.
-        bool                m_ObjStatus = true;     ///< Status of the objective function.
-        std::vector<double> m_Constraints;          ///< Array to store constraint values.
+        double              _Obj = 0.0;            ///< Value of the objective function.
+        bool                _ObjStatus = true;     ///< Status of the objective function.
+        std::vector<double> _Constraints;          ///< Array to store constraint values.
 
 
         /// Initializes the evaluator.
@@ -120,15 +120,15 @@ extern "C"
     /// Class for wrapping a multi-objective evaluator.
     class MultiObjEvaluatorWrapper : public BaseMultiObjEvaluator {
     public:
-        EvaluateDelegate                      m_Evaluate;                   ///< Delegate for evaluating the objective function.
-        GetMultiObjFunctionDelegate           m_GetObjectiveFunction;       ///< Delegate for retrieving the value of the objective function.
-        GetConstraintsDelegate                m_GetConstraints;             ///< Delegate for retrieving constraint values.
-        MultiObjInitDelegate                  m_Inititialize;               ///< Delegate for initializing the evaluator.
-        GetObjectiveFunctionStatusDelegate    m_GetObjectiveFunctionStatus; ///< Delegate for retrieving the status of the objective function.
+        EvaluateDelegate                      _Evaluate;                   ///< Delegate for evaluating the objective function.
+        GetMultiObjFunctionDelegate           _GetObjectiveFunction;       ///< Delegate for retrieving the value of the objective function.
+        GetConstraintsDelegate                _GetConstraints;             ///< Delegate for retrieving constraint values.
+        MultiObjInitDelegate                  _Inititialize;               ///< Delegate for initializing the evaluator.
+        GetObjectiveFunctionStatusDelegate    _GetObjectiveFunctionStatus; ///< Delegate for retrieving the status of the objective function.
 
-        std::vector<double> m_Obj;              ///< Array to store objective function values.
-        std::vector<double> m_Constraints;      ///< Array to store constraint values.
-        bool                m_ObjStatus = true; ///< Status of the objective function.
+        std::vector<double> _Obj;              ///< Array to store objective function values.
+        std::vector<double> _Constraints;      ///< Array to store constraint values.
+        bool                _ObjStatus = true; ///< Status of the objective function.
 
         /// Initializes the evaluator.
         /**

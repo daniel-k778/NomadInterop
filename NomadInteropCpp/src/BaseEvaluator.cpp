@@ -30,7 +30,7 @@ std::vector<double> BaseSingleObjEvaluator::GetConstraints( void )
 	throw std::exception("Constraints function not provided.");
 }
 
-void BaseSingleObjEvaluator::Evaluate( double* x, int m_NumVars )
+void BaseSingleObjEvaluator::Evaluate( double* x, int _NumVars )
 {
 	throw std::exception("Evaluate function not provided.");
 }
@@ -65,7 +65,7 @@ std::vector<double> BaseMultiObjEvaluator::GetConstraints( void )
 	throw std::exception("Constraints function not provided.");
 }
 
-void BaseMultiObjEvaluator::Evaluate( double* x, int m_NumVars )
+void BaseMultiObjEvaluator::Evaluate( double* x, int _NumVars )
 {
 	throw std::exception("Evaluate function not provided.");
 }

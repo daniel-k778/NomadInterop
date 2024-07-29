@@ -4,12 +4,12 @@
 class UserEvaluator : public BaseMultiObjEvaluator
 {
 private:
-    vector<double> m_obj;
-    vector<double> m_constraints;
-    bool m_objStatus = true;
+    vector<double> _obj;
+    vector<double> _constraints;
+    bool _objStatus = true;
 
-    int m_NumObjFunctions = 0;
-    int m_NumConstraints = 0;
+    int _NumObjFunctions = 0;
+    int _NumConstraints = 0;
 
 public:
     UserEvaluator()
@@ -23,43 +23,43 @@ public:
     }
 
     void Initialize(int numConstraints, int numObjFunctions) {
-        this->m_NumObjFunctions = numObjFunctions;
-        this->m_NumConstraints = numConstraints;
+        this->_NumObjFunctions = numObjFunctions;
+        this->_NumConstraints = numConstraints;
 
-        m_obj.resize(numObjFunctions);
-        m_constraints.resize(numConstraints);
+        _obj.resize(numObjFunctions);
+        _constraints.resize(numConstraints);
     }
 
     bool GetObjectiveFunctionStatus()
 	{
-		return m_objStatus;
+		return _objStatus;
 	}
 
     vector<double> GetObjectiveFunction()
     {
-        return m_obj;
+        return _obj;
     }
 
     vector<double> GetConstraints()
     {
-		return m_constraints;
+		return _constraints;
 	}
 
-    void Evaluate(double* x, int m_NumVars)
+    void Evaluate(double* x, int _NumVars)
     {
 
         double c1 = 0.0, c2 = 0.0;
-        for (int i = 0; i < m_NumVars; i++)
+        for (int i = 0; i < _NumVars; i++)
         {
             c1 += std::pow((x[i] - 1.0), 2);
             c2 += std::pow((x[i] + 1), 2);
         }
 
-        m_obj[0] = x[4];
-        m_obj[1] = c1 - 25;
-        m_constraints[0] = 25 - c2;
+        _obj[0] = x[4];
+        _obj[1] = c1 - 25;
+        _constraints[0] = 25 - c2;
 
-        m_objStatus = true;
+        _objStatus = true;
     }
 };
 
@@ -68,9 +68,9 @@ auto main() -> int {
 	NomadCore* myMainWrapper = new NomadCore();
 	myMainWrapper->SetOutputPath("sol.txt");
 
-	int m_NumVars = 5;
-	myMainWrapper->SetNumberVariables(m_NumVars);
-	for (int i = 0; i < m_NumVars; i++) {
+	int _NumVars = 5;
+	myMainWrapper->SetNumberVariables(_NumVars);
+	for (int i = 0; i < _NumVars; i++) {
 		myMainWrapper->SetInitialVariableValue(i, 1.0);
         myMainWrapper->SetVariableType(i, "CONTINUOUS");
 	}
