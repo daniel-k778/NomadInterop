@@ -1,4 +1,4 @@
-﻿using NomadLibrary;
+﻿using NomadInterop;
 using System.Runtime.InteropServices;
 using System.Transactions;
 
@@ -11,35 +11,27 @@ namespace csExample
         {
             IntPtr nomadCore = NomadCore.CreateNomadCore();
 
-            NomadCore.SetNumberVariables(nomadCore, 3);
+            NomadCore.SetNumberVariables(nomadCore, 5);
             for (int i = 0; i < 3; i++)
             {
                 
                 //NomadCore.SetVariableUpperBound(nomadCore, i, 20.0);
                 NomadCore.SetVariableType(nomadCore, i, "CONTINUOUS");
             }
-            NomadCore.SetInitialVariableValue(nomadCore, 0, 4.0);
-            NomadCore.SetInitialVariableValue(nomadCore, 1, 0.7);
-            NomadCore.SetInitialVariableValue(nomadCore, 2, 11.5);
-
-            NomadCore.SetVariableLowerBound(nomadCore, 0, 4);
-            NomadCore.SetVariableUpperBound(nomadCore, 0, 6);
-            NomadCore.SetVariableLowerBound(nomadCore, 1, 0.4);
-            NomadCore.SetVariableUpperBound(nomadCore, 1, 1);
-            NomadCore.SetVariableLowerBound(nomadCore, 2, 11);
-            NomadCore.SetVariableUpperBound(nomadCore, 2, 12);
-
-
 
             NomadCore.SetNumberOfIterations(nomadCore, 500);
 
-            //NomadCore.SetNumberEBConstraints(nomadCore, 2);
-            //NomadCore.SetNumberPBConstraints(nomadCore, 3);
+            NomadCore.SetNumberEBConstraints(nomadCore, 2);
+            NomadCore.SetNumberPBConstraints(nomadCore, 3);
 
-            myEvaluator2 myEval = new myEvaluator2();
+            myEvaluator myEval = new myEvaluator();
 
-            NomadCore.SetEvaluator(nomadCore, myEval);
-            NomadCore.Optimize(nomadCore);
+            //NomadCore.SetSingleObjEvaluator(nomadCore, myEval);
+            //NomadCore.OptimizeSingleObj(nomadCore);
+
+            NomadCore.SetNumberObjFunctions(nomadCore, 2);
+            NomadCore.SetMultiObjEvaluator(nomadCore, myEval);
+            NomadCore.OptimizeMultiObj(nomadCore);
 
             double[] results = NomadCore.GetResults(nomadCore);
 
@@ -51,18 +43,18 @@ namespace csExample
         }
     }
 
-    public class myEvaluator : IUserEvaluator
+    public class myEvaluator : IMultiObjEvaluator
     {
-        private double obj;
+        private double[] obj;
         private double[] constraints;
 
-        public myEvaluator()
+        public void Initialize(int numConstraints, int numObjFunctions)
         {
-            obj = 0.0;
-            constraints = new double[2]; // Assuming 2 constraints for simplicity
+            constraints = new double[numConstraints];
+            obj = new double[numObjFunctions];
         }
 
-        public void Evaluate(IntPtr x, int m_NumVars, int numConstraints)
+        public void Evaluate(IntPtr x, int m_NumVars)
         {
             double[] xArray = new double[m_NumVars];
             Marshal.Copy(x, xArray, 0, m_NumVars);
@@ -74,14 +66,17 @@ namespace csExample
                 c2 += Math.Pow((xArray[i] + 1), 2);
             }
 
-            obj = xArray[4];
-            constraints[0] = c1 - 25;
-            constraints[1] = 25 - c2;
+            obj[0] = xArray[4];
+            obj[1] = c1 - 25;
+            constraints[0] = 25 - c2;
         }
 
-        public double GetObjectiveFunction()
+        public void GetObjectiveFunction(IntPtr objFunctionsPtr)
         {
-            return obj;
+            if (objFunctionsPtr != IntPtr.Zero)
+            {
+                Marshal.Copy(obj, 0, objFunctionsPtr, obj.Length);
+            }
         }
 
         public void GetConstraints(IntPtr constraintsPtr)
@@ -93,18 +88,23 @@ namespace csExample
         }
     }
 
-    public class myEvaluator2 : IUserEvaluator
+    public class myEvaluator2 : ISingleObjEvaluator
     {
         private double obj = 0;
         private double[] constraints;
 
         public myEvaluator2()
         {
-            obj = 0.0;
-            constraints = new double[0]; // Assuming 2 constraints for simplicity
+
         }
 
-        public void Evaluate(IntPtr x, int m_NumVars, int numConstraints)
+        public void Initialize(int numConstraints)
+        {
+            constraints = new double[numConstraints];
+            obj = 0.0;
+        }
+
+        public void Evaluate(IntPtr x, int m_NumVars)
         {
             double[] xArray = new double[m_NumVars];
             Marshal.Copy(x, xArray, 0, m_NumVars);

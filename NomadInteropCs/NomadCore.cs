@@ -1,19 +1,28 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace NomadLibrary
+namespace NomadInterop
 {
     public class NomadCore
     {
         private const string dllpath = "C:\\Users\\Daniel\\OneDrive\\Desktop\\Nomad\\NomadInterop\\x64\\Debug\\NomadInteropCpp.dll";
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate void EvaluateDelegate(IntPtr x, int m_NumVars, int numConstraints);
+        public delegate void EvaluateDelegate(IntPtr x, int m_NumVars);
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate double GetObjectiveFunctionDelegate();
+        public delegate double GetSingleObjFunctionDelegate();
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void GetMultiObjFunctionDelegate(IntPtr objFunctions);
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate void GetConstraintsDelegate(IntPtr constraints);
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void SingleObjInitDelegate(int numConstraints);
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void MultiObjInitDelegate(int numConstraints, int numObjFunctions);
 
         [DllImport(dllpath, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr CreateNomadCore();
@@ -46,25 +55,51 @@ namespace NomadLibrary
         public static extern void SetNumberPBConstraints(IntPtr nomadCore, int numPBConstraints);
 
         [DllImport(dllpath, CallingConvention = CallingConvention.Cdecl)]
-        private static extern void SetEvaluator(IntPtr nomadCore, IntPtr evaluator, IntPtr getObjectiveFunction, IntPtr getConstraints);
+        private static extern void SetSingleObjEvaluator(IntPtr nomadCore, IntPtr evaluator, IntPtr getObjectiveFunction, IntPtr getConstraints, IntPtr init);
 
         [DllImport(dllpath, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void Optimize(IntPtr nomadCore);
+        private static extern void SetMultiObjEvaluator(IntPtr nomadCore, IntPtr evaluator, IntPtr getObjectiveFunction, IntPtr getConstraints, IntPtr init);
+
+        [DllImport(dllpath, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void OptimizeSingleObj(IntPtr nomadCore);
+
+        [DllImport(dllpath, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void OptimizeMultiObj(IntPtr nomadCore);
+
+        [DllImport(dllpath, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetNumberObjFunctions(IntPtr nomadCore, int numObjFunctions);
 
         [DllImport(dllpath, CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr GetResults(IntPtr nomadCore, ref int size);
 
-        public static void SetEvaluator(IntPtr nomadCore, IUserEvaluator evaluator)
+        public static void SetSingleObjEvaluator(IntPtr nomadCore, ISingleObjEvaluator evaluator)
         {
             EvaluateDelegate evalDelegate = new EvaluateDelegate(evaluator.Evaluate);
-            GetObjectiveFunctionDelegate getObjFuncDelegate = new GetObjectiveFunctionDelegate(evaluator.GetObjectiveFunction);
+            GetSingleObjFunctionDelegate getObjFuncDelegate = new GetSingleObjFunctionDelegate(evaluator.GetObjectiveFunction);
             GetConstraintsDelegate getConstraintsDelegate = new GetConstraintsDelegate(evaluator.GetConstraints);
+            SingleObjInitDelegate initDelegate = new SingleObjInitDelegate(evaluator.Initialize);
 
             IntPtr evalPtr = Marshal.GetFunctionPointerForDelegate(evalDelegate);
             IntPtr getObjFuncPtr = Marshal.GetFunctionPointerForDelegate(getObjFuncDelegate);
             IntPtr getConstraintsPtr = Marshal.GetFunctionPointerForDelegate(getConstraintsDelegate);
+            IntPtr initPtr = Marshal.GetFunctionPointerForDelegate(initDelegate);
 
-            SetEvaluator(nomadCore, evalPtr, getObjFuncPtr, getConstraintsPtr);
+            SetSingleObjEvaluator(nomadCore, evalPtr, getObjFuncPtr, getConstraintsPtr, initPtr);
+        }
+
+        public static void SetMultiObjEvaluator(IntPtr nomadCore, IMultiObjEvaluator evaluator)
+        {
+            EvaluateDelegate evalDelegate = new EvaluateDelegate(evaluator.Evaluate);
+            GetMultiObjFunctionDelegate getObjFuncDelegate = new GetMultiObjFunctionDelegate(evaluator.GetObjectiveFunction);
+            GetConstraintsDelegate getConstraintsDelegate = new GetConstraintsDelegate(evaluator.GetConstraints);
+            MultiObjInitDelegate initDelegate = new MultiObjInitDelegate(evaluator.Initialize);
+
+            IntPtr evalPtr = Marshal.GetFunctionPointerForDelegate(evalDelegate);
+            IntPtr getObjFuncPtr = Marshal.GetFunctionPointerForDelegate(getObjFuncDelegate);
+            IntPtr getConstraintsPtr = Marshal.GetFunctionPointerForDelegate(getConstraintsDelegate);
+            IntPtr initPtr = Marshal.GetFunctionPointerForDelegate(initDelegate);
+
+            SetMultiObjEvaluator(nomadCore, evalPtr, getObjFuncPtr, getConstraintsPtr, initPtr);
         }
 
         public static double[] GetResults(IntPtr nomadCore)

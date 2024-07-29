@@ -1,11 +1,15 @@
 //#include "NomadCore.hpp"
 //#include "BaseEvaluator.hpp"
 //
-//class UserEvaluator : public BaseEvaluator
+//class UserEvaluator : public BaseMultiObjEvaluator
 //{
 //private:
-//    double m_obj = 0.0;
+//    vector<double> m_obj;
 //    vector<double> m_constraints;
+//
+//    int m_NumObjFunctions = 0;
+//    int m_NumConstraints = 0;
+//
 //public:
 //    UserEvaluator()
 //    {
@@ -17,7 +21,15 @@
 //
 //    }
 //
-//    double GetObjectiveFunction()
+//    void Initialize(int numConstraints, int numObjFunctions) {
+//        this->m_NumObjFunctions = numObjFunctions;
+//        this->m_NumConstraints = numConstraints;
+//
+//        m_obj.resize(numObjFunctions);
+//        m_constraints.resize(numConstraints);
+//    }
+//
+//    vector<double> GetObjectiveFunction()
 //    {
 //        return m_obj;
 //    }
@@ -27,19 +39,19 @@
 //		return m_constraints;
 //	}
 //
-//    void Evaluate(double* x, int m_NumVars, int numConstraints)
+//    void Evaluate(double* x, int m_NumVars)
 //    {
+//
 //        double c1 = 0.0, c2 = 0.0;
 //        for (int i = 0; i < m_NumVars; i++)
 //        {
 //            c1 += std::pow((x[i] - 1.0), 2);
 //            c2 += std::pow((x[i] + 1), 2);
 //        }
-//        m_obj = x[4];
 //
-//        m_constraints.resize(numConstraints);
-//        m_constraints[0] = c1 - 25;
-//        m_constraints[1] = 25 - c2;
+//        m_obj[0] = x[4];
+//        m_obj[1] = c1 - 25;
+//        m_constraints[0] = 25 - c2;
 //    }
 //};
 //
@@ -51,9 +63,7 @@
 //	int m_NumVars = 5;
 //	myMainWrapper->SetNumberVariables(m_NumVars);
 //	for (int i = 0; i < m_NumVars; i++) {
-//		myMainWrapper->SetInitialVariable(i, 1.0);
-//		myMainWrapper->SetUpperBound(i, 5.0);
-//		myMainWrapper->SetLowerBound(i, -6.0);
+//		myMainWrapper->SetInitialVariableValue(i, 1.0);
 //        myMainWrapper->SetVariableType(i, "CONTINUOUS");
 //	}
 //
@@ -63,6 +73,7 @@
 //
 //	UserEvaluator* myEval = new UserEvaluator();
 //
-//	myMainWrapper->SetEvaluator(myEval);
-//    myMainWrapper->Optimize();
+//    myMainWrapper->SetNumberObjFunctions(2);
+//	myMainWrapper->SetMultiObjEvaluator(myEval);
+//    myMainWrapper->OptimizeMultiObj();
 //}
