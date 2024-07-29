@@ -11,7 +11,7 @@ namespace NomadInterop
     public class NomadCore
     {
         // Path to the NOMAD Core DLL.
-        private const string PATH = "C:\\Users\\Daniel\\OneDrive\\Desktop\\Nomad\\NomadInterop\\x64\\Debug\\NomadInteropCpp.dll";
+        private const string PATH = "C:\\Users\\Daniel\\OneDrive\\Desktop\\Nomad\\NomadInterop\\x64\\Debug\\NomadInteropCPP.dll";
 
         // Delegate declarations for function pointers used in the NOMAD Core DLL.
 

@@ -5,9 +5,9 @@ VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "csExample", "csExample\csExample.csproj", "{9C8B8921-F9DE-4C53-B100-27648A77A623}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NomadInteropCpp", "NomadInteropCpp\NomadInteropCpp.vcxproj", "{08B353F2-2796-437E-B196-CCBADE5D8EE7}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NomadInteropCPP", "NomadInteropCpp\NomadInteropCpp.vcxproj", "{08B353F2-2796-437E-B196-CCBADE5D8EE7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NomadInteropCs", "NomadInteropCs\NomadInteropCs.csproj", "{74314792-45E9-4B4F-B102-1466112837EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NomadInteropCS", "NomadInteropCs\NomadInteropCS.csproj", "{74314792-45E9-4B4F-B102-1466112837EB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
