@@ -1,6 +1,6 @@
 /**
  \file   NomadCore.hpp
- \brief  NOMAD Core Functions (headers)
+ \brief  DLL exports for NOMAD core functions and class definitions (headers)
  \author
  \date   2024-07-29
  \see    NomadCore.cpp
@@ -12,6 +12,7 @@
 #include "nomad.hpp"
 #include "BaseEvaluator.hpp"
 
+/// NOMAD core class.
 class NomadCore
 {
 private:

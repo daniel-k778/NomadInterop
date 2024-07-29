@@ -23,6 +23,9 @@ void NomadCore::SetInitialVariableValue( int index, double value )
 
 void NomadCore::SetNumberVariables( int numberVariables )
 {
+    // Set the number of variables
+    // Resize the vectors to the number of variables
+
     m_NumVars = numberVariables;
     m_UpperBoundIsGivenVec.resize(m_NumVars, false);
     m_LowerBoundIsGivenVec.resize(m_NumVars, false);
@@ -46,6 +49,7 @@ void NomadCore::SetVariableUpperBound( int index, double value )
         throw std::invalid_argument("Index out of bounds");
     }
 
+    // Adds a flag to indicate that the upper bound is given
     m_UpperBoundIsGivenVec[index] = true;
     m_UpperBoundValueVec[index] = value;
 }
@@ -57,6 +61,7 @@ void NomadCore::SetVariableLowerBound( int index, double value )
         throw std::invalid_argument("Index out of bounds");
     }
 
+    // Adds a flag to indicate that the lower bound is given
 	m_LowerBoundIsGivenVec[index] = true;
 	m_LowerBoundValueVec[index] = value;
 }
@@ -67,6 +72,7 @@ void NomadCore::SetVariableType( int index, const char* type ) {
         throw std::invalid_argument("Index out of bounds");
     }
 
+    // Adds a flag to indicate that the parameter type is given
     m_ParamaterTypeIsGivenVec[index] = true;
     m_ParamaterTypeVec[index] = type;
 }
@@ -138,27 +144,33 @@ void NomadCore::OptimizeSingleObj( void )
     {
         throw std::exception("Only one objective function can be optimized.");
     }
-
+    // Display
     NOMAD::Display* out = new NOMAD::Display(std::cout);
+    out->precision(NOMAD::DISPLAY_PRECISION_STD);
 
     try
     {
-        out->precision(NOMAD::DISPLAY_PRECISION_STD);
-
+        // NOMAD initialisations
         NOMAD::begin(0, NULL);
 
+        // Paramater creation
         NOMAD::Parameters* params = new NOMAD::Parameters(*out);
+
+        // Set the number of variables
         params->set_DIMENSION(m_NumVars);
 
+        // Definition of output types
         vector<NOMAD::bb_output_type> bbot;
         bbot.resize(m_NumPBConstraints + m_NumEBConstraints + 1);
-        bbot[0] = NOMAD::OBJ; // 0 always obj
+        bbot[0] = NOMAD::OBJ; // 0 always obj for single obj
 
+        // Add the PB constraints
         for (int i = 1; i < m_NumPBConstraints + 1; i++)
         {
             bbot[i] = NOMAD::PB;
         }
 
+        // Add the EB constraints
         for (int i = m_NumPBConstraints + 1; i < m_NumPBConstraints + m_NumEBConstraints + 1; i++)
         {
             bbot[i] = NOMAD::EB;
@@ -166,6 +178,7 @@ void NomadCore::OptimizeSingleObj( void )
 
         params->set_BB_OUTPUT_TYPE(bbot);
 
+        // Set the parameter types
         for (int i = 0; i < m_NumVars; i++)
 		{
             if (m_ParamaterTypeIsGivenVec[i])
@@ -193,10 +206,10 @@ void NomadCore::OptimizeSingleObj( void )
 			}
 		}
 
-        //    p.set_DISPLAY_ALL_EVAL(true);   // displays all evaluations.
+        // Display
         params->set_DISPLAY_STATS("bbe ( sol ) obj");
 
-
+        // Set the bounds and initial values of variables
         NOMAD::Point x0(m_NumVars);
         NOMAD::Point lb(m_NumVars);
         NOMAD::Point ub(m_NumVars);
@@ -220,23 +233,29 @@ void NomadCore::OptimizeSingleObj( void )
         params->set_LOWER_BOUND(lb);
         params->set_UPPER_BOUND(ub);
 
+        // Set max iterations
         params->set_MAX_BB_EVAL(m_NumIterations);
+        
+        // Display
         params->set_DISPLAY_DEGREE(2);
+
+        // Output file
         if (m_OutputPath)
         {
             params->set_SOLUTION_FILE(m_OutputPath);
         }
 
-        // parameters validation:
+        // Parameters validation
         params->check();
 
-        // custom evaluator creation:
+        // Custom evaluator creation
         NomadSingleObjEvaluator* evaluatorPtr = new NomadSingleObjEvaluator(*params, m_SingleObjEvaluator, this);
 
-        // algorithm creation and execution:
+        // Algorithm creation and execution
         NOMAD::Mads* mads = new NOMAD::Mads(*params, evaluatorPtr);
         mads->run();
 
+        // Get the best feasible solution
         for (int i = 0; i < m_NumVars; i++) 
         {
             m_FinalVariables[i] = mads->get_best_feasible()->value(i);
@@ -265,30 +284,37 @@ void NomadCore::OptimizeMultiObj( void )
 		throw std::exception("Number of objective functions must be greater than 1.");
 	}
 
+    // Display
     NOMAD::Display* out = new NOMAD::Display(std::cout);
-
+    out->precision(NOMAD::DISPLAY_PRECISION_STD);
     try
     {
-        out->precision(NOMAD::DISPLAY_PRECISION_STD);
-
+        // NOMAD initialisations
         NOMAD::begin(0, NULL);
 
+        // Paramater creation
         NOMAD::Parameters* params = new NOMAD::Parameters(*out);
+
+        // Set the number of variables
         params->set_DIMENSION(m_NumVars);
 
+        // Definition of output types
         vector<NOMAD::bb_output_type> bbot;
         bbot.resize(m_NumPBConstraints + m_NumEBConstraints + m_NumObjFunctions);
 
+        // Set the number of objective functions
         for (int i = 0; i < m_NumObjFunctions; i++)
         {
             bbot[i] = NOMAD::OBJ;
         }
 
+        // Set the number of PB constraints
         for (int i = m_NumObjFunctions; i < m_NumPBConstraints + m_NumObjFunctions; i++)
         {
             bbot[i] = NOMAD::PB;
         }
 
+        // Set the number of EB constraints
         for (int i = m_NumPBConstraints + m_NumObjFunctions; i < m_NumPBConstraints + m_NumEBConstraints + m_NumObjFunctions; i++)
         {
             bbot[i] = NOMAD::EB;
@@ -296,6 +322,7 @@ void NomadCore::OptimizeMultiObj( void )
 
         params->set_BB_OUTPUT_TYPE(bbot);
 
+        // Set the parameter types
         for (int i = 0; i < m_NumVars; i++)
         {
             if (m_ParamaterTypeIsGivenVec[i])
@@ -323,10 +350,10 @@ void NomadCore::OptimizeMultiObj( void )
             }
         }
 
-        //    p.set_DISPLAY_ALL_EVAL(true);   // displays all evaluations.
+        // Display
         params->set_DISPLAY_STATS("bbe ( sol ) obj");
 
-
+        // Set the bounds and initial values of variables
         NOMAD::Point x0(m_NumVars);
         NOMAD::Point lb(m_NumVars);
         NOMAD::Point ub(m_NumVars);
@@ -350,23 +377,27 @@ void NomadCore::OptimizeMultiObj( void )
         params->set_LOWER_BOUND(lb);
         params->set_UPPER_BOUND(ub);
 
+        // Set max iterations
         params->set_MULTI_OVERALL_BB_EVAL(m_NumIterations);
+
+        // Display
         params->set_DISPLAY_DEGREE(2);
         if (m_OutputPath)
         {
             params->set_SOLUTION_FILE(m_OutputPath);
         }
 
-        // parameters validation:
+        // Parameters validation
         params->check();
 
-        // custom evaluator creation:
+        // Custom evaluator creation
         NomadMultiObjEvaluator* evaluatorPtr = new NomadMultiObjEvaluator(*params, m_MultiObjEvaluator, this);
 
-        // algorithm creation and execution:
+        // Algorithm creation and execution
         NOMAD::Mads* mads = new NOMAD::Mads(*params, evaluatorPtr);
         mads->multi_run();
 
+        // Get the best feasible solution
         for (int i = 0; i < m_NumVars; i++)
         {
             m_FinalVariables[i] = mads->get_best_feasible()->value(i);

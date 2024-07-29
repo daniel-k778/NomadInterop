@@ -147,8 +147,12 @@ extern "C"
 		nomadCore->OptimizeMultiObj();
 	}
 
-    double* GetResults( NomadCore* nomadCore, int* size )
+    double* GetResults(NomadCore* nomadCore, int* size)
     {
+        // This is a workaround to avoid copying the vector to a C array.
+        // We use a static vector to hold the results so that we can return a pointer to the internal data.
+        // Note: The use of static here means the results are not thread-safe and will persist across function calls.
+        // Ensure that the NomadCore object is valid and the results are not modified elsewhere.
         static std::vector<double> results = nomadCore->GetResults();
         *size = static_cast<int>(results.size());
         return results.data();

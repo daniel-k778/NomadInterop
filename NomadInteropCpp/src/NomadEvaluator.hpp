@@ -1,37 +1,79 @@
 #ifndef NOMADEVALUATOR_H
 #define NOMADEVALUATOR_H
 
+/**
+ \file   NomadEvaluator.hpp
+ \brief  Class definitions derived from NOMAD evaluators (headers)
+ \author
+ \date   2024-07-29
+ \see    NomadEvaluator.cpp
+ */
+
 #include "nomad.hpp"
 #include "NomadCore.hpp"
 #include "BaseEvaluator.hpp"
 
+/// NOMAD single-objective evaluator.
 class NomadSingleObjEvaluator : public NOMAD::Evaluator
 {
 private:
-	BaseSingleObjEvaluator*		m_SingleObjEvaluator = nullptr;
-	NomadCore*					m_NomadCore = nullptr;
-	const NOMAD::Parameters*    m_Params = nullptr;
+	BaseSingleObjEvaluator*		m_SingleObjEvaluator = nullptr;  ///< Single-objective evaluator.
+	NomadCore*					m_NomadCore = nullptr;		     ///< NOMAD core.
+	const NOMAD::Parameters*    m_Params = nullptr;		         ///< Parameters.
 
 public:
+	/// Constructor.
+	/**
+	 \param p NOMAD parameters  -- \b IN.
+	 \param Evaluator Single-objective evaluator  -- \b IN.
+	 \param nomadCore NOMAD core  -- \b IN.
+	 */
 	NomadSingleObjEvaluator( const NOMAD::Parameters& p, BaseSingleObjEvaluator* Evaluator, NomadCore* nomadCore );
 
+	/// Destructor.
+	/**
+	*/
 	~NomadSingleObjEvaluator( void );
 
+	/// Evaluate the objective function and constraints.
+	/**
+	 \param x Evaluated point  -- \b IN.
+	 \param h_max Maximum constraint violation  -- \b IN.
+	 \param count_eval Flag for counting evaluations  -- \b IN.
+	 \return Evaluation status.
+	 */
 	bool eval_x( NOMAD::Eval_Point& x, const NOMAD::Double& h_max, bool& count_eval ) const;
 };
 
+/// NOMAD multi-objective evaluator.
 class NomadMultiObjEvaluator : public NOMAD::Multi_Obj_Evaluator
 {
 private:
-	BaseMultiObjEvaluator*		m_MultiObjEvaluator = nullptr;
-	NomadCore*					m_NomadCore = nullptr;
-	const NOMAD::Parameters*    m_Params = nullptr;
+	BaseMultiObjEvaluator*		m_MultiObjEvaluator = nullptr;   ///< Multi-objective evaluator.
+	NomadCore*					m_NomadCore = nullptr;		     ///< NOMAD core.
+	const NOMAD::Parameters*    m_Params = nullptr;			     ///< Parameters.
 
 public:
+	/// Constructor.
+	/**
+	 \param p NOMAD parameters  -- \b IN.
+	 \param Evaluator Multi-objective evaluator  -- \b IN.
+	 \param nomadCore NOMAD core  -- \b IN.
+	 */
 	NomadMultiObjEvaluator( const NOMAD::Parameters& p, BaseMultiObjEvaluator* Evaluator, NomadCore* nomadCore );
 
+	/// Destructor.
+	/**
+	*/
 	~NomadMultiObjEvaluator( void );
 
+	/// Evaluate the objective function and constraints.
+	/**
+	 \param x Evaluated point  -- \b IN.
+	 \param h_max Maximum constraint violation  -- \b IN.
+	 \param count_eval Flag for counting evaluations  -- \b IN.
+	 \return Evaluation status.
+	 */
 	bool eval_x( NOMAD::Eval_Point& x, const NOMAD::Double& h_max, bool& count_eval ) const;
 };
 

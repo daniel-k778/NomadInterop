@@ -1,6 +1,6 @@
 /**
  \file   NomadCoreAPI.hpp
- \brief  NOMAD Core Functions (headers)
+ \brief  NOMAD core functions (headers)
  \author
  \date   2024-07-29
  \see    NomadCoreAPI.cpp
@@ -70,6 +70,7 @@ typedef void( __stdcall* GetMultiObjFunctionDelegate )( double* objFunctions );
 
 extern "C"
 {
+    /// Class for wrapping a single-objective evaluator.
     class SingleObjEvaluatorWrapper : public BaseSingleObjEvaluator {
 
     public:
@@ -116,6 +117,7 @@ extern "C"
         std::vector<double> GetConstraints( void ) override;
     };
 
+    /// Class for wrapping a multi-objective evaluator.
     class MultiObjEvaluatorWrapper : public BaseMultiObjEvaluator {
     public:
         EvaluateDelegate                      m_Evaluate;                   ///< Delegate for evaluating the objective function.
