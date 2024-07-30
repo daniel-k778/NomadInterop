@@ -50,14 +50,14 @@ bool NomadSingleObjEvaluator::eval_x( NOMAD::Eval_Point& x, const NOMAD::Double&
     // Return the evaluation status
     if (_SingleObjEvaluator->GetObjectiveFunctionStatus())
     {
-        count_eval = true;
-        return true;       // the evaluation succeeded
+        count_eval = true; // the evaluation succeeded
     }
     else
     {
-        count_eval = false;
-        return false;       // the evaluation failed
+        count_eval = false; // the evaluation failed
     }
+
+    return true;
 }
 
 NomadMultiObjEvaluator::NomadMultiObjEvaluator( const NOMAD::Parameters& p, BaseMultiObjEvaluator* Evaluator, NomadCore* nomadCore ) : NOMAD::Multi_Obj_Evaluator( p )
