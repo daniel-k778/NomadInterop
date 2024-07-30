@@ -22,7 +22,7 @@ public:
 
     /// Destructor.
     /**
-	*/
+    */
     ~BaseSingleObjEvaluator( void );
 
     /// Initialize the evaluator.
@@ -33,61 +33,14 @@ public:
 
     /// Get the objective function.
     /**
-	 \return Objective function value.
-	 */
+     \return Objective function value.
+     */
     virtual double GetObjectiveFunction( void );
 
     /// Get the objective function status.
     /**
      \return Objective function status.
      */
-    virtual bool GetObjectiveFunctionStatus( void );
-
-    /// Get the constraints.
-    /**
-     \return Constraints array.
-	 */
-    virtual std::vector<double> GetConstraints( void );
-
-    /// Evaluate the objective function and constraints.
-    /**
-	 \param x Array of variables  -- \b IN.
-	 \param numVars Number of variables  -- \b IN.
-     */
-    virtual void Evaluate( double* x, int numVars );
-};
-
-/// Base class for multi-objective evaluators.
-class BaseMultiObjEvaluator
-{
-public:
-    /// Constructor.
-    /**
-	*/
-    BaseMultiObjEvaluator( void );
-
-    /// Destructor.
-    /**
-    */
-    ~BaseMultiObjEvaluator( void );
-
-    /// Initialize the evaluator.
-    /**
-	 \param numConstraints Number of constraints  -- \b IN.
-	 \param numObjFunctions Number of objective functions  -- \b IN.
-	 */
-    virtual void Initialize( int numConstraints, int numObjFunctions );
-
-    /// Get the objective function.
-    /**
-     \return Objective function value.
-     */
-    virtual std::vector<double> GetObjectiveFunction( void );
-
-    /// Get the objective function status.
-    /**
-	 \return Objective function status.
-	 */
     virtual bool GetObjectiveFunctionStatus( void );
 
     /// Get the constraints.
@@ -100,7 +53,54 @@ public:
     /**
      \param x Array of variables  -- \b IN.
      \param numVars Number of variables  -- \b IN.
-	 */
+     */
+    virtual void Evaluate( double* x, int numVars );
+};
+
+/// Base class for multi-objective evaluators.
+class BaseMultiObjEvaluator
+{
+public:
+    /// Constructor.
+    /**
+    */
+    BaseMultiObjEvaluator( void );
+
+    /// Destructor.
+    /**
+    */
+    ~BaseMultiObjEvaluator( void );
+
+    /// Initialize the evaluator.
+    /**
+     \param numConstraints Number of constraints  -- \b IN.
+     \param numObjFunctions Number of objective functions  -- \b IN.
+     */
+    virtual void Initialize( int numConstraints, int numObjFunctions );
+
+    /// Get the objective function.
+    /**
+     \return Objective function value.
+     */
+    virtual std::vector<double> GetObjectiveFunction( void );
+
+    /// Get the objective function status.
+    /**
+     \return Objective function status.
+     */
+    virtual bool GetObjectiveFunctionStatus( void );
+
+    /// Get the constraints.
+    /**
+     \return Constraints array.
+     */
+    virtual std::vector<double> GetConstraints( void );
+
+    /// Evaluate the objective function and constraints.
+    /**
+     \param x Array of variables  -- \b IN.
+     \param numVars Number of variables  -- \b IN.
+     */
     virtual void Evaluate( double* x, int numVars );
 };
 

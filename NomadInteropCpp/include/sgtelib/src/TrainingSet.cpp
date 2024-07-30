@@ -172,11 +172,11 @@ void SGTELIB::TrainingSet::set_bbo_type (const std::string & line){
   #endif 
 
   std::string s;
-  std::istringstream in_line (line);		
+  std::istringstream in_line (line);        
   
   int j = 0;
   while (in_line.good()){
-  	in_line >> s;
+      in_line >> s;
     if (j>=_m){
       throw Exception ( __FILE__ , __LINE__ ,
            "TrainingSet::set_bbo_type: string error (j>_m)" );

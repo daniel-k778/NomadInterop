@@ -5,16 +5,16 @@ extern "C"
 
     void SingleObjEvaluatorWrapper::Initialize( int numConstraints )
     {
-		_Constraints.resize(numConstraints);
-		_Inititialize(numConstraints);
-	}
+        _Constraints.resize(numConstraints);
+        _Inititialize(numConstraints);
+    }
 
     void SingleObjEvaluatorWrapper::Evaluate( double* x, int numVars )
     {
-		_Evaluate(x, numVars);
-		_Obj = _GetObjectiveFunction();
-		_GetConstraints(_Constraints.data());
-	}
+        _Evaluate(x, numVars);
+        _Obj = _GetObjectiveFunction();
+        _GetConstraints(_Constraints.data());
+    }
 
     double SingleObjEvaluatorWrapper::GetObjectiveFunction( void )
     {
@@ -28,8 +28,8 @@ extern "C"
 
     std::vector<double> SingleObjEvaluatorWrapper::GetConstraints( void )
     {
-		return _Constraints;
-	}
+        return _Constraints;
+    }
 
     void MultiObjEvaluatorWrapper::Initialize( int numConstraints, int numObjFunctions )
     {
@@ -40,20 +40,20 @@ extern "C"
 
     void MultiObjEvaluatorWrapper::Evaluate( double* x, int _NumVars )
     {
-		_Evaluate(x, _NumVars);
-		_GetObjectiveFunction(_Obj.data());
-		_GetConstraints(_Constraints.data());
-	}
+        _Evaluate(x, _NumVars);
+        _GetObjectiveFunction(_Obj.data());
+        _GetConstraints(_Constraints.data());
+    }
 
     std::vector<double> MultiObjEvaluatorWrapper::GetObjectiveFunction( void )
     {
-		return _Obj;
-	}
+        return _Obj;
+    }
 
     bool MultiObjEvaluatorWrapper::GetObjectiveFunctionStatus( void )
     {
-		return _ObjStatus;
-	}
+        return _ObjStatus;
+    }
 
     std::vector<double> MultiObjEvaluatorWrapper::GetConstraints( void )
     {
@@ -92,8 +92,8 @@ extern "C"
 
     void SetVariableType( NomadCore* nomadCore, int index, const char* type )
     {
-		nomadCore->SetVariableType(index, type);
-	}
+        nomadCore->SetVariableType(index, type);
+    }
 
     void SetNumberOfIterations( NomadCore* nomadCore, int numIterations )
     {
@@ -123,19 +123,19 @@ extern "C"
 
     void SetMultiObjEvaluator( NomadCore* nomadCore, EvaluateDelegate evaluator, GetMultiObjFunctionDelegate _GetObjectiveFunction, GetConstraintsDelegate _GetConstraints, MultiObjInitDelegate _Inititialize, GetObjectiveFunctionStatusDelegate _GetObjectiveFunctionStatus )
     {
-		MultiObjEvaluatorWrapper* w = new MultiObjEvaluatorWrapper();
-		w->_Evaluate = evaluator;
-		w->_GetObjectiveFunction = _GetObjectiveFunction;
+        MultiObjEvaluatorWrapper* w = new MultiObjEvaluatorWrapper();
+        w->_Evaluate = evaluator;
+        w->_GetObjectiveFunction = _GetObjectiveFunction;
         w->_GetObjectiveFunctionStatus = _GetObjectiveFunctionStatus;
-		w->_GetConstraints = _GetConstraints;
-		w->_Inititialize = _Inititialize;
-		nomadCore->SetMultiObjEvaluator(w);
-	}
+        w->_GetConstraints = _GetConstraints;
+        w->_Inititialize = _Inititialize;
+        nomadCore->SetMultiObjEvaluator(w);
+    }
 
     void SetNumberObjFunctions( NomadCore* nomadCore, int numObjFunctions )
     {
-		nomadCore->SetNumberObjFunctions(numObjFunctions);
-	}
+        nomadCore->SetNumberObjFunctions(numObjFunctions);
+    }
 
     void OptimizeSingleObj( NomadCore* nomadCore )
     {
@@ -144,8 +144,8 @@ extern "C"
 
     void OptimizeMultiObj( NomadCore* nomadCore )
     {
-		nomadCore->OptimizeMultiObj();
-	}
+        nomadCore->OptimizeMultiObj();
+    }
 
     double* GetResults(NomadCore* nomadCore, int* size)
     {

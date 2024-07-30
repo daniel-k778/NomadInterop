@@ -87,8 +87,8 @@ extern "C"
 
         /// Initializes the evaluator.
         /**
-		 \param numConstraints Number of constraints -- \b IN.
-		 */
+         \param numConstraints Number of constraints -- \b IN.
+         */
         void Initialize( int numConstraints ) override;
 
         /// Evaluates the objective function.
@@ -100,8 +100,8 @@ extern "C"
 
         /// Retrieves the value of the objective function.
         /**
-		 \return Value of the objective function.
-		 */
+         \return Value of the objective function.
+         */
         double GetObjectiveFunction( void ) override;
 
         /// Retrieves the status of the objective function.
@@ -112,8 +112,8 @@ extern "C"
 
         /// Retrieves constraint values.
         /**
-		 \return Array of constraint values.
-		 */
+         \return Array of constraint values.
+         */
         std::vector<double> GetConstraints( void ) override;
     };
 
@@ -134,14 +134,14 @@ extern "C"
         /**
          \param numConstraints Number of constraints -- \b IN.
          \param numObjFunctions Number of objective functions -- \b IN.
-		 */
+         */
         void Initialize( int numConstraints, int numObjFunctions ) override;
 
         /// Evaluates the objective function.
         /**
-		 \param x Array of variables -- \b IN.
-		 \param numVars Number of variables -- \b IN.
-		 */
+         \param x Array of variables -- \b IN.
+         \param numVars Number of variables -- \b IN.
+         */
         void Evaluate( double* x, int numVars ) override;
 
         /// Retrieves the value of the objective function.
@@ -152,21 +152,21 @@ extern "C"
 
         /// Retrieves the status of the objective function.
         /**
-		 \return Status of the objective function.
-		 */
+         \return Status of the objective function.
+         */
         bool GetObjectiveFunctionStatus( void ) override;
 
         /// Retrieves constraint values.
         /**
          \return Array of constraint values.
-		 */
+         */
         std::vector<double> GetConstraints( void ) override;
     };
 
     /// Creates a NomadCore object.
     /**
-	 \return NomadCore object.
-	 */
+     \return NomadCore object.
+     */
     NOMADCORE_API NomadCore* CreateNomadCore( void );
 
     /// Sets the output path for results.
@@ -178,9 +178,9 @@ extern "C"
 
     /// Sets the number of variables.
     /**
-	 \param nomadCore NomadCore object -- \b IN.
-	 \param numVars Number of variables -- \b IN.
-	 */
+     \param nomadCore NomadCore object -- \b IN.
+     \param numVars Number of variables -- \b IN.
+     */
     NOMADCORE_API void SetNumberVariables( NomadCore* nomadCore, int numVars );
 
     /// Sets the initial value of a variable.
@@ -188,14 +188,14 @@ extern "C"
      \param nomadCore NomadCore object -- \b IN.
      \param index Index of the variable -- \b IN.
      \param value Initial value of the variable -- \b IN.
-	 */
+     */
     NOMADCORE_API void SetInitialVariableValue( NomadCore* nomadCore, int index, double value );
 
     /// Sets the upper bound of a variable.
     /**
-	 \param nomadCore NomadCore object -- \b IN.
-	 \param index Index of the variable -- \b IN.
-	 \param value Upper bound of the variable -- \b IN.
+     \param nomadCore NomadCore object -- \b IN.
+     \param index Index of the variable -- \b IN.
+     \param value Upper bound of the variable -- \b IN.
      */
     NOMADCORE_API void SetVariableUpperBound( NomadCore* nomadCore, int index, double value );
 
@@ -209,17 +209,17 @@ extern "C"
 
     /// Sets the type of a variable.
     /**
-	 \param nomadCore NomadCore object -- \b IN.
-	 \param index Index of the variable -- \b IN.
-	 \param type Type of the variable -- \b IN.
-	 */
+     \param nomadCore NomadCore object -- \b IN.
+     \param index Index of the variable -- \b IN.
+     \param type Type of the variable -- \b IN.
+     */
     NOMADCORE_API void SetVariableType( NomadCore* nomadCore, int index, const char* type );
 
     /// Sets the number of iterations.
     /**
      \param nomadCore NomadCore object -- \b IN.
      \param numIterations Number of iterations -- \b IN.
-	 */
+     */
     NOMADCORE_API void SetNumberOfIterations( NomadCore* nomadCore, int numIterations );
 
     /// Sets the number of EB constraints.
@@ -231,9 +231,9 @@ extern "C"
 
     /// Sets the number of PB constraints.
     /**
-	 \param nomadCore NomadCore object -- \b IN.
-	 \param numPBConstraints Number of progressive barrier constraints -- \b IN.
-	 */
+     \param nomadCore NomadCore object -- \b IN.
+     \param numPBConstraints Number of progressive barrier constraints -- \b IN.
+     */
     NOMADCORE_API void SetNumberPBConstraints( NomadCore* nomadCore, int numPBConstraints );
 
     /// Sets the single-objective evaluator.
@@ -255,13 +255,13 @@ extern "C"
 
     /// Sets the multi-objective evaluator.
     /**
-	 \param nomadCore NomadCore object -- \b IN.
-	 \param evaluator Delegate for evaluating the objective function -- \b IN.
-	 \param getObjectiveFunction Delegate for retrieving the value of the objective function -- \b IN.
-	 \param getConstraints Delegate for retrieving constraint values -- \b IN.
-	 \param init Delegate for initializing the evaluator -- \b IN.
-	 \param getObjectiveFunctionStatus Delegate for retrieving the status of the objective function -- \b IN.
-	 */
+     \param nomadCore NomadCore object -- \b IN.
+     \param evaluator Delegate for evaluating the objective function -- \b IN.
+     \param getObjectiveFunction Delegate for retrieving the value of the objective function -- \b IN.
+     \param getConstraints Delegate for retrieving constraint values -- \b IN.
+     \param init Delegate for initializing the evaluator -- \b IN.
+     \param getObjectiveFunctionStatus Delegate for retrieving the status of the objective function -- \b IN.
+     */
     NOMADCORE_API void SetMultiObjEvaluator
     ( NomadCore*                         nomadCore                   , 
       EvaluateDelegate                   evaluator                   , 
@@ -279,14 +279,14 @@ extern "C"
 
     /// Optimizes a single-objective function.
     /**
-	 \param nomadCore NomadCore object -- \b IN.
-	 */
+     \param nomadCore NomadCore object -- \b IN.
+     */
     NOMADCORE_API void OptimizeSingleObj( NomadCore* nomadCore );
 
     /// Optimizes multiple objective functions.
     /**
      \param nomadCore NomadCore object -- \b IN.
-	 */
+     */
     NOMADCORE_API void OptimizeMultiObj( NomadCore* nomadCore );
 
     /// Retrieves the optimizer results.

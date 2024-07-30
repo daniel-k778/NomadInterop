@@ -64,7 +64,7 @@ SGTELIB::Surrogate_Parameters::~Surrogate_Parameters ( void ) {
 /*----------------------------------------*/
 SGTELIB::model_t SGTELIB::Surrogate_Parameters::read_model_type ( const std::string & model_description){
   std::string s;
-  std::istringstream in_line (model_description);	
+  std::istringstream in_line (model_description);    
   while ( in_line >> s ){
     s = SGTELIB::toupper(s);
     if (streqi(s,"TYPE")){
@@ -151,7 +151,7 @@ void SGTELIB::Surrogate_Parameters::read_string (const std::string & model_descr
   std::string field;
   std::string content;
   bool content_is_optim;
-  std::istringstream in_line (model_description);	
+  std::istringstream in_line (model_description);    
   const bool display = false;
   if (display){
     std::cout << "Model description: " << model_description << "\n";

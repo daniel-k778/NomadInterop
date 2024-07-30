@@ -52,8 +52,8 @@ namespace SGTELIB {
     }
 
     Exception ( const std::string & file    ,
-		int                 line    ,
-		const std::string & err_msg   )
+        int                 line    ,
+        const std::string & err_msg   )
       : _file(file) , _line(line) , _err_msg(err_msg) {}
     
     virtual ~Exception ( void ) throw() {}

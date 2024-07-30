@@ -225,7 +225,7 @@ void SGTELIB::sgtelib_predict( const std::string & file_list , const std::string
   bool error = false;
   std::string file;
   SGTELIB::Matrix X,Z,XX,ZZ;
-  std::istringstream in_line (file_list);	
+  std::istringstream in_line (file_list);    
   if ( ( ! error) && (in_line >> file) && (SGTELIB::exists(file)) ){
     std::cout << "Read file " << file << "\n";
     X = SGTELIB::Matrix(file);
@@ -290,7 +290,7 @@ void SGTELIB::sgtelib_best( const std::string & file_list , const bool verbose){
   bool error = false;
   std::string file;
   SGTELIB::Matrix X,Z;
-  std::istringstream in_line (file_list);	
+  std::istringstream in_line (file_list);    
   if ( ( ! error) && (in_line >> file) && (SGTELIB::exists(file)) ){
     std::cout << "Read file " << file << "\n";
     X = SGTELIB::Matrix(file);

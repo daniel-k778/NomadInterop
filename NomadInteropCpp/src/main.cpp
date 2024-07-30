@@ -31,9 +31,9 @@ public:
     }
 
     bool GetObjectiveFunctionStatus()
-	{
-		return _objStatus;
-	}
+    {
+        return _objStatus;
+    }
 
     vector<double> GetObjectiveFunction()
     {
@@ -42,8 +42,8 @@ public:
 
     vector<double> GetConstraints()
     {
-		return _constraints;
-	}
+        return _constraints;
+    }
 
     void Evaluate(double* x, int _NumVars)
     {
@@ -65,23 +65,23 @@ public:
 
 
 auto main() -> int {
-	NomadCore* myMainWrapper = new NomadCore();
-	myMainWrapper->SetOutputPath("sol.txt");
+    NomadCore* myMainWrapper = new NomadCore();
+    myMainWrapper->SetOutputPath("sol.txt");
 
-	int _NumVars = 5;
-	myMainWrapper->SetNumberVariables(_NumVars);
-	for (int i = 0; i < _NumVars; i++) {
-		myMainWrapper->SetInitialVariableValue(i, 1.0);
+    int _NumVars = 5;
+    myMainWrapper->SetNumberVariables(_NumVars);
+    for (int i = 0; i < _NumVars; i++) {
+        myMainWrapper->SetInitialVariableValue(i, 1.0);
         myMainWrapper->SetVariableType(i, "CONTINUOUS");
-	}
+    }
 
-	myMainWrapper->SetNumberOfIterations(100);
-	myMainWrapper->SetNumberEBConstraints(2);
-	myMainWrapper->SetNumberPBConstraints(3);
+    myMainWrapper->SetNumberOfIterations(100);
+    myMainWrapper->SetNumberEBConstraints(2);
+    myMainWrapper->SetNumberPBConstraints(3);
 
-	UserEvaluator* myEval = new UserEvaluator();
+    UserEvaluator* myEval = new UserEvaluator();
 
     myMainWrapper->SetNumberObjFunctions(2);
-	myMainWrapper->SetMultiObjEvaluator(myEval);
+    myMainWrapper->SetMultiObjEvaluator(myEval);
     myMainWrapper->OptimizeMultiObj();
 }
