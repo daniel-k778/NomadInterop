@@ -4,12 +4,12 @@
 class UserEvaluator : public BaseMultiObjEvaluator
 {
 private:
-    vector<double> _obj;
-    vector<double> _constraints;
-    bool _objStatus = true;
+    vector<double> obj;
+    vector<double> constraints;
+    bool objstatus = true;
 
     int _NumObjFunctions = 0;
-    int _NumConstraints = 0;
+    int numConstraints = 0;
 
 public:
     UserEvaluator()
@@ -24,25 +24,25 @@ public:
 
     void Initialize(int numConstraints, int numObjFunctions) {
         this->_NumObjFunctions = numObjFunctions;
-        this->_NumConstraints = numConstraints;
+        this->numConstraints = numConstraints;
 
-        _obj.resize(numObjFunctions);
-        _constraints.resize(numConstraints);
+        obj.resize(numObjFunctions);
+        constraints.resize(numConstraints);
     }
 
     bool GetObjectiveFunctionStatus()
     {
-        return _objStatus;
+        return objstatus;
     }
 
     vector<double> GetObjectiveFunction()
     {
-        return _obj;
+        return obj;
     }
 
     vector<double> GetConstraints()
     {
-        return _constraints;
+        return constraints;
     }
 
     void Evaluate(double* x, int _NumVars)
@@ -55,11 +55,11 @@ public:
             c2 += std::pow((x[i] + 1), 2);
         }
 
-        _obj[0] = x[4];
-        _obj[1] = c1 - 25;
-        _constraints[0] = 25 - c2;
+        obj[0] = x[4];
+        obj[1] = c1 - 25;
+        constraints[0] = 25 - c2;
 
-        _objStatus = true;
+        objstatus = true;
     }
 };
 

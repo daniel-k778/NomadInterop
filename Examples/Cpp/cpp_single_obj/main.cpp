@@ -86,88 +86,100 @@
 //    myMainWrapper->OptimizeMultiObj();
 //}
 
-
-class UserEvaluator : public BaseMultiObjEvaluator
+/*--------------------------------------------*/
+/*             evaluator creation             */
+/*--------------------------------------------*/
+class myEvaluator : public BaseSingleObjEvaluator
 {
 private:
-    vector<double> _obj;
-    vector<double> _constraints;
-    bool _objStatus = true;
-
-    int _NumObjFunctions = 0;
-    int _NumConstraints = 0;
+    double obj = 0.0; // objective function value
+    vector<double> constraints; // constraint values
+    bool objstatus = true; // objective function status (success/failure)
+    int numConstraints = 0; // number of constraints
 
 public:
-    UserEvaluator()
-    {
+    void Initialize(int numConstraints) {
+        // Required method for implementing the derived BaseSingleObjEvaluator class.
+        // Note: this function can be used to initialize any part of the evaluator.
 
-    }
-
-    ~UserEvaluator()
-    {
-
-    }
-
-    void Initialize(int numConstraints, int numObjFunctions) {
-        this->_NumObjFunctions = numObjFunctions;
-        this->_NumConstraints = numConstraints;
-
-        _obj.resize(numObjFunctions);
-        _constraints.resize(numConstraints);
+        this->numConstraints = numConstraints;
+        constraints.resize(numConstraints);
     }
 
     bool GetObjectiveFunctionStatus()
     {
-        return _objStatus;
+        // Required method for implementing the derived BaseSingleObjEvaluator class.
+        // This function is used to return the status of the objective function evaluation.
+
+        return objstatus;
     }
 
-    vector<double> GetObjectiveFunction()
+    double GetObjectiveFunction()
     {
-        return _obj;
+        // Required method for implementing the derived BaseSingleObjEvaluator class.
+        // This function is used to return the objective function value.
+
+        return obj;
     }
 
     vector<double> GetConstraints()
     {
-        return _constraints;
+        // Required method for implementing the derived BaseSingleObjEvaluator class.
+        // This function is used to return the constraint values.
+
+        return constraints;
     }
 
-    void Evaluate(double* x, int _NumVars)
+    void Evaluate(double* x, int numVars)
     {
+        // Required method for implementing the derived BaseSingleObjEvaluator class.
+        // This function is used to evaluate the objective function and constraints.
 
         double c1 = 0.0, c2 = 0.0;
-        for (int i = 0; i < _NumVars; i++)
+        for (int i = 0; i < numVars; i++)
         {
             c1 += std::pow((x[i] - 1.0), 2);
             c2 += std::pow((x[i] + 1), 2);
         }
 
-        _obj[0] = x[4];
-        _obj[1] = c1 - 25;
-        _constraints[0] = 25 - c2;
+        obj = x[4]; // set the objective function
+        constraints[0] = c1 - 25; // set the first constraint
+        constraints[1] = 25 - c2; // set the second constraint
 
-        _objStatus = true;
+        objstatus = true; // set the objective function status
     }
 };
 
-
+/*--------------------------------------------*/
+/*                main program                */
+/*--------------------------------------------*/
 auto main() -> int {
-    NomadCore* myMainWrapper = new NomadCore();
-    myMainWrapper->SetOutputPath("sol.txt");
 
-    int _NumVars = 5;
-    myMainWrapper->SetNumberVariables(_NumVars);
-    for (int i = 0; i < _NumVars; i++) {
-        myMainWrapper->SetInitialVariableValue(i, 1.0);
-        myMainWrapper->SetVariableType(i, "CONTINUOUS");
+    // Create an instance of the NomadCore class
+    NomadCore* nomadCore = new NomadCore();
+
+    // Set the output path for the results file
+    nomadCore->SetOutputPath("sol.txt");
+
+    // Set the number of variables, initial values, and types
+    int numVars = 5;
+    nomadCore->SetNumberVariables(numVars);
+    for (int i = 0; i < numVars; i++) {
+        nomadCore->SetInitialVariableValue(i, 1.0);
+        nomadCore->SetVariableType(i, "CONTINUOUS");
     }
 
-    myMainWrapper->SetNumberOfIterations(100);
-    myMainWrapper->SetNumberEBConstraints(2);
-    myMainWrapper->SetNumberPBConstraints(3);
+    // Set the number of iterations
+    nomadCore->SetNumberOfIterations(100);
 
-    UserEvaluator* myEval = new UserEvaluator();
+    // Set the number of extreme and progressive barrier constraints
+    nomadCore->SetNumberEBConstraints(2);
+    nomadCore->SetNumberPBConstraints(3);
 
-    myMainWrapper->SetNumberObjFunctions(2);
-    myMainWrapper->SetMultiObjEvaluator(myEval);
-    myMainWrapper->OptimizeMultiObj();
+    // Set the evaluator
+    myEvaluator* myEval = new myEvaluator();
+    nomadCore->SetSingleObjEvaluator(myEval);
+
+    // Optimize the problem
+    nomadCore->OptimizeSingleObj();
 }
