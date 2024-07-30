@@ -111,6 +111,10 @@ namespace NomadInterop
 
         /// <summary>
         /// Sets the type of a specific variable.
+        /// - "CONTINUOUS"
+        /// - "INTEGER"
+        /// - "BINARY"
+        /// - "CATEGORICAL"
         /// </summary>
         /// <param name="nomadCore">Pointer to the NOMAD Core instance.</param>
         /// <param name="index">Index of the variable.</param>

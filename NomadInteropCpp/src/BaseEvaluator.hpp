@@ -11,8 +11,14 @@
 
 #include "nomad.hpp"
 
+#ifdef NOMADCORE_EXPORTS
+#define NOMADCORE_API __declspec( dllexport )
+#else
+#define NOMADCORE_API __declspec( dllimport )
+#endif
+
 /// Base class for single-objective evaluators.
-class BaseSingleObjEvaluator
+class NOMADCORE_API BaseSingleObjEvaluator
 {
 public:
     /// Constructor.
@@ -58,7 +64,7 @@ public:
 };
 
 /// Base class for multi-objective evaluators.
-class BaseMultiObjEvaluator
+class NOMADCORE_API BaseMultiObjEvaluator
 {
 public:
     /// Constructor.

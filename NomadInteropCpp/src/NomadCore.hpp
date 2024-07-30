@@ -12,8 +12,14 @@
 #include "nomad.hpp"
 #include "BaseEvaluator.hpp"
 
+#ifdef NOMADCORE_EXPORTS
+#define NOMADCORE_API __declspec( dllexport )
+#else
+#define NOMADCORE_API __declspec( dllimport )
+#endif
+
 /// NOMAD core class.
-class NomadCore
+class NOMADCORE_API NomadCore
 {
 private:
     const char*     _OutputPath = nullptr;            ///< Output path.

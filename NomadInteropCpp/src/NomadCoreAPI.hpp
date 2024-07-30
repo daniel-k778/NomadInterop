@@ -209,6 +209,10 @@ extern "C"
 
     /// Sets the type of a variable.
     /**
+    * - "CONTINUOUS"
+    * - "INTEGER"
+    * - "BINARY"
+    * - "CATEGORICAL"
      \param nomadCore NomadCore object -- \b IN.
      \param index Index of the variable -- \b IN.
      \param type Type of the variable -- \b IN.
