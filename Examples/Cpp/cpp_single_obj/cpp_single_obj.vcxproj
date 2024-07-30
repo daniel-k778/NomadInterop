@@ -104,13 +104,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\include\interop;$(ProjectDir)\include\sgtelib;$(ProjectDir)\include\nomad;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>NomadInteropCPP.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>NomadInteropCPP.lib;nomad.lib;sgtelib.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -121,7 +121,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\include\interop;$(ProjectDir)\include\sgtelib;$(ProjectDir)\include\nomad;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -129,131 +129,11 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>NomadInteropCPP.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>NomadInteropCPP.lib;nomad.lib;sgtelib.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="include\Algo_Parameters.cpp" />
-    <ClCompile Include="include\Barrier.cpp" />
-    <ClCompile Include="include\Cache.cpp" />
-    <ClCompile Include="include\Cache_File_Point.cpp" />
-    <ClCompile Include="include\Cache_Point.cpp" />
-    <ClCompile Include="include\Cache_Search.cpp" />
-    <ClCompile Include="include\Clock.cpp" />
-    <ClCompile Include="include\Direction.cpp" />
-    <ClCompile Include="include\Directions.cpp" />
-    <ClCompile Include="include\Display.cpp" />
-    <ClCompile Include="include\Double.cpp" />
-    <ClCompile Include="include\Evaluator.cpp" />
-    <ClCompile Include="include\Evaluator_Control.cpp" />
-    <ClCompile Include="include\Eval_Point.cpp" />
-    <ClCompile Include="include\Extended_Poll.cpp" />
-    <ClCompile Include="include\GMesh.cpp" />
-    <ClCompile Include="include\LH_Search.cpp" />
-    <ClCompile Include="include\L_Curve.cpp" />
-    <ClCompile Include="include\Mads.cpp" />
-    <ClCompile Include="include\Model_Sorted_Point.cpp" />
-    <ClCompile Include="include\Model_Stats.cpp" />
-    <ClCompile Include="include\Multi_Obj_Evaluator.cpp" />
-    <ClCompile Include="include\NelderMead_Search.cpp" />
-    <ClCompile Include="include\NelderMead_Simplex_Eval_Point.cpp" />
-    <ClCompile Include="include\nomad.cpp" />
-    <ClCompile Include="include\OrthogonalMesh.cpp" />
-    <ClCompile Include="include\Parameters.cpp" />
-    <ClCompile Include="include\Parameter_Entries.cpp" />
-    <ClCompile Include="include\Parameter_Entry.cpp" />
-    <ClCompile Include="include\Pareto_Front.cpp" />
-    <ClCompile Include="include\Pareto_Point.cpp" />
-    <ClCompile Include="include\Phase_One_Evaluator.cpp" />
-    <ClCompile Include="include\Phase_One_Search.cpp" />
-    <ClCompile Include="include\Point.cpp" />
-    <ClCompile Include="include\Priority_Eval_Point.cpp" />
-    <ClCompile Include="include\Quad_Model.cpp" />
-    <ClCompile Include="include\Quad_Model_Evaluator.cpp" />
-    <ClCompile Include="include\Quad_Model_Search.cpp" />
-    <ClCompile Include="include\Random_Pickup.cpp" />
-    <ClCompile Include="include\RNG.cpp" />
-    <ClCompile Include="include\Sgtelib_Model_Evaluator.cpp" />
-    <ClCompile Include="include\Sgtelib_Model_Manager.cpp" />
-    <ClCompile Include="include\Sgtelib_Model_Search.cpp" />
-    <ClCompile Include="include\Signature.cpp" />
-    <ClCompile Include="include\Slave.cpp" />
-    <ClCompile Include="include\SMesh.cpp" />
-    <ClCompile Include="include\Speculative_Search.cpp" />
-    <ClCompile Include="include\Stats.cpp" />
-    <ClCompile Include="include\TrendMatrix_Line_Search.cpp" />
-    <ClCompile Include="include\utils.cpp" />
-    <ClCompile Include="include\Variable_Group.cpp" />
-    <ClCompile Include="include\VNS_Search.cpp" />
-    <ClCompile Include="include\XMesh.cpp" />
     <ClCompile Include="main.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="include\Algo_Parameters.hpp" />
-    <ClInclude Include="include\Barrier.hpp" />
-    <ClInclude Include="include\BaseEvaluator.hpp" />
-    <ClInclude Include="include\Cache.hpp" />
-    <ClInclude Include="include\Cache_File_Point.hpp" />
-    <ClInclude Include="include\Cache_Point.hpp" />
-    <ClInclude Include="include\Cache_Search.hpp" />
-    <ClInclude Include="include\Clock.hpp" />
-    <ClInclude Include="include\defines.hpp" />
-    <ClInclude Include="include\Direction.hpp" />
-    <ClInclude Include="include\Directions.hpp" />
-    <ClInclude Include="include\Display.hpp" />
-    <ClInclude Include="include\Double.hpp" />
-    <ClInclude Include="include\Evaluator.hpp" />
-    <ClInclude Include="include\Evaluator_Control.hpp" />
-    <ClInclude Include="include\Eval_Point.hpp" />
-    <ClInclude Include="include\Exception.hpp" />
-    <ClInclude Include="include\Extended_Poll.hpp" />
-    <ClInclude Include="include\Filter_Point.hpp" />
-    <ClInclude Include="include\GMesh.hpp" />
-    <ClInclude Include="include\LH_Search.hpp" />
-    <ClInclude Include="include\L_Curve.hpp" />
-    <ClInclude Include="include\Mads.hpp" />
-    <ClInclude Include="include\Model_Sorted_Point.hpp" />
-    <ClInclude Include="include\Model_Stats.hpp" />
-    <ClInclude Include="include\Multi_Obj_Evaluator.hpp" />
-    <ClInclude Include="include\Multi_Obj_Quad_Model_Evaluator.hpp" />
-    <ClInclude Include="include\NelderMead_Search.hpp" />
-    <ClInclude Include="include\NelderMead_Simplex_Eval_Point.hpp" />
-    <ClInclude Include="include\nomad.hpp" />
-    <ClInclude Include="include\NomadCore.hpp" />
-    <ClInclude Include="include\nomad_version.hpp" />
-    <ClInclude Include="include\OrthogonalMesh.hpp" />
-    <ClInclude Include="include\Parameters.hpp" />
-    <ClInclude Include="include\Parameter_Entries.hpp" />
-    <ClInclude Include="include\Parameter_Entry.hpp" />
-    <ClInclude Include="include\Pareto_Front.hpp" />
-    <ClInclude Include="include\Pareto_Point.hpp" />
-    <ClInclude Include="include\Phase_One_Evaluator.hpp" />
-    <ClInclude Include="include\Phase_One_Search.hpp" />
-    <ClInclude Include="include\Point.hpp" />
-    <ClInclude Include="include\Priority_Eval_Point.hpp" />
-    <ClInclude Include="include\Quad_Model.hpp" />
-    <ClInclude Include="include\Quad_Model_Evaluator.hpp" />
-    <ClInclude Include="include\Quad_Model_Search.hpp" />
-    <ClInclude Include="include\Random_Pickup.hpp" />
-    <ClInclude Include="include\RNG.hpp" />
-    <ClInclude Include="include\Search.hpp" />
-    <ClInclude Include="include\Set_Element.hpp" />
-    <ClInclude Include="include\Sgtelib_Model_Evaluator.hpp" />
-    <ClInclude Include="include\Sgtelib_Model_Manager.hpp" />
-    <ClInclude Include="include\Sgtelib_Model_Search.hpp" />
-    <ClInclude Include="include\Signature.hpp" />
-    <ClInclude Include="include\Signature_Element.hpp" />
-    <ClInclude Include="include\Single_Obj_Quad_Model_Evaluator.hpp" />
-    <ClInclude Include="include\Slave.hpp" />
-    <ClInclude Include="include\SMesh.hpp" />
-    <ClInclude Include="include\Speculative_Search.hpp" />
-    <ClInclude Include="include\Stats.hpp" />
-    <ClInclude Include="include\TrendMatrix_Line_Search.hpp" />
-    <ClInclude Include="include\Uncopyable.hpp" />
-    <ClInclude Include="include\utils.hpp" />
-    <ClInclude Include="include\Variable_Group.hpp" />
-    <ClInclude Include="include\VNS_Search.hpp" />
-    <ClInclude Include="include\XMesh.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

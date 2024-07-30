@@ -13,6 +13,7 @@
 #include "NomadCore.hpp"
 #include "BaseEvaluator.hpp"
 
+
 /// NOMAD single-objective evaluator.
 class NomadSingleObjEvaluator : public NOMAD::Evaluator
 {
