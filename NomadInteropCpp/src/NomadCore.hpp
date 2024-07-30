@@ -6,7 +6,6 @@
  \see    NomadCore.cpp
  */
 
-
 #ifndef NOMADCORE_H
 #define NOMADCORE_H
 
