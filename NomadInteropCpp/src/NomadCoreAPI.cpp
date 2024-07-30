@@ -6,7 +6,7 @@ extern "C"
     void SingleObjEvaluatorWrapper::Initialize( int numConstraints )
     {
         _Constraints.resize(numConstraints);
-        _Inititialize(numConstraints);
+        _Initialize(numConstraints);
     }
 
     void SingleObjEvaluatorWrapper::Evaluate( double* x, int numVars )
@@ -35,7 +35,7 @@ extern "C"
     {
         _Constraints.resize(numConstraints);
         _Obj.resize(numObjFunctions);
-        _Inititialize(numConstraints, numObjFunctions);
+        _Initialize(numConstraints, numObjFunctions);
     }
 
     void MultiObjEvaluatorWrapper::Evaluate( double* x, int _NumVars )
@@ -110,25 +110,25 @@ extern "C"
         nomadCore->SetNumberPBConstraints(numPBConstraints);
     }
 
-    void SetSingleObjEvaluator( NomadCore* nomadCore, EvaluateDelegate evaluator, GetSingleObjFunctionDelegate _GetObjectiveFunction, GetConstraintsDelegate _GetConstraints, SingleObjInitDelegate _Inititialize, GetObjectiveFunctionStatusDelegate _GetObjectiveFunctionStatus )
+    void SetSingleObjEvaluator( NomadCore* nomadCore, EvaluateDelegate evaluator, GetSingleObjFunctionDelegate _GetObjectiveFunction, GetConstraintsDelegate _GetConstraints, SingleObjInitDelegate _Initialize, GetObjectiveFunctionStatusDelegate _GetObjectiveFunctionStatus )
     {
         SingleObjEvaluatorWrapper* w = new SingleObjEvaluatorWrapper();
         w->_Evaluate = evaluator;
         w->_GetObjectiveFunction = _GetObjectiveFunction;
         w->_GetObjectiveFunctionStatus = _GetObjectiveFunctionStatus;
         w->_GetConstraints = _GetConstraints;
-        w->_Inititialize = _Inititialize;
+        w->_Initialize = _Initialize;
         nomadCore->SetSingleObjEvaluator(w);
     }
 
-    void SetMultiObjEvaluator( NomadCore* nomadCore, EvaluateDelegate evaluator, GetMultiObjFunctionDelegate _GetObjectiveFunction, GetConstraintsDelegate _GetConstraints, MultiObjInitDelegate _Inititialize, GetObjectiveFunctionStatusDelegate _GetObjectiveFunctionStatus )
+    void SetMultiObjEvaluator( NomadCore* nomadCore, EvaluateDelegate evaluator, GetMultiObjFunctionDelegate _GetObjectiveFunction, GetConstraintsDelegate _GetConstraints, MultiObjInitDelegate _Initialize, GetObjectiveFunctionStatusDelegate _GetObjectiveFunctionStatus )
     {
         MultiObjEvaluatorWrapper* w = new MultiObjEvaluatorWrapper();
         w->_Evaluate = evaluator;
         w->_GetObjectiveFunction = _GetObjectiveFunction;
         w->_GetObjectiveFunctionStatus = _GetObjectiveFunctionStatus;
         w->_GetConstraints = _GetConstraints;
-        w->_Inititialize = _Inititialize;
+        w->_Initialize = _Initialize;
         nomadCore->SetMultiObjEvaluator(w);
     }
 
