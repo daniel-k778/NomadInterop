@@ -169,6 +169,12 @@ extern "C"
      */
     NOMADCORE_API NomadCore* CreateNomadCore( void );
 
+    /// Deletes a NomadCore object.
+    /**
+     \param NomadCore object.
+     */
+    NOMADCORE_API void DestroyNomadCore( NomadCore* nomadCore );
+
     /// Sets the output path for results.
     /**
      \param nomadCore NomadCore object -- \b IN.

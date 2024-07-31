@@ -127,6 +127,8 @@ namespace cs_multi_obj
                 Console.Write($"{r} ");
             }
 
+            NomadCore.DestroyNomadCore(nomadCore);
+
         }
     }
 }

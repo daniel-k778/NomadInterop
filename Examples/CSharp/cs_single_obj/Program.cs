@@ -122,6 +122,7 @@ namespace cs_single_obj
                 Console.Write($"{r} ");
             }
 
+            NomadCore.DestroyNomadCore(nomadCore);
         }
     }
 }

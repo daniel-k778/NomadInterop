@@ -8,15 +8,7 @@ NomadCore::NomadCore( void )
 
 NomadCore::~NomadCore( void )
 {
-    if (_MultiObjEvaluator)
-    {
-        delete _MultiObjEvaluator;
-    }
 
-    if (_SingleObjEvaluator)
-    {
-        delete _SingleObjEvaluator;
-    }
 }
 
 void NomadCore::SetInitialVariableValue( int index, double value )
@@ -267,21 +259,17 @@ void NomadCore::OptimizeSingleObj( void )
         params.check();
 
         // Custom evaluator creation
-        NomadSingleObjEvaluator* evaluatorPtr = new NomadSingleObjEvaluator(params, _SingleObjEvaluator, this);
+        NomadSingleObjEvaluator evaluator (params, _SingleObjEvaluator, this);
 
         // Algorithm creation and execution
-        NOMAD::Mads mads (params, evaluatorPtr);
+        NOMAD::Mads mads (params, &evaluator);
         mads.run();
-
-        delete evaluatorPtr;
 
         // Get the best feasible solution
         for (int i = 0; i < _NumVars; i++) 
         {
             _FinalVariables[i] = mads.get_best_feasible()->value(i);
         }
-
-
     }
     catch (exception& e)
     {
@@ -412,13 +400,11 @@ void NomadCore::OptimizeMultiObj( void )
         params.check();
 
         // Custom evaluator creation
-        NomadMultiObjEvaluator* evaluatorPtr = new NomadMultiObjEvaluator(params, _MultiObjEvaluator, this);
+        NomadMultiObjEvaluator evaluator (params, _MultiObjEvaluator, this);
 
         // Algorithm creation and execution
-        NOMAD::Mads mads (params, evaluatorPtr);
+        NOMAD::Mads mads (params, &evaluator);
         mads.multi_run();
-
-        delete evaluatorPtr;
 
         // Get the best feasible solution
         for (int i = 0; i < _NumVars; i++)

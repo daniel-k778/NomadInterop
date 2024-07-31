@@ -182,4 +182,6 @@ auto main() -> int {
 
     // Optimize the problem
     nomadCore->OptimizeSingleObj();
+
+    delete nomadCore;
 }

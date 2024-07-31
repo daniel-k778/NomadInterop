@@ -16,16 +16,7 @@ NomadSingleObjEvaluator::~NomadSingleObjEvaluator( void )
     if (_SingleObjEvaluator)
     {
         delete _SingleObjEvaluator;
-    }
-
-    if (_NomadCore)
-    {
-        delete _NomadCore;
-    }
-
-    if (_Params)
-    {
-        delete _Params;
+        _SingleObjEvaluator = nullptr;
     }
 }
 
@@ -87,7 +78,11 @@ NomadMultiObjEvaluator::NomadMultiObjEvaluator( const NOMAD::Parameters& p, Base
 
 NomadMultiObjEvaluator::~NomadMultiObjEvaluator( void )
 {
-
+    if (_MultiObjEvaluator)
+    {
+        delete _MultiObjEvaluator;
+        _MultiObjEvaluator = nullptr;
+    }
 }
 
 bool NomadMultiObjEvaluator::eval_x( NOMAD::Eval_Point& x, const NOMAD::Double& h_max, bool& count_eval ) const

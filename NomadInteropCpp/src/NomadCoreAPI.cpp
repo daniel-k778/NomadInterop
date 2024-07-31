@@ -67,6 +67,11 @@ extern "C"
         return new NomadCore();
     }
 
+    void DestroyNomadCore(NomadCore* nomadCore)
+    {
+        delete nomadCore;
+    }
+
     void SetOutputPath( NomadCore* nomadCore, const char* path )
     {
         nomadCore->SetOutputPath(path);

@@ -71,6 +71,13 @@ namespace NomadInterop
         public static extern IntPtr CreateNomadCore();
 
         /// <summary>
+        /// Deletes an instance of the NOMAD Core object.
+        /// </summary>
+        /// <param name="nomadCore">A pointer to the created NOMAD Core instance.</param>
+        [DllImport(PATH, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void DestroyNomadCore(IntPtr nomadCore);
+
+        /// <summary>
         /// Sets the output path for the NOMAD Core instance.
         /// </summary>
         /// <param name="nomadCore">Pointer to the NOMAD Core instance.</param>
