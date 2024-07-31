@@ -43,6 +43,7 @@ extern "C"
     {
         _Evaluate(x, _NumVars);
         _GetObjectiveFunction(_Obj.data());
+        _GetObjectiveFunctionStatus();
         _GetConstraints(_Constraints.data());
     }
 
