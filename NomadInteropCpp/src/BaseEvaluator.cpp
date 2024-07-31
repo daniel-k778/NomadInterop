@@ -12,27 +12,27 @@ BaseSingleObjEvaluator::~BaseSingleObjEvaluator( void )
 
 void BaseSingleObjEvaluator::Initialize( int numConstraints )
 {
-    throw std::exception("Initialize function not provided.");
+    throw std::runtime_error("Initialize function not implemented.");
 }
 
 double BaseSingleObjEvaluator::GetObjectiveFunction( void )
 {
-    throw std::exception("Objective function not provided.");
+    throw std::runtime_error("GetObjectiveFunction function not implemented.");
 }
 
 bool BaseSingleObjEvaluator::GetObjectiveFunctionStatus( void )
 {
-    throw std::exception("Objective function status not provided.");
+    throw std::runtime_error("GetObjectiveFunctionStatus function not implemented.");
 }
 
 std::vector<double> BaseSingleObjEvaluator::GetConstraints( void )
 {
-    throw std::exception("Constraints function not provided.");
+    throw std::runtime_error("GetConstraints function not implemented.");
 }
 
 void BaseSingleObjEvaluator::Evaluate( double* x, int _NumVars )
 {
-    throw std::exception("Evaluate function not provided.");
+    throw std::runtime_error("Evaluate function not implemented.");
 }
 
 BaseMultiObjEvaluator::BaseMultiObjEvaluator( void )
@@ -47,25 +47,25 @@ BaseMultiObjEvaluator::~BaseMultiObjEvaluator( void )
 
 void BaseMultiObjEvaluator::Initialize( int numConstraints, int numObjFunctions )
 {
-    throw std::exception("Initialize function not provided.");
+    throw std::runtime_error("Initialize function not implemented.");
 }
 
 std::vector<double> BaseMultiObjEvaluator::GetObjectiveFunction( void )
 {
-    throw std::exception("Objective function not provided.");
+    throw std::runtime_error("GetObjectiveFunction function not implemented.");
 }
 
 bool BaseMultiObjEvaluator::GetObjectiveFunctionStatus( void )
 {
-    throw std::exception("Objective function status not provided.");
+    throw std::runtime_error("GetObjectiveFunctionStatus function not implemented.");
 }
 
 std::vector<double> BaseMultiObjEvaluator::GetConstraints( void )
 {
-    throw std::exception("Constraints function not provided.");
+    throw std::runtime_error("GetConstraints function not implemented.");
 }
 
 void BaseMultiObjEvaluator::Evaluate( double* x, int _NumVars )
 {
-    throw std::exception("Evaluate function not provided.");
+    throw std::runtime_error("Evaluate function not implemented.");
 }
