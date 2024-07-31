@@ -1,6 +1,3 @@
-#ifndef NOMADEVALUATOR_H
-#define NOMADEVALUATOR_H
-
 /**
  \file   NomadEvaluator.hpp
  \brief  Class definitions derived from NOMAD evaluators (headers)
@@ -8,6 +5,9 @@
  \date   2024-07-29
  \see    NomadEvaluator.cpp
  */
+
+#ifndef __NOMADEVALUATOR_H__
+#define __NOMADEVALUATOR_H__
 
 #include "nomad.hpp"
 #include "NomadCore.hpp"
@@ -78,4 +78,4 @@ public:
     bool eval_x( NOMAD::Eval_Point& x, const NOMAD::Double& h_max, bool& count_eval ) const;
 };
 
-#endif // NOMADEVALUATOR_H
+#endif // __NOMADEVALUATOR_H__

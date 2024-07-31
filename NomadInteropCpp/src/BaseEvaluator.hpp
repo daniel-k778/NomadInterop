@@ -6,8 +6,8 @@
  \see    BaseEvaluator.cpp
  */
 
-#ifndef BASEEVALUATOR_H
-#define BASEEVALUATOR_H
+#ifndef __BASEEVALUATOR_H__
+#define __BASEEVALUATOR_H__
 
 #include "nomad.hpp"
 
@@ -110,4 +110,4 @@ public:
     virtual void Evaluate( double* x, int numVars );
 };
 
-#endif // BASEEVALUATOR_H
+#endif // __BASEEVALUATOR_H__

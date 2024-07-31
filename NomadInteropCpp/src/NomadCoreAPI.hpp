@@ -6,8 +6,8 @@
  \see    NomadCoreAPI.cpp
  */
 
-#ifndef NOMADCOREAPI_H
-#define NOMADCOREAPI_H
+#ifndef __NOMADCOREAPI_H__
+#define __NOMADCOREAPI_H__
 
 #include "NomadCore.hpp"
 #include "BaseEvaluator.hpp"
@@ -301,4 +301,4 @@ extern "C"
     NOMADCORE_API double* GetResults( NomadCore* nomadCore, int* size );
 }
 
-#endif // NOMADCOREAPI_H
+#endif // __NOMADCOREAPI_H__

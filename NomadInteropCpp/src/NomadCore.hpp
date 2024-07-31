@@ -6,8 +6,8 @@
  \see    NomadCore.cpp
  */
 
-#ifndef NOMADCORE_H
-#define NOMADCORE_H
+#ifndef __NOMADCORE_H__
+#define __NOMADCORE_H__
 
 #include "nomad.hpp"
 #include "BaseEvaluator.hpp"
@@ -179,4 +179,4 @@ public:
     std::vector<double> GetResults( void );
 };
 
-#endif // NOMADCORE_H
+#endif // __NOMADCORE_H__

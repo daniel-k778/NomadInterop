@@ -10,10 +10,11 @@ namespace NomadInterop
     /// </summary>
     public class NomadCore
     {
-        // Path to the NOMAD Core DLL.
         private const string PATH = "C:\\Users\\Daniel\\OneDrive\\Desktop\\Nomad\\NomadInterop\\x64\\Debug\\NomadInteropCPP.dll";
 
-        // Delegate declarations for function pointers used in the NOMAD Core DLL.
+        /*--------------------------------------------------------------------------*/
+        /*  Delegate declarations for function pointers used in the NOMAD Core DLL. */
+        /*--------------------------------------------------------------------------*/
 
         /// <summary>
         /// Delegate for the Evaluate function in the NOMAD Core DLL.
@@ -57,7 +58,10 @@ namespace NomadInterop
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate void MultiObjInitDelegate(int numConstraints, int numObjFunctions);
 
-        // DLL Import declarations for NOMAD Core functions.
+
+        /*--------------------------------------------------------------------------*/
+        /*             DLL Import declarations for NOMAD Core functions.            */
+        /*--------------------------------------------------------------------------*/
 
         /// <summary>
         /// Creates an instance of the NOMAD Core object.
@@ -147,6 +151,32 @@ namespace NomadInterop
         public static extern void SetNumberPBConstraints(IntPtr nomadCore, int numPBConstraints);
 
         /// <summary>
+        /// Optimizes a single-objective problem using the NOMAD Core instance.
+        /// </summary>
+        /// <param name="nomadCore">Pointer to the NOMAD Core instance.</param>
+        [DllImport(PATH, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void OptimizeSingleObj(IntPtr nomadCore);
+
+        /// <summary>
+        /// Optimizes a multi-objective problem using the NOMAD Core instance.
+        /// </summary>
+        /// <param name="nomadCore">Pointer to the NOMAD Core instance.</param>
+        [DllImport(PATH, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void OptimizeMultiObj(IntPtr nomadCore);
+
+        /// <summary>
+        /// Sets the number of objective functions for the NOMAD Core instance.
+        /// </summary>
+        /// <param name="nomadCore">Pointer to the NOMAD Core instance.</param>
+        /// <param name="numObjFunctions">Number of objective functions.</param>
+        [DllImport(PATH, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetNumberObjFunctions(IntPtr nomadCore, int numObjFunctions);
+
+        /*--------------------------------------------------------------------------*/
+        /*                        Implementations for NOMAD Core                    */
+        /*--------------------------------------------------------------------------*/
+
+        /// <summary>
         /// Sets the single-objective evaluator for the NOMAD Core instance.
         /// </summary>
         /// <param name="nomadCore">Pointer to the NOMAD Core instance.</param>
@@ -195,28 +225,6 @@ namespace NomadInterop
         }
 
         /// <summary>
-        /// Optimizes a single-objective problem using the NOMAD Core instance.
-        /// </summary>
-        /// <param name="nomadCore">Pointer to the NOMAD Core instance.</param>
-        [DllImport(PATH, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void OptimizeSingleObj(IntPtr nomadCore);
-
-        /// <summary>
-        /// Optimizes a multi-objective problem using the NOMAD Core instance.
-        /// </summary>
-        /// <param name="nomadCore">Pointer to the NOMAD Core instance.</param>
-        [DllImport(PATH, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void OptimizeMultiObj(IntPtr nomadCore);
-
-        /// <summary>
-        /// Sets the number of objective functions for the NOMAD Core instance.
-        /// </summary>
-        /// <param name="nomadCore">Pointer to the NOMAD Core instance.</param>
-        /// <param name="numObjFunctions">Number of objective functions.</param>
-        [DllImport(PATH, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void SetNumberObjFunctions(IntPtr nomadCore, int numObjFunctions);
-
-        /// <summary>
         /// Retrieves the results from the NOMAD Core instance.
         /// </summary>
         /// <param name="nomadCore">Pointer to the NOMAD Core instance.</param>
@@ -237,12 +245,34 @@ namespace NomadInterop
         /*--------------------------------------------------------------------------*/
         /*    Private DLL imports for internal use. Do not expose these directly    */
         /*--------------------------------------------------------------------------*/
+
+        /// <summary>
+        /// Sets the single-objective evaluator for the NOMAD Core instance.
+        /// </summary>
+        /// <param name="nomadCore">Pointer to the NOMAD Core instance.</param>
+        /// <param name="evaluator">Function pointer to evaluator delegate.</param>
+        /// <param name="getObjectiveFunction">Function pointer to the getobjectivefunction delegate.</param>
+        /// <param name="getConstraints">Function pointer to getConstraints delegate.</param>
+        /// <param name="getObjectiveFunctionStatus">Function pointer to getobjectivefunctionstatus delegate.</param>
+        /// <param name="init">Function pointer to initialize delegate.</param>
         [DllImport(PATH, CallingConvention = CallingConvention.Cdecl)]
         private static extern void SetSingleObjEvaluator(IntPtr nomadCore, IntPtr evaluator, IntPtr getObjectiveFunction, IntPtr getConstraints, IntPtr init, IntPtr getObjectiveFunctionStatus);
 
+        /// <summary>
+        /// Sets the multi-objective evaluator for the NOMAD Core instance.
+        /// <param name="nomadCore"/>Pointer to the NOMAD Core instance.</param>
+        /// <param name="evaluator">Function pointer to evaluator delegate.</param>
+        /// <param name="getConstraints">Function pointer to getConstraints delegate.</param>
+        /// <param name="getObjectiveFunction">Function pointer to the getobjectivefunction delegate.</param>
+        /// <param name="getObjectiveFunctionStatus">Function pointer to getobjectivefunctionstatus delegate.</param>
+        /// <param name="init">Function pointer to initialize delegate.</param>
         [DllImport(PATH, CallingConvention = CallingConvention.Cdecl)]
         private static extern void SetMultiObjEvaluator(IntPtr nomadCore, IntPtr evaluator, IntPtr getObjectiveFunction, IntPtr getConstraints, IntPtr init, IntPtr getObjectiveFunctionStatus);
 
+        /// <summary>
+        /// Gets the results from the NOMAD Core instance.
+        /// <param name="nomadCore"/>Pointer to the NOMAD Core instance.</param>"
+        /// <param name="size">Size of the results array.</param>
         [DllImport(PATH, CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr GetResults(IntPtr nomadCore, ref int size);
     }
