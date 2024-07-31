@@ -77,7 +77,7 @@ extern "C"
         EvaluateDelegate                     _Evaluate;                    ///< Delegate for evaluating the objective function.
         GetSingleObjFunctionDelegate         _GetObjectiveFunction;        ///< Delegate for retrieving the value of the objective function.
         GetConstraintsDelegate               _GetConstraints;              ///< Delegate for retrieving constraint values.
-        SingleObjInitDelegate                _Initialize;                ///< Delegate for initializing the evaluator.
+        SingleObjInitDelegate                _Initialize;                  ///< Delegate for initializing the evaluator.
         GetObjectiveFunctionStatusDelegate   _GetObjectiveFunctionStatus;  ///< Delegate for retrieving the status of the objective function.
 
         double              _Obj = 0.0;            ///< Value of the objective function.
@@ -123,7 +123,7 @@ extern "C"
         EvaluateDelegate                      _Evaluate;                   ///< Delegate for evaluating the objective function.
         GetMultiObjFunctionDelegate           _GetObjectiveFunction;       ///< Delegate for retrieving the value of the objective function.
         GetConstraintsDelegate                _GetConstraints;             ///< Delegate for retrieving constraint values.
-        MultiObjInitDelegate                  _Initialize;               ///< Delegate for initializing the evaluator.
+        MultiObjInitDelegate                  _Initialize;                 ///< Delegate for initializing the evaluator.
         GetObjectiveFunctionStatusDelegate    _GetObjectiveFunctionStatus; ///< Delegate for retrieving the status of the objective function.
 
         std::vector<double> _Obj;              ///< Array to store objective function values.
