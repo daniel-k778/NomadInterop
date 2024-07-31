@@ -84,4 +84,6 @@ auto main() -> int {
     myMainWrapper->SetNumberObjFunctions(2);
     myMainWrapper->SetMultiObjEvaluator(myEval);
     myMainWrapper->OptimizeMultiObj();
+
+    delete myMainWrapper;
 }

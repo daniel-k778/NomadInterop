@@ -158,9 +158,6 @@ auto main() -> int {
     // Create an instance of the NomadCore class
     NomadCore* nomadCore = new NomadCore();
 
-    // Set the output path for the results file
-    nomadCore->SetOutputPath("sol.txt");
-
     // Set the number of variables, initial values, and types
     int numVars = 5;
     nomadCore->SetNumberVariables(numVars);

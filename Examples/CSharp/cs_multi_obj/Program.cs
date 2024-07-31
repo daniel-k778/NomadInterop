@@ -1,4 +1,4 @@
-﻿using NomadInterop;
+﻿using NomadInteropCS;
 using System.Runtime.InteropServices;
 using System.Transactions;
 
