@@ -409,7 +409,12 @@ void NomadCore::OptimizeMultiObj( void )
         // Get the best feasible solution
         for (int i = 0; i < _NumVars; i++)
         {
-            _FinalVariables[i] = mads.get_best_feasible()->value(i);
+            auto bestFeasible = mads.get_best_feasible();
+
+            if (bestFeasible)
+            {
+                _FinalVariables[i] = bestFeasible->value(i);
+            }
         }
 
 

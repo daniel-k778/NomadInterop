@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NomadInteropCPP", "NomadInteropCpp\NomadInteropCpp.vcxproj", "{08B353F2-2796-437E-B196-CCBADE5D8EE7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NomadInteropCS", "NomadInteropCs\NomadInteropCS.csproj", "{74314792-45E9-4B4F-B102-1466112837EB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{08B353F2-2796-437E-B196-CCBADE5D8EE7} = {08B353F2-2796-437E-B196-CCBADE5D8EE7}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E5EFBF6E-2D25-464B-8AFE-A935796518FD}"
 	ProjectSection(SolutionItems) = preProject

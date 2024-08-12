@@ -10,7 +10,7 @@ namespace NomadInteropCS
     /// </summary>
     public class NomadCore
     {
-        private const string PATH = "C:\\Users\\Daniel\\OneDrive\\Desktop\\Nomad\\NomadInterop\\x64\\Debug\\NomadInteropCPP.dll";
+        private const string PATH = "NomadInteropCPP.dll";
 
         /*--------------------------------------------------------------------------*/
         /*  Delegate declarations for function pointers used in the NOMAD Core DLL. */
@@ -33,7 +33,7 @@ namespace NomadInteropCS
         /// </summary>
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate void GetMultiObjFunctionDelegate(nint objFunctions);
-
+         
         /// <summary>
         /// Delegate for the GetObjectiveFunctionStatus function in the NOMAD Core DLL.
         /// </summary>
