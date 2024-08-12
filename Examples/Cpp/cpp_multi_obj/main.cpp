@@ -105,4 +105,7 @@ auto main() -> int {
 
     // Run the optimization
     nomadCore->OptimizeMultiObj();
+
+    delete nomadCore;
+    delete myEval;
 }

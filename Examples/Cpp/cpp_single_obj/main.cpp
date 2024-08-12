@@ -96,4 +96,5 @@ auto main() -> int {
     nomadCore->OptimizeSingleObj();
 
     delete nomadCore;
+    delete myEval;
 }
