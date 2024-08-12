@@ -4,47 +4,43 @@
 /*--------------------------------------------*/
 /*             evaluator creation             */
 /*--------------------------------------------*/
-class UserEvaluator : public BaseMultiObjEvaluator
+class myEvaluator : public BaseSingleObjEvaluator
 {
 private:
-    vector<double> obj; // Objective function values
-    vector<double> constraints; // Constraint values
-    bool objStatus = true; // Objective function status (success/failure)
-    int numObjFunctions = 0; // Number of objective functions
-    int numConstraints = 0; // Number of constraints
+    double obj = 0.0; // objective function value
+    vector<double> constraints; // constraint values
+    bool objstatus = true; // objective function status (success/failure)
+    int numConstraints = 0; // number of constraints
+    int counter = 1; // counter for demonstrating the failure of the objective function
 
 public:
-
-    void Initialize(int numConstraints, int numObjFunctions) {
-        // Required method for implementing the derived BaseMultiObjEvaluator class.
+    void Initialize(int numConstraints) {
+        // Required method for implementing the derived BaseSingleObjEvaluator class.
         // Note: this function can be used to initialize any part of the evaluator.
 
-        this->numObjFunctions = numObjFunctions;
         this->numConstraints = numConstraints;
-
-        obj.resize(numObjFunctions);
         constraints.resize(numConstraints);
     }
 
     bool GetObjectiveFunctionStatus()
     {
-        // Required method for implementing the derived BaseMultiObjEvaluator class.
+        // Required method for implementing the derived BaseSingleObjEvaluator class.
         // This function is used to return the status of the objective function evaluation.
 
-        return objStatus;
+        return objstatus;
     }
 
-    vector<double> GetObjectiveFunction()
+    double GetObjectiveFunction()
     {
-        // Required method for implementing the derived BaseMultiObjEvaluator class.
-        // This function is used to return a vector of objective function values.
+        // Required method for implementing the derived BaseSingleObjEvaluator class.
+        // This function is used to return the objective function value.
 
         return obj;
     }
 
     vector<double> GetConstraints()
     {
-        // Required method for implementing the derived BaseMultiObjEvaluator class.
+        // Required method for implementing the derived BaseSingleObjEvaluator class.
         // This function is used to return the constraint values.
 
         return constraints;
@@ -52,7 +48,7 @@ public:
 
     void Evaluate(double* x, int numVars)
     {
-        // Required method for implementing the derived BaseMultiObjEvaluator class.
+        // Required method for implementing the derived BaseSingleObjEvaluator class.
         // This function is used to evaluate the objective function and constraints.
 
         double c1 = 0.0, c2 = 0.0;
@@ -62,11 +58,17 @@ public:
             c2 += std::pow((x[i] + 1), 2);
         }
 
-        obj[0] = x[4]; // Set the first objective function
-        obj[1] = c1 - 25; // Set the second objective function
-        constraints[0] = 25 - c2; // Set the first constraint
+        obj = x[4]; // set the objective function
+        constraints[0] = c1 - 25; // set the first constraint
+        constraints[1] = 25 - c2; // set the second constraint
 
-        objStatus = true; // Set the objective function status(success)
+        if (counter % 2 == 0) { // Fail the objective function every other iteration
+            objstatus = false; // set the objective function status(failure)
+        }
+        else {
+            objstatus = true; // set the objective function status(success)
+        }
+        counter++;
     }
 };
 
@@ -77,9 +79,6 @@ auto main() -> int {
 
     // Create an instance of the NomadCore class
     NomadCore* nomadCore = new NomadCore();
-
-    // Set the output path(optional)
-    nomadCore->SetOutputPath("sol.txt");
 
     // Set the number of variables, initial values, and types
     int numVars = 5;
@@ -96,15 +95,12 @@ auto main() -> int {
     nomadCore->SetNumberEBConstraints(2);
     nomadCore->SetNumberPBConstraints(3);
 
-    // Set the number of objective functions
-    nomadCore->SetNumberObjFunctions(2);
-
     // Set the evaluator
-    UserEvaluator* myEval = new UserEvaluator();
-    nomadCore->SetMultiObjEvaluator(myEval);
+    myEvaluator* myEval = new myEvaluator();
+    nomadCore->SetSingleObjEvaluator(myEval);
 
-    // Run the optimization
-    nomadCore->OptimizeMultiObj();
+    // Optimize the problem
+    nomadCore->OptimizeSingleObj();
 
     delete nomadCore;
     delete myEval;

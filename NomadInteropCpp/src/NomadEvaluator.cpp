@@ -13,11 +13,11 @@ NomadSingleObjEvaluator::NomadSingleObjEvaluator( const NOMAD::Parameters& p, Ba
 
 NomadSingleObjEvaluator::~NomadSingleObjEvaluator( void )
 {
-    if (_SingleObjEvaluator)
-    {
-        delete _SingleObjEvaluator;
-        _SingleObjEvaluator = nullptr;
-    }
+    //if (_SingleObjEvaluator)
+    //{
+    //    delete _SingleObjEvaluator;
+    //    _SingleObjEvaluator = nullptr;
+    //}
 }
 
 bool NomadSingleObjEvaluator::eval_x( NOMAD::Eval_Point& x, const NOMAD::Double& h_max, bool& count_eval ) const
@@ -78,11 +78,11 @@ NomadMultiObjEvaluator::NomadMultiObjEvaluator( const NOMAD::Parameters& p, Base
 
 NomadMultiObjEvaluator::~NomadMultiObjEvaluator( void )
 {
-    if (_MultiObjEvaluator)
-    {
-        delete _MultiObjEvaluator;
-        _MultiObjEvaluator = nullptr;
-    }
+    //if (_MultiObjEvaluator)
+    //{
+    //    delete _MultiObjEvaluator;
+    //    _MultiObjEvaluator = nullptr;
+    //}
 }
 
 bool NomadMultiObjEvaluator::eval_x( NOMAD::Eval_Point& x, const NOMAD::Double& h_max, bool& count_eval ) const
