@@ -10,7 +10,6 @@ private:
     vector<double> obj; // Objective function values
     vector<double> constraints; // Constraint values
     bool objStatus = true; // Objective function status (success/failure)
-
     int numObjFunctions = 0; // Number of objective functions
     int numConstraints = 0; // Number of constraints
 
