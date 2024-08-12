@@ -135,12 +135,12 @@ void NomadCore::SetMultiObjEvaluator( BaseMultiObjEvaluator* eval )
 
 void NomadCore::SetNumberObjFunctions( int numObjFunctions )
 {
-    _NumObjFunctions = numObjFunctions;
+    numObjFunctions = numObjFunctions;
 }
 
 int NomadCore::GetNumberObjFunctions( void )
 {
-    return _NumObjFunctions;
+    return numObjFunctions;
 }
 
 void NomadCore::OptimizeSingleObj( void )
@@ -150,7 +150,7 @@ void NomadCore::OptimizeSingleObj( void )
         throw std::exception("Number of variables must be greater than 0.");
     }
 
-    if (_NumObjFunctions != 1)
+    if (numObjFunctions != 1)
     {
         throw std::exception("Only one objective function can be optimized.");
     }
@@ -288,7 +288,7 @@ void NomadCore::OptimizeMultiObj( void )
         throw std::exception("Number of variables must be greater than 0.");
     }
 
-    if (_NumObjFunctions <= 1)
+    if (numObjFunctions <= 1)
     {
         throw std::exception("Number of objective functions must be greater than 1.");
     }
@@ -309,22 +309,22 @@ void NomadCore::OptimizeMultiObj( void )
 
         // Definition of output types
         vector<NOMAD::bb_output_type> bbot;
-        bbot.resize(_NumPBConstraints + _NumEBConstraints + _NumObjFunctions);
+        bbot.resize(_NumPBConstraints + _NumEBConstraints + numObjFunctions);
 
         // Set the number of objective functions
-        for (int i = 0; i < _NumObjFunctions; i++)
+        for (int i = 0; i < numObjFunctions; i++)
         {
             bbot[i] = NOMAD::OBJ;
         }
 
         // Set the number of PB constraints
-        for (int i = _NumObjFunctions; i < _NumPBConstraints + _NumObjFunctions; i++)
+        for (int i = numObjFunctions; i < _NumPBConstraints + numObjFunctions; i++)
         {
             bbot[i] = NOMAD::PB;
         }
 
         // Set the number of EB constraints
-        for (int i = _NumPBConstraints + _NumObjFunctions; i < _NumPBConstraints + _NumEBConstraints + _NumObjFunctions; i++)
+        for (int i = _NumPBConstraints + numObjFunctions; i < _NumPBConstraints + _NumEBConstraints + numObjFunctions; i++)
         {
             bbot[i] = NOMAD::EB;
         }

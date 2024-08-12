@@ -8,7 +8,7 @@ private:
     vector<double> constraints;
     bool objstatus = true;
 
-    int _NumObjFunctions = 0;
+    int numObjFunctions = 0;
     int numConstraints = 0;
 
 public:
@@ -23,7 +23,7 @@ public:
     }
 
     void Initialize(int numConstraints, int numObjFunctions) {
-        this->_NumObjFunctions = numObjFunctions;
+        this->numObjFunctions = numObjFunctions;
         this->numConstraints = numConstraints;
 
         obj.resize(numObjFunctions);

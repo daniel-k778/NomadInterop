@@ -27,7 +27,7 @@ private:
     int             _NumIterations = 100;             ///< Number of iterations.
     int             _NumPBConstraints = 0;            ///< Number of progressive barrier constraints.
     int             _NumEBConstraints = 0;            ///< Number of extreme barrier constraints.
-    int             _NumObjFunctions = 1;             ///< Number of objective functions.
+    int             numObjFunctions = 1;             ///< Number of objective functions.
 
     std::vector<double>         _InitialVarsVec = { };            ///< Initial variables. Stores the initial values of the variables.
     std::vector<double>         _FinalVariables = { };            ///< Final variables. Stores the optimizer results.
