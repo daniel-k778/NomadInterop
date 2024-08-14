@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="NomadInteropCS">
+      <HintPath>..\..\..\NomadInteropCS\bin\Debug\net8.0\NomadInteropCS.dll</HintPath>
+    </Reference>
+    <Reference Include="nomadlibx64cs">
+      <HintPath>..\..\..\x64\Release\nomadlibx64cs.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="if exist &quot;$(SolutionDir)\x64\Release&quot; (&#xA;    copy /Y &quot;$(SolutionDir)\x64\Release\nomad.dll&quot; &quot;$(TargetDir)&quot;&#xA;    copy /Y &quot;$(SolutionDir)\x64\Release\sgtelib.dll&quot; &quot;$(TargetDir)&quot;&#xA;    copy /Y &quot;$(SolutionDir)\x64\Release\nomadlibx64cpp.dll&quot; &quot;$(TargetDir)&quot;&#xA;)" />
+  </Target>
+
+</Project>
