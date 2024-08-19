@@ -32,7 +32,7 @@ NomadInterop is a **powerful and easy-to-use** wrapper for the [Nomad optimizer]
 See the [examples folder](./examples).
 
 # Documentation
-For detailed documentation on how to use each function, refer to the [official Nomad documentation](https://www.gerad.ca/software/nomad/Downloads/user_guide.pdf).
+For detailed documentation on how to use each function, refer to the [official NOMAD documentation](https://nomad-4-user-guide.readthedocs.io/en/latest/) or the [NOMAD user guide](./docs/user_guide.pdf).
 
 # Contributing
 Contributions are welcome! If you have suggestions for improvements or have found bugs, feel free to open an issue or submit a pull request.
