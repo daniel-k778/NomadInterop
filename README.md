@@ -7,7 +7,7 @@ NomadInterop is a **powerful and easy-to-use** wrapper for the [Nomad optimizer]
 - Efficient runtime and memory consumption.
 - Fully open-source and available for modification to suit your specific needs.
 
-# Installation
+## Installation
 
 **Get the latest binaries, modules and configuration files from the latest release.** Alternatively clone the repository and build from source.
 
@@ -27,15 +27,15 @@ NomadInterop is a **powerful and easy-to-use** wrapper for the [Nomad optimizer]
 - sgtelib.dll
 - nomadlibx64cs.dll
 
-# Examples
+## Examples
 
 See the [examples folder](./examples) for detailed examples on how to integrate NomadInterop into your C++ and C# applications.
 
-# Documentation
+## Documentation
 For detailed documentation on how to use each function, refer to the [official NOMAD documentation](https://nomad-4-user-guide.readthedocs.io/en/latest/) or the [NOMAD user guide](./docs/user_guide.pdf).
 
-# Contributing
+## Contributing
 Contributions are welcome! If you have suggestions for improvements or have found bugs, feel free to open an issue or submit a pull request.
 
-# License
+## License
 This project is licensed under the MIT License. See the LICENSE file for more details.
