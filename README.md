@@ -38,4 +38,4 @@ For detailed documentation on how to use each function, refer to the [official N
 Contributions are welcome! If you have suggestions for improvements or have found bugs, feel free to open an issue or submit a pull request.
 
 ## License
-This project is licensed under the MIT License. See the LICENSE file for more details.
+This project is licensed under the MIT License. See the [LICENSE file](./LICENSE) for more details.
