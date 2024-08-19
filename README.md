@@ -29,7 +29,7 @@ NomadInterop is a **powerful and easy-to-use** wrapper for the [Nomad optimizer]
 
 # Examples
 
-See the [examples folder](./examples).
+See the [examples folder](./examples) for detailed examples on how to integrate NomadInterop into your C++ and C# applications.
 
 # Documentation
 For detailed documentation on how to use each function, refer to the [official NOMAD documentation](https://nomad-4-user-guide.readthedocs.io/en/latest/) or the [NOMAD user guide](./docs/user_guide.pdf).
