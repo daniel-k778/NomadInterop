@@ -86,7 +86,7 @@ auto main() -> int {
     nomadCore->SetNumberVariables(numVars);
     for (int i = 0; i < numVars; i++) {
         nomadCore->SetInitialVariableValue(i, 1.0);
-        nomadCore->SetVariableType(i, NomadVariableType::CONTINUOUS);
+        nomadCore->SetVariableType(i, NOMAD_VARIABLE_TYPE_CONTINUOUS);
     }
 
     // Set the number of iterations

@@ -193,19 +193,19 @@ void NomadCore::OptimizeSingleObj( void )
         {
             if (_ParamaterTypeIsGivenVec[i])
             {
-                if (_ParamaterTypeVec[i] == NomadVariableType::CATEGORICAL)
+                if (_ParamaterTypeVec[i] == NOMAD_VARIABLE_TYPE_CATEGORICAL)
                 {
                     params.set_BB_INPUT_TYPE(i, NOMAD::bb_input_type::CATEGORICAL);
                 }
-                else if (_ParamaterTypeVec[i] == NomadVariableType::INTEGER)
+                else if (_ParamaterTypeVec[i] == NOMAD_VARIABLE_TYPE_INTEGER)
                 {
                     params.set_BB_INPUT_TYPE(i, NOMAD::bb_input_type::INTEGER);
                 }
-                else if (_ParamaterTypeVec[i] == NomadVariableType::CONTINUOUS)
+                else if (_ParamaterTypeVec[i] == NOMAD_VARIABLE_TYPE_CONTINUOUS)
                 {
                     params.set_BB_INPUT_TYPE(i, NOMAD::bb_input_type::CONTINUOUS);
                 }
-                else if (_ParamaterTypeVec[i] == NomadVariableType::BINARY)
+                else if (_ParamaterTypeVec[i] == NOMAD_VARIABLE_TYPE_BINARY)
                 {
                     params.set_BB_INPUT_TYPE(i, NOMAD::bb_input_type::BINARY);
                 }
@@ -336,19 +336,19 @@ void NomadCore::OptimizeMultiObj( void )
         {
             if (_ParamaterTypeIsGivenVec[i])
             {
-                if (_ParamaterTypeVec[i] == NomadVariableType::CATEGORICAL)
+                if (_ParamaterTypeVec[i] == NOMAD_VARIABLE_TYPE_CATEGORICAL)
                 {
                     params.set_BB_INPUT_TYPE(i, NOMAD::bb_input_type::CATEGORICAL);
                 }
-                else if (_ParamaterTypeVec[i] == NomadVariableType::INTEGER)
+                else if (_ParamaterTypeVec[i] == NOMAD_VARIABLE_TYPE_INTEGER)
                 {
                     params.set_BB_INPUT_TYPE(i, NOMAD::bb_input_type::INTEGER);
                 }
-                else if (_ParamaterTypeVec[i] == NomadVariableType::CONTINUOUS)
+                else if (_ParamaterTypeVec[i] == NOMAD_VARIABLE_TYPE_CONTINUOUS)
                 {
                     params.set_BB_INPUT_TYPE(i, NOMAD::bb_input_type::CONTINUOUS);
                 }
-                else if (_ParamaterTypeVec[i] == NomadVariableType::BINARY)
+                else if (_ParamaterTypeVec[i] == NOMAD_VARIABLE_TYPE_BINARY)
                 {
                     params.set_BB_INPUT_TYPE(i, NOMAD::bb_input_type::BINARY);
                 }

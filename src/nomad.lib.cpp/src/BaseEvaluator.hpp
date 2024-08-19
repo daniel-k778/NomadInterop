@@ -1,7 +1,6 @@
 /**
  \file   BaseEvaluator.hpp
  \brief  Base classes for evaluators (headers)
- \author
  \date   2024-07-29
  \see    BaseEvaluator.cpp
  */

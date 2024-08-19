@@ -1,7 +1,6 @@
 /**
  \file   NomadCoreAPI.hpp
  \brief  NOMAD core functions (headers)
- \author
  \date   2024-07-29
  \see    NomadCoreAPI.cpp
  */

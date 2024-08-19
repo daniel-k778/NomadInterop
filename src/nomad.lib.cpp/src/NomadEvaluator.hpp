@@ -1,7 +1,6 @@
 /**
  \file   NomadEvaluator.hpp
  \brief  Class definitions derived from NOMAD evaluators (headers)
- \author
  \date   2024-07-29
  \see    NomadEvaluator.cpp
  */

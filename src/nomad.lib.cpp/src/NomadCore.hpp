@@ -1,7 +1,6 @@
 /**
  \file   NomadCore.hpp
  \brief  DLL exports for NOMAD core functions and class definitions (headers)
- \author
  \date   2024-07-29
  \see    NomadCore.cpp
  */
@@ -18,16 +17,11 @@
 #define NOMADCORE_API __declspec( dllimport )
 #endif
 
-
-
-/// NOMAD variable types.
-namespace NomadVariableType
-{
-    constexpr const char* CONTINUOUS = "CONTINUOUS";
-    constexpr const char* INTEGER = "INTEGER";
-    constexpr const char* BINARY = "BINARY";
-    constexpr const char* CATEGORICAL = "CATEGORICAL";
-};
+ /// NOMAD variable types.
+#define NOMAD_VARIABLE_TYPE_CONTINUOUS      "CONTINUOUS"
+#define NOMAD_VARIABLE_TYPE_INTEGER         "INTEGER"
+#define NOMAD_VARIABLE_TYPE_BINARY          "BINARY"
+#define NOMAD_VARIABLE_TYPE_CATEGORICAL     "CATEGORICAL"
 
 /// NOMAD core class.
 class NOMADCORE_API NomadCore
