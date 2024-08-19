@@ -9,7 +9,7 @@ NomadInterop is a **powerful and easy-to-use** wrapper for the [Nomad optimizer]
 
 ## Installation
 
-**Get the latest binaries, modules and configuration files from the latest release.** Alternatively clone the repository and build from source.
+**Get the latest [binaries, modules and configuration files](https://github.com/daniel-k778/NomadInterop/releases/tag/v1.0) from the latest release.** Alternatively clone the repository and build from source.
 
 ### C++
 
