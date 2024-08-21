@@ -42,11 +42,19 @@ bool NomadSingleObjEvaluator::eval_x( NOMAD::Eval_Point& x, const NOMAD::Double&
 
     // Get the constraints array
     auto evalConstraintsArr = _SingleObjEvaluator->GetConstraints();
+    static auto numConstraints = _NomadCore->GetNumberEBConstraints() + _NomadCore->GetNumberPBConstraints();
 
-    // Set the constraints
-    for (int i = 0; i < evalConstraintsArr.size(); i++)
+    if (evalConstraintsArr.size() == numConstraints)
     {
-        x.set_bb_output(i + 1, evalConstraintsArr.at(i));
+        // Set the constraints
+        for (int i = 0; i < evalConstraintsArr.size(); i++)
+        {
+            x.set_bb_output(i + 1, evalConstraintsArr.at(i));
+        }
+    }
+    else
+    {
+        throw std::runtime_error("The number of constraints does not match the number of constraints in the evaluator.");
     }
 
     delete[] paramsPtr;
@@ -105,17 +113,33 @@ bool NomadMultiObjEvaluator::eval_x( NOMAD::Eval_Point& x, const NOMAD::Double& 
     // Get the objective functions and constraints arrays
     auto evalObjFunctionsArr = _MultiObjEvaluator->GetObjectiveFunction();
     auto evalConstraintsArr = _MultiObjEvaluator->GetConstraints();
+    static auto numConstraints = _NomadCore->GetNumberEBConstraints() + _NomadCore->GetNumberPBConstraints();
+    static auto numObjFunctions = _NomadCore->GetNumberObjFunctions();
 
-    // Set the objective functions
-    for (int i = 0; i < evalObjFunctionsArr.size(); i++)
+    if (evalObjFunctionsArr.size() == numObjFunctions)
     {
-        x.set_bb_output(i, evalObjFunctionsArr.at(i));
+        // Set the objective functions
+        for (int i = 0; i < evalObjFunctionsArr.size(); i++)
+        {
+            x.set_bb_output(i, evalObjFunctionsArr.at(i));
+        }
+    }
+    else
+    {
+        throw std::runtime_error("The number of objective functions does not match the number of objective functions in the evaluator.");
     }
 
-    // Set the constraints
-    for (int i = 0; i < evalConstraintsArr.size(); i++)
+    if (evalConstraintsArr.size() == numConstraints)
     {
-        x.set_bb_output(i + evalObjFunctionsArr.size(), evalConstraintsArr.at(i));
+        // Set the constraints
+        for (int i = 0; i < evalConstraintsArr.size(); i++)
+        {
+            x.set_bb_output(i + evalObjFunctionsArr.size(), evalConstraintsArr.at(i));
+        }
+    }
+    else
+    {
+        throw std::runtime_error("The number of constraints does not match the number of constraints in the evaluator.");
     }
 
     delete[] paramsPtr;
