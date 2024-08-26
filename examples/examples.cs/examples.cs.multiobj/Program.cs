@@ -85,51 +85,47 @@ namespace cs_multi_obj
     {
         static void Main()
         {
-            // Create a NomadCore instance
-            IntPtr nomadCore = NomadCore.CreateNomadCore();
+            // Create a NOMAD instance
+            NomadProvider nomad = new NomadProvider();
 
             // Set the number of variables
             int numVars = 5;
-            NomadCore.SetNumberVariables(nomadCore, numVars);
+            nomad.SetNumberVariables(numVars);
 
             // Set the initial variable values, upper and lower bounds, and type
             for (int i = 0; i < numVars; i++)
             {
-                NomadCore.SetInitialVariableValue(nomadCore, i, 15.0);
-                NomadCore.SetVariableUpperBound(nomadCore, i, 20.0);
-                NomadCore.SetVariableLowerBound(nomadCore, i, -50);
-                NomadCore.SetVariableType(nomadCore, i, NomadCore.VariableType.Continuous);
+                nomad.SetInitialVariableValue(i, 15.0);
+                nomad.SetVariableUpperBound(i, 20.0);
+                nomad.SetVariableLowerBound(i, -50);
+                nomad.SetVariableType(i, NomadVariableType.Continuous);
             }
 
             // Set the number of iterations
-            NomadCore.SetNumberOfIterations(nomadCore, 500);
+            nomad.SetNumberOfIterations(500);
 
             // Set the number of extreme and progressive barrier constraints
-            NomadCore.SetNumberEBConstraints(nomadCore, 2);
-            NomadCore.SetNumberPBConstraints(nomadCore, 3);
-
-            // Set the number of objective functions
-            NomadCore.SetNumberObjFunctions(nomadCore, 2);
+            nomad.SetNumberEBConstraints(2);
+            nomad.SetNumberPBConstraints(3);
 
             // Set the evaluator
             myEvaluator myEval = new myEvaluator();
-            NomadProvider nomadProvider = new NomadProvider(myEval);
-            NomadCore.SetMultiObjEvaluator(nomadCore, nomadProvider);
+            nomad.SetEvaluator(myEval);
 
-            // Optimize the multi-objective function
-            NomadCore.OptimizeMultiObj(nomadCore);
+            // Set the number of objective functions
+            nomad.SetNumberObjFunctions(2);
+
+            // Optimize the single-objective function
+            nomad.Optimize();
 
             // Get the results
-            double[] results = NomadCore.GetResults(nomadCore);
+            double[] results = nomad.GetResults();
 
             Console.Write("Results: ");
             foreach (double r in results)
             {
                 Console.Write($"{r} ");
             }
-
-            NomadCore.DestroyNomadCore(nomadCore);
-
         }
     }
 }

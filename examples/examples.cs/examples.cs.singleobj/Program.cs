@@ -86,44 +86,41 @@ namespace cs_single_obj
     {
         static void Main()
         {
-            // Create a NomadCore instance
-            IntPtr nomadCore = NomadCore.CreateNomadCore();
+            // Create a NOMAD instance
+            NomadProvider nomad = new NomadProvider();
 
             // Set the number of variables
             int numVars = 3;
-            NomadCore.SetNumberVariables(nomadCore, numVars);
+            nomad.SetNumberVariables(numVars);
 
             // Set the initial variable values, upper and lower bounds, and type
             for (int i = 0; i < numVars; i++)
             {
-                NomadCore.SetInitialVariableValue(nomadCore, i, 15.0);
-                NomadCore.SetVariableUpperBound(nomadCore, i, 20.0);
-                NomadCore.SetVariableLowerBound(nomadCore, i, -50);
-                NomadCore.SetVariableType(nomadCore, i, NomadCore.VariableType.Continuous);
+                nomad.SetInitialVariableValue(i, 15.0);
+                nomad.SetVariableUpperBound(i, 20.0);
+                nomad.SetVariableLowerBound(i, -50);
+                nomad.SetVariableType(i, NomadVariableType.Continuous);
             }
 
             // Set the number of iterations
-            NomadCore.SetNumberOfIterations(nomadCore, 500);
+            nomad.SetNumberOfIterations(500);
 
 
             // Set the evaluator
             myEvaluator myEval = new myEvaluator();
-            NomadProvider nomadProvider = new NomadProvider(myEval);
-            NomadCore.SetSingleObjEvaluator(nomadCore, nomadProvider);
+            nomad.SetEvaluator(myEval);
 
-            // Optimize the multi-objective function
-            NomadCore.OptimizeSingleObj(nomadCore);
+            // Optimize the single-objective function
+            nomad.Optimize();
 
             // Get the results
-            double[] results = NomadCore.GetResults(nomadCore);
+            double[] results = nomad.GetResults();
 
             Console.Write("Results: ");
             foreach (double r in results)
             {
                 Console.Write($"{r} ");
             }
-
-            NomadCore.DestroyNomadCore(nomadCore);
         }
     }
 }
