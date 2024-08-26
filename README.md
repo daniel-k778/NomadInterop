@@ -35,7 +35,7 @@ See [examples](./examples) for detailed examples on how to integrate NomadIntero
 For detailed documentation on how to use each function, refer to the [official NOMAD documentation](https://nomad-4-user-guide.readthedocs.io/en/latest/) or the [NOMAD user guide](./docs/user_guide.pdf).
 
 ## Contributing
-Contributions are welcome! If you have suggestions for improvements or have found bugs, feel free to open an issue or submit a pull request.
+If you have suggestions for improvements or have found bugs, feel free to open an issue.
 
 ## License
 This project is licensed under the MIT License. See [LICENSE](./LICENSE) for more details.
