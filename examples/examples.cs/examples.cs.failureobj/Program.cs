@@ -117,7 +117,8 @@ namespace cs_failure_obj
 
             // Set the evaluator
             myEvaluator myEval = new myEvaluator();
-            NomadCore.SetSingleObjEvaluator(nomadCore, myEval);
+            NomadProvider nomadProvider = new NomadProvider(myEval);
+            NomadCore.SetSingleObjEvaluator(nomadCore, nomadProvider);
 
             // Optimize the multi-objective function
             NomadCore.OptimizeSingleObj(nomadCore);

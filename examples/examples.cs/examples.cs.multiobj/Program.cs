@@ -113,7 +113,8 @@ namespace cs_multi_obj
 
             // Set the evaluator
             myEvaluator myEval = new myEvaluator();
-            NomadCore.SetMultiObjEvaluator(nomadCore, myEval);
+            NomadProvider nomadProvider = new NomadProvider(myEval);
+            NomadCore.SetMultiObjEvaluator(nomadCore, nomadProvider);
 
             // Optimize the multi-objective function
             NomadCore.OptimizeMultiObj(nomadCore);

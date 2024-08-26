@@ -187,22 +187,15 @@ namespace NomadInteropCS
         /// Sets the single-objective evaluator for the NOMAD Core instance.
         /// </summary>
         /// <param name="nomadCore">Pointer to the NOMAD Core instance.</param>
-        /// <param name="evaluator">The evaluator implementing the `ISingleObjEvaluator` interface.</param>
-        public static void SetSingleObjEvaluator(nint nomadCore, ISingleObjEvaluator evaluator)
+        /// <param name="provider">Provider for nomad evaluator.</param>
+        public static void SetSingleObjEvaluator(nint nomadCore, NomadProvider provider)
         {
-            // Create delegates for each required function pointer.
-            EvaluateDelegate evalDelegate = new EvaluateDelegate(evaluator.Evaluate);
-            GetSingleObjFunctionDelegate getObjFuncDelegate = new GetSingleObjFunctionDelegate(evaluator.GetObjectiveFunction);
-            GetObjectiveFunctionStatusDelegate getObjectiveFunctionStatusDelegate = new GetObjectiveFunctionStatusDelegate(evaluator.GetObjectiveFunctionStatus);
-            GetConstraintsDelegate getConstraintsDelegate = new GetConstraintsDelegate(evaluator.GetConstraints);
-            SingleObjInitDelegate initDelegate = new SingleObjInitDelegate(evaluator.Initialize);
-
             // Convert delegates to function pointers and call the native function to set the evaluator.
-            nint evalPtr = Marshal.GetFunctionPointerForDelegate(evalDelegate);
-            nint getObjFuncPtr = Marshal.GetFunctionPointerForDelegate(getObjFuncDelegate);
-            nint getObjectiveFunctionStatusPtr = Marshal.GetFunctionPointerForDelegate(getObjectiveFunctionStatusDelegate);
-            nint getConstraintsPtr = Marshal.GetFunctionPointerForDelegate(getConstraintsDelegate);
-            nint initPtr = Marshal.GetFunctionPointerForDelegate(initDelegate);
+            nint evalPtr = Marshal.GetFunctionPointerForDelegate(provider.EvalDelegate);
+            nint getObjFuncPtr = Marshal.GetFunctionPointerForDelegate(provider.GetSingleObjFuncDelegate);
+            nint getObjectiveFunctionStatusPtr = Marshal.GetFunctionPointerForDelegate(provider.GetObjectiveFunctionStatusDelegate);
+            nint getConstraintsPtr = Marshal.GetFunctionPointerForDelegate(provider.GetConstraintsDelegate);
+            nint initPtr = Marshal.GetFunctionPointerForDelegate(provider.InitDelegate);
 
             SetSingleObjEvaluator(nomadCore, evalPtr, getObjFuncPtr, getConstraintsPtr, initPtr, getObjectiveFunctionStatusPtr);
         }
@@ -211,22 +204,15 @@ namespace NomadInteropCS
         /// Sets the multi-objective evaluator for the NOMAD Core instance.
         /// </summary>
         /// <param name="nomadCore">Pointer to the NOMAD Core instance.</param>
-        /// <param name="evaluator">The evaluator implementing the `IMultiObjEvaluator` interface.</param>
-        public static void SetMultiObjEvaluator(nint nomadCore, IMultiObjEvaluator evaluator)
+        /// <param name="provider">Provider for nomad evaluator.</param>
+        public static void SetMultiObjEvaluator(nint nomadCore, NomadProvider provider)
         {
-            // Create delegates for each required function pointer.
-            EvaluateDelegate evalDelegate = new EvaluateDelegate(evaluator.Evaluate);
-            GetMultiObjFunctionDelegate getObjFuncDelegate = new GetMultiObjFunctionDelegate(evaluator.GetObjectiveFunction);
-            GetObjectiveFunctionStatusDelegate getObjectiveFunctionStatusDelegate = new GetObjectiveFunctionStatusDelegate(evaluator.GetObjectiveFunctionStatus);
-            GetConstraintsDelegate getConstraintsDelegate = new GetConstraintsDelegate(evaluator.GetConstraints);
-            MultiObjInitDelegate initDelegate = new MultiObjInitDelegate(evaluator.Initialize);
-
             // Convert delegates to function pointers and call the native function to set the evaluator.
-            nint evalPtr = Marshal.GetFunctionPointerForDelegate(evalDelegate);
-            nint getObjFuncPtr = Marshal.GetFunctionPointerForDelegate(getObjFuncDelegate);
-            nint getObjectiveFunctionStatusPtr = Marshal.GetFunctionPointerForDelegate(getObjectiveFunctionStatusDelegate);
-            nint getConstraintsPtr = Marshal.GetFunctionPointerForDelegate(getConstraintsDelegate);
-            nint initPtr = Marshal.GetFunctionPointerForDelegate(initDelegate);
+            nint evalPtr = Marshal.GetFunctionPointerForDelegate(provider.EvalDelegate);
+            nint getObjFuncPtr = Marshal.GetFunctionPointerForDelegate(provider.GetMultiObjFuncDelegate);
+            nint getObjectiveFunctionStatusPtr = Marshal.GetFunctionPointerForDelegate(provider.GetObjectiveFunctionStatusDelegate);
+            nint getConstraintsPtr = Marshal.GetFunctionPointerForDelegate(provider.GetConstraintsDelegate);
+            nint initPtr = Marshal.GetFunctionPointerForDelegate(provider.MultiObjInitDelegate);
 
             SetMultiObjEvaluator(nomadCore, evalPtr, getObjFuncPtr, getConstraintsPtr, initPtr, getObjectiveFunctionStatusPtr);
         }
@@ -279,7 +265,7 @@ namespace NomadInteropCS
         /// <param name="getObjectiveFunctionStatus">Function pointer to getobjectivefunctionstatus delegate.</param>
         /// <param name="init">Function pointer to initialize delegate.</param>
         [DllImport(PATH, CallingConvention = CallingConvention.Cdecl)]
-        private static extern void SetSingleObjEvaluator(nint nomadCore, nint evaluator, nint getObjectiveFunction, nint getConstraints, nint init, nint getObjectiveFunctionStatus);
+        protected static extern void SetSingleObjEvaluator(nint nomadCore, nint evaluator, nint getObjectiveFunction, nint getConstraints, nint init, nint getObjectiveFunctionStatus);
 
         /// <summary>
         /// Sets the multi-objective evaluator for the NOMAD Core instance.
@@ -290,13 +276,13 @@ namespace NomadInteropCS
         /// <param name="getObjectiveFunctionStatus">Function pointer to getobjectivefunctionstatus delegate.</param>
         /// <param name="init">Function pointer to initialize delegate.</param>
         [DllImport(PATH, CallingConvention = CallingConvention.Cdecl)]
-        private static extern void SetMultiObjEvaluator(nint nomadCore, nint evaluator, nint getObjectiveFunction, nint getConstraints, nint init, nint getObjectiveFunctionStatus);
+        protected static extern void SetMultiObjEvaluator(nint nomadCore, nint evaluator, nint getObjectiveFunction, nint getConstraints, nint init, nint getObjectiveFunctionStatus);
 
         /// <summary>
         /// Gets the results from the NOMAD Core instance.
         /// <param name="nomadCore"/>Pointer to the NOMAD Core instance.</param>"
         /// <param name="size">Size of the results array.</param>
         [DllImport(PATH, CallingConvention = CallingConvention.Cdecl)]
-        private static extern nint GetResults(nint nomadCore, ref int size);
+        protected static extern nint GetResults(nint nomadCore, ref int size);
     }
 }
