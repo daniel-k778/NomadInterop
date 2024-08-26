@@ -9,11 +9,15 @@ using System.Threading.Tasks;
 namespace NomadInteropCS
 {
     /// <summary>
-    /// Provides a container for the NomadCore delegates.
+    /// Provides a container and implementations for the NomadCore imports.
     /// </summary>
     public class NomadProvider : NomadCore
     {
         private IntPtr _NomadCore { get; set; }
+
+        /// <summary>
+        /// Constructor for the NomadProvider class. Creates a new instance of NomadCore.
+        /// </summary>
         public NomadProvider()
         {
             _NomadCore = NomadCore.CreateNomadCore();
@@ -22,6 +26,9 @@ namespace NomadInteropCS
             _SolveCalled = false;
         }
 
+        /// <summary>
+        /// Destructor for the NomadProvider class. Destroys the instance of NomadCore.
+        /// </summary>
         ~NomadProvider()
         {
             NomadCore.DestroyNomadCore(_NomadCore);
@@ -38,18 +45,32 @@ namespace NomadInteropCS
         public bool _NumObjFunctionsSet { get; private set; }
         public bool _SolveCalled { get; private set; }
 
+        /// <summary>
+        /// Sets the output path for the optimization results.
+        /// </summary>
+        /// <param name="path">Output path.</param>
         public void SetOutputPath(string path)
         {
             _OutputPath = path;
             NomadCore.SetOutputPath(_NomadCore, _OutputPath);
         }
 
+        /// <summary>
+        /// Set the number of variables.
+        /// </summary>
+        /// <param name="numVariables">Number of variables.</param>
         public void SetNumberVariables(int numVariables)
         {
             _NumberVariables = numVariables;
             NomadCore.SetNumberVariables(_NomadCore, _NumberVariables);
         }
 
+        /// <summary>
+        /// Set the initial variable values.
+        /// </summary>
+        /// <param name="index">Index of the variable.</param>
+        /// <param name="value">Initial value of the variable.</param>
+        /// <exception cref="InvalidOperationException">Number of variables must be set.</exception>
         public void SetInitialVariableValue(int index, double value)
         {
             if (_NumberVariables <= 0)
@@ -59,6 +80,12 @@ namespace NomadInteropCS
             NomadCore.SetInitialVariableValue(_NomadCore, index, value);
         }
 
+        /// <summary>
+        /// Set the variable upper bounds.
+        /// </summary>
+        /// <param name="index">Index of variable.</param>
+        /// <param name="value">Upper bound value.</param>
+        /// <exception cref="InvalidOperationException">Number of variables must be set.</exception>
         public void SetVariableUpperBound(int index, double value)
         {
             if (_NumberVariables <= 0)
@@ -68,6 +95,12 @@ namespace NomadInteropCS
             NomadCore.SetVariableUpperBound(_NomadCore, index, value);
         }
 
+        /// <summary>
+        /// Set the variable lower bounds.
+        /// </summary>
+        /// <param name="index">Index of variable.</param>
+        /// <param name="value">Lower bound value.</param>
+        /// <exception cref="InvalidOperationException">Number of variables must be set.</exception>
         public void SetVariableLowerBound(int index, double value)
         {
             if (_NumberVariables <= 0)
@@ -77,6 +110,13 @@ namespace NomadInteropCS
             NomadCore.SetVariableLowerBound(_NomadCore, index, value);
         }
 
+        /// <summary>
+        /// Set the variable types.
+        /// </summary>
+        /// <param name="index">Index of variable.</param>
+        /// <param name="type">Type of variable.</param>
+        /// <exception cref="InvalidOperationException">Number of variables must be set.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Unexpected variable type.</exception>
         public void SetVariableType(int index, NomadVariableType type)
         {
             if (_NumberVariables <= 0)
@@ -105,24 +145,40 @@ namespace NomadInteropCS
             NomadCore.SetVariableType(_NomadCore, index, vType);
         }
 
+        /// <summary>
+        /// Set the number of iterations.
+        /// </summary>
+        /// <param name="numIterations">Number of iterations.</param>
         public void SetNumberOfIterations(int numIterations)
         {
             _NumberOfIterations = numIterations;
             NomadCore.SetNumberOfIterations(_NomadCore, _NumberOfIterations);
         }
 
+        /// <summary>
+        /// Set the number of extreme-barrier constraints.
+        /// </summary>
+        /// <param name="numEBConstraints">Number of EB constraints.</param>
         public void SetNumberEBConstraints(int numEBConstraints)
         {
             _NumberEBConstraints = numEBConstraints;
             NomadCore.SetNumberEBConstraints(_NomadCore, _NumberEBConstraints);
         }
 
+        /// <summary>
+        /// Set the number of progressive-barrier constraints.
+        /// </summary>
+        /// <param name="numPBConstraints">Number of PB constraints.</param>
         public void SetNumberPBConstraints(int numPBConstraints)
         {
             _NumberPBConstraints = numPBConstraints;
             NomadCore.SetNumberPBConstraints(_NomadCore, _NumberPBConstraints);
         }
 
+        /// <summary>
+        /// Optimize the problem.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">Evaluator must be set. Number of objective-functions must be set for multi-obj problems.</exception>
         public void Optimize()
         {
             if (!_EvaluatorSet)
@@ -143,7 +199,12 @@ namespace NomadInteropCS
             }
             _SolveCalled = true;
         }
-
+        
+        /// <summary>
+        /// Set the number of objective functions.
+        /// </summary>
+        /// <param name="numObjFunctions">Number of objective functions.</param>
+        /// <exception cref="InvalidOperationException">Evaluator must be set. Single-objective problems do not require setting number of objective functions.</exception>
         public void SetNumberObjFunctions(int numObjFunctions)
         {
             if (!_EvaluatorSet)

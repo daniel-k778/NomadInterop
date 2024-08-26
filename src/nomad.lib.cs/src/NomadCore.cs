@@ -52,11 +52,6 @@ namespace NomadInteropCS
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         protected delegate void MultiObjInitDelegate(int numConstraints, int numObjFunctions);
 
-
-        /*--------------------------------------------------------------------------*/
-        /*             DLL Import declarations for NOMAD Core functions.            */
-        /*--------------------------------------------------------------------------*/
-
         /// <summary>
         /// Creates an instance of the NOMAD Core object.
         /// </summary>
