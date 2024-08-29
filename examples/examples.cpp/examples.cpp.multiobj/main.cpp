@@ -4,7 +4,7 @@
 /*--------------------------------------------*/
 /*             evaluator creation             */
 /*--------------------------------------------*/
-class UserEvaluator : public BaseMultiObjEvaluator
+class myEvaluator : public BaseMultiObjEvaluator
 {
 private:
     vector<double> obj; // Objective function values
@@ -100,7 +100,7 @@ auto main() -> int {
     nomadCore->SetNumberObjFunctions(2);
 
     // Set the evaluator
-    UserEvaluator* myEval = new UserEvaluator();
+    myEvaluator* myEval = new myEvaluator();
     nomadCore->SetMultiObjEvaluator(myEval);
 
     // Run the optimization
