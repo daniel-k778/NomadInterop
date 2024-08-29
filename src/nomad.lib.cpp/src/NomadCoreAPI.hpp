@@ -12,6 +12,7 @@
 #include "BaseEvaluator.hpp"
 #include <iostream>
 #include <vector>
+#include <memory>
 
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
@@ -286,17 +287,11 @@ extern "C"
      */
     NOMADCORE_API void SetNumberObjFunctions( NomadCore* nomadCore, int numObjFunctions );
 
-    /// Optimizes a single-objective function.
+    /// Optimizes the problem.
     /**
      \param nomadCore NomadCore object -- \b IN.
      */
-    NOMADCORE_API void OptimizeSingleObj( NomadCore* nomadCore );
-
-    /// Optimizes multiple objective functions.
-    /**
-     \param nomadCore NomadCore object -- \b IN.
-     */
-    NOMADCORE_API void OptimizeMultiObj( NomadCore* nomadCore );
+    NOMADCORE_API void Optimize( NomadCore* nomadCore );
 
     /// Retrieves the optimizer results.
     /**

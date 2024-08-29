@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 
 namespace NomadInteropCS
 {
@@ -147,18 +148,11 @@ namespace NomadInteropCS
         protected static extern void SetNumberPBConstraints(nint nomadCore, int numPBConstraints);
 
         /// <summary>
-        /// Optimizes a single-objective problem using the NOMAD Core instance.
+        /// Optimizes the problem using the NOMAD Core instance.
         /// </summary>
         /// <param name="nomadCore">Pointer to the NOMAD Core instance.</param>
         [DllImport("nomadlibx64cpp.dll", CallingConvention = CallingConvention.Cdecl)]
-        protected static extern void OptimizeSingleObj(nint nomadCore);
-
-        /// <summary>
-        /// Optimizes a multi-objective problem using the NOMAD Core instance.
-        /// </summary>
-        /// <param name="nomadCore">Pointer to the NOMAD Core instance.</param>
-        [DllImport("nomadlibx64cpp.dll", CallingConvention = CallingConvention.Cdecl)]
-        protected static extern void OptimizeMultiObj(nint nomadCore);
+        protected static extern void Optimize(nint nomadCore);
 
         /// <summary>
         /// Sets the number of objective functions for the NOMAD Core instance.

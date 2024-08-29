@@ -17,9 +17,10 @@
 class NomadSingleObjEvaluator : public NOMAD::Evaluator
 {
 private:
-    BaseSingleObjEvaluator*        _SingleObjEvaluator = nullptr;  ///< Single-objective evaluator.
-    NomadCore*                     _NomadCore = nullptr;           ///< NOMAD core.
-    const NOMAD::Parameters*       _Params = nullptr;              ///< Parameters.
+    BaseSingleObjEvaluator*                 _SingleObjEvaluatorPtr = nullptr;      ///< Raw pointer for single-objective evaluator.
+    std::shared_ptr<BaseSingleObjEvaluator> _SingleObjEvaluatorSmrtPtr = nullptr;  ///< Smart pointer for single-objective evaluator.
+    NomadCore*                              _NomadCore = nullptr;                  ///< NOMAD core.
+    const NOMAD::Parameters*                _Params = nullptr;                     ///< Parameters.
 
 public:
     /// Constructor.
@@ -29,6 +30,14 @@ public:
      \param nomadCore NOMAD core  -- \b IN.
      */
     NomadSingleObjEvaluator( const NOMAD::Parameters& p, BaseSingleObjEvaluator* Evaluator, NomadCore* nomadCore );
+
+    /// Constructor.
+    /**
+     \param p NOMAD parameters  -- \b IN.
+     \param Evaluator Single-objective evaluator  -- \b IN.
+     \param nomadCore NOMAD core  -- \b IN.
+     */
+    NomadSingleObjEvaluator( const NOMAD::Parameters& p, std::shared_ptr<BaseSingleObjEvaluator> Evaluator, NomadCore* nomadCore );
 
     /// Destructor.
     /**
@@ -49,9 +58,10 @@ public:
 class NomadMultiObjEvaluator : public NOMAD::Multi_Obj_Evaluator
 {
 private:
-    BaseMultiObjEvaluator*        _MultiObjEvaluator = nullptr;     ///< Multi-objective evaluator.
-    NomadCore*                    _NomadCore = nullptr;             ///< NOMAD core.
-    const NOMAD::Parameters*      _Params = nullptr;                ///< Parameters.
+    BaseMultiObjEvaluator*                 _MultiObjEvaluatorPtr = nullptr;      ///< Multi-objective evaluator.
+    std::shared_ptr<BaseMultiObjEvaluator> _MultiObjEvaluatorSmrtPtr = nullptr;  ///< Smart pointer for multi-objective evaluator.
+    NomadCore*                             _NomadCore = nullptr;                 ///< NOMAD core.
+    const NOMAD::Parameters*               _Params = nullptr;                    ///< Parameters.
 
 public:
     /// Constructor.
@@ -60,7 +70,15 @@ public:
      \param Evaluator Multi-objective evaluator  -- \b IN.
      \param nomadCore NOMAD core  -- \b IN.
      */
-    NomadMultiObjEvaluator( const NOMAD::Parameters& p, BaseMultiObjEvaluator* Evaluator, NomadCore* nomadCore );
+    NomadMultiObjEvaluator( const NOMAD::Parameters& p, BaseMultiObjEvaluator* evaluator, NomadCore* nomadCore );
+
+    /// Constructor.
+    /**
+     \param p NOMAD parameters  -- \b IN.
+     \param Evaluator Multi-objective evaluator  -- \b IN.
+     \param nomadCore NOMAD core  -- \b IN.
+     */
+    NomadMultiObjEvaluator( const NOMAD::Parameters& p, std::shared_ptr<BaseMultiObjEvaluator> evaluator, NomadCore* nomadCore );
 
     /// Destructor.
     /**

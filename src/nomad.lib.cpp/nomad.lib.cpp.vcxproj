@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseEvaluator.hpp" />
+    <ClInclude Include="src\Defines.hpp" />
     <ClInclude Include="src\NomadCore.hpp" />
     <ClInclude Include="src\NomadEvaluator.hpp" />
     <ClInclude Include="src\NomadCoreAPI.hpp" />

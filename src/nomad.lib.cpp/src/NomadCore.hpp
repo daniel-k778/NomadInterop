@@ -10,18 +10,13 @@
 
 #include "nomad.hpp"
 #include "BaseEvaluator.hpp"
+#include "Defines.hpp"
 
 #ifdef NOMADCORE_EXPORTS
 #define NOMADCORE_API __declspec( dllexport )
 #else
 #define NOMADCORE_API __declspec( dllimport )
 #endif
-
- /// NOMAD variable types.
-#define NOMAD_VARIABLE_TYPE_CONTINUOUS      "CONTINUOUS"
-#define NOMAD_VARIABLE_TYPE_INTEGER         "INTEGER"
-#define NOMAD_VARIABLE_TYPE_BINARY          "BINARY"
-#define NOMAD_VARIABLE_TYPE_CATEGORICAL     "CATEGORICAL"
 
 /// NOMAD core class.
 class NOMADCORE_API NomadCore
@@ -34,17 +29,22 @@ private:
     int             _NumEBConstraints = 0;            ///< Number of extreme barrier constraints.
     int             _NumObjFunctions = 1;             ///< Number of objective functions.
 
-    std::vector<double>         _InitialVarsVec = { };            ///< Initial variables. Stores the initial values of the variables.
-    std::vector<double>         _FinalVariables = { };            ///< Final variables. Stores the optimizer results.
-    std::vector<double>         _UpperBoundValueVec = { };        ///< Upper bound values of the variables.
-    std::vector<bool>           _UpperBoundIsGivenVec = { };      ///< Flag for upper bound values.
-    std::vector<double>         _LowerBoundValueVec = { };        ///< Lower bound values of the variables.
-    std::vector<bool>           _LowerBoundIsGivenVec = { };      ///< Flag for lower bound values.
-    std::vector<bool>           _ParamaterTypeIsGivenVec = { };   ///< Flag for parameter types.
+    std::vector<double>         _InitialVarsVec = { };              ///< Initial variables. Stores the initial values of the variables.
+    std::vector<double>         _FinalVariables = { };              ///< Final variables. Stores the optimizer results.
+    std::vector<double>         _UpperBoundValueVec = { };          ///< Upper bound values of the variables.
+    std::vector<bool>           _UpperBoundIsGivenVec = { };        ///< Flag for upper bound values.
+    std::vector<double>         _LowerBoundValueVec = { };          ///< Lower bound values of the variables.
+    std::vector<bool>           _LowerBoundIsGivenVec = { };        ///< Flag for lower bound values.
+    std::vector<bool>           _ParamaterTypeIsGivenVec = { };     ///< Flag for parameter types.
     std::vector<std::string>    _ParamaterTypeVec = { };
 
-    BaseSingleObjEvaluator*  _SingleObjEvaluator = nullptr; ///< Single-objective evaluator.
-    BaseMultiObjEvaluator*   _MultiObjEvaluator = nullptr;  ///< Multi-objective evaluator.
+    BaseSingleObjEvaluator*                 _SingleObjEvaluatorPtr = nullptr;        ///< Raw pointer for single-objective evaluator.
+    BaseMultiObjEvaluator*                  _MultiObjEvaluatorPtr = nullptr;         ///< Raw pointer for multi-objective evaluator.
+    std::shared_ptr<BaseSingleObjEvaluator> _SingleObjEvaluatorSmrtPtr = nullptr;    ///< Smart pointer for single-objective evaluator.
+    std::shared_ptr<BaseMultiObjEvaluator>  _MultiObjEvaluatorSmrtPtr = nullptr;     ///< Smart pointer for multi-objective evaluator.
+
+    EvaluatorType                           _EvaluatorType = EvaluatorType::NONE;                ///< Evaluator type.
+    EvaluatorPointerType                    _EvaluatorPointerType = EvaluatorPointerType::NONE;  ///< Evaluator pointer type.
 
 public:
     /// Constructor.
@@ -155,27 +155,46 @@ public:
      */
     int GetNumberObjFunctions( void );
 
-    /// Set the single-objective evaluator.
+    /// Get the type of the evaluator.
+    /**
+     \return Evaluator type.
+     */
+    EvaluatorType GetEvaluatorType( void );
+
+    /// Get the type of the evaluator pointer.
+    /**
+     \return Evaluator pointer type.
+     */
+    EvaluatorPointerType GetEvaluatorPointerType(void);
+
+    /// Set the single-objective evaluator using raw pointer.
     /**
      \param eval Single-objective evaluator  -- \b IN.
      */
-    void SetSingleObjEvaluator( BaseSingleObjEvaluator* eval );
+    void SetEvaluator( BaseSingleObjEvaluator* eval );
 
-    /// Set the multi-objective evaluator.
+    /// Set the single-objective evaluator using smart pointer.
+    /**
+     \param eval Single-objective evaluator  -- \b IN.
+     */
+    void SetEvaluator( std::shared_ptr<BaseSingleObjEvaluator> eval );
+
+    /// Set the multi-objective evaluator using raw pointer.
     /**
      \param eval Multi-objective evaluator  -- \b IN.
      */
-    void SetMultiObjEvaluator( BaseMultiObjEvaluator* eval );
+    void SetEvaluator( BaseMultiObjEvaluator* eval );
+
+    /// Set the single-objective evaluator using smart pointer.
+    /**
+     \param eval Single-objective evaluator  -- \b IN.
+     */
+    void SetEvaluator( std::shared_ptr<BaseMultiObjEvaluator> eval );
 
     /// Optimize a single-objective problem.
     /**
     */
-    void OptimizeSingleObj( void );
-
-    /// Optimize a multi-objective problem.
-    /**
-    */
-    void OptimizeMultiObj( void );
+    void Optimize( void );
 
     /// Get the results.
     /**

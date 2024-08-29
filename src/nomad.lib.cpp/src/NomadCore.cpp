@@ -26,6 +26,11 @@ void NomadCore::SetNumberVariables( int numberVariables )
     // Set the number of variables
     // Resize the vectors to the number of variables
 
+    if (numberVariables <= 0)
+    {
+        throw std::exception("Number of variables must be greater than 0.");
+    }
+
     _NumVars = numberVariables;
     _UpperBoundIsGivenVec.resize(_NumVars, false);
     _LowerBoundIsGivenVec.resize(_NumVars, false);
@@ -80,6 +85,10 @@ void NomadCore::SetVariableType( int index, const char* type ) {
 
 void NomadCore::SetNumberOfIterations( int numIters )
 {
+    if (numIters <= 0)
+    {
+        throw std::exception("Number of iterations must be greater than 0.");
+    }
     _NumIterations = numIters;
 }
 
@@ -95,6 +104,10 @@ void NomadCore::SetOutputPath( const char* outputFilePath )
 
 void NomadCore::SetNumberPBConstraints( int numPBConstraints )
 {
+    if (numPBConstraints < 0)
+    {
+        throw std::exception("Number of progressive barrier constraints being set must be greater or equal to 0.");
+    }
     _NumPBConstraints = numPBConstraints;
 }
 
@@ -105,36 +118,60 @@ int NomadCore::GetNumberPBConstraints( void )
 
 void NomadCore::SetNumberEBConstraints( int numEBConstraints )
 {
+    if (numEBConstraints < 0)
+    {
+        throw std::exception("Number of extreme barrier constraints being set must be greater or equal to 0.");
+    }
     _NumEBConstraints = numEBConstraints;
 }
 
-int NomadCore::GetNumberEBConstraints(void )
+int NomadCore::GetNumberEBConstraints( void )
 {
     return _NumEBConstraints;
 }
 
-void NomadCore::SetSingleObjEvaluator( BaseSingleObjEvaluator* eval )
+void NomadCore::SetEvaluator( BaseSingleObjEvaluator* eval )
 {
-    if (_SingleObjEvaluator)
-    {
-        delete _SingleObjEvaluator;
-        _SingleObjEvaluator = nullptr;
-    }
-    _SingleObjEvaluator = eval;
+    _SingleObjEvaluatorPtr = eval;
+    _EvaluatorType = EvaluatorType::SINGLE_OBJECTIVE;
+    _EvaluatorPointerType = EvaluatorPointerType::RAW;
 }
 
-void NomadCore::SetMultiObjEvaluator( BaseMultiObjEvaluator* eval )
+void NomadCore::SetEvaluator( BaseMultiObjEvaluator* eval )
 {
-    if (_MultiObjEvaluator)
-    {
-        delete _MultiObjEvaluator;
-        _MultiObjEvaluator = nullptr;
-    }
-    _MultiObjEvaluator = eval;
+    _MultiObjEvaluatorPtr = eval;
+    _EvaluatorType = EvaluatorType::MULTI_OBJECTIVE;
+    _EvaluatorPointerType = EvaluatorPointerType::RAW;
+}
+
+void NomadCore::SetEvaluator( std::shared_ptr<BaseSingleObjEvaluator> eval )
+{
+    _SingleObjEvaluatorSmrtPtr = eval;
+    _EvaluatorType = EvaluatorType::SINGLE_OBJECTIVE;
+    _EvaluatorPointerType = EvaluatorPointerType::SMART;
+}
+
+void NomadCore::SetEvaluator( std::shared_ptr<BaseMultiObjEvaluator> eval )
+{
+    _MultiObjEvaluatorSmrtPtr = eval;
+    _EvaluatorType = EvaluatorType::MULTI_OBJECTIVE;
+    _EvaluatorPointerType = EvaluatorPointerType::SMART;
 }
 
 void NomadCore::SetNumberObjFunctions( int numObjFunctions )
 {
+    if (_EvaluatorType == EvaluatorType::SINGLE_OBJECTIVE && numObjFunctions != 1)
+    {
+        throw std::exception("Single objective evaluator is set. Number of objective functions must be 1.");
+    }
+    if (_EvaluatorType == EvaluatorType::NONE)
+    {
+        throw std::exception("Evaluator is not set.");
+    }
+    if (numObjFunctions <= 1)
+    {
+        throw std::exception("Number of objective functions must be greater than 1.");
+    }
     _NumObjFunctions = numObjFunctions;
 }
 
@@ -143,158 +180,31 @@ int NomadCore::GetNumberObjFunctions( void )
     return _NumObjFunctions;
 }
 
-void NomadCore::OptimizeSingleObj( void )
+void NomadCore::Optimize(void)
 {
     if (_NumVars <= 0)
     {
         throw std::exception("Number of variables must be greater than 0.");
     }
-
-    if (_NumObjFunctions != 1)
+    if (_NumIterations <= 0)
     {
-        throw std::exception("Only one objective function can be optimized.");
+        throw std::exception("Number of iterations must be greater than 0.");
     }
-    // Display
-    NOMAD::Display out (std::cout);
-    out.precision(NOMAD::DISPLAY_PRECISION_STD);
-
-    try
+    if (_EvaluatorType == EvaluatorType::NONE)
     {
-        // NOMAD initialisations
-        NOMAD::begin(0, NULL);
-
-        // Paramater creation
-        NOMAD::Parameters params (out);
-
-        // Set the number of variables
-        params.set_DIMENSION(_NumVars);
-
-        // Definition of output types
-        vector<NOMAD::bb_output_type> bbot;
-        bbot.resize(_NumPBConstraints + _NumEBConstraints + 1);
-        bbot[0] = NOMAD::OBJ; // 0 always obj for single obj
-
-        // Add the PB constraints
-        for (int i = 1; i < _NumPBConstraints + 1; i++)
-        {
-            bbot[i] = NOMAD::PB;
-        }
-
-        // Add the EB constraints
-        for (int i = _NumPBConstraints + 1; i < _NumPBConstraints + _NumEBConstraints + 1; i++)
-        {
-            bbot[i] = NOMAD::EB;
-        }
-
-        params.set_BB_OUTPUT_TYPE(bbot);
-
-        // Set the parameter types
-        for (int i = 0; i < _NumVars; i++)
-        {
-            if (_ParamaterTypeIsGivenVec[i])
-            {
-                if (_ParamaterTypeVec[i] == NOMAD_VARIABLE_TYPE_CATEGORICAL)
-                {
-                    params.set_BB_INPUT_TYPE(i, NOMAD::bb_input_type::CATEGORICAL);
-                }
-                else if (_ParamaterTypeVec[i] == NOMAD_VARIABLE_TYPE_INTEGER)
-                {
-                    params.set_BB_INPUT_TYPE(i, NOMAD::bb_input_type::INTEGER);
-                }
-                else if (_ParamaterTypeVec[i] == NOMAD_VARIABLE_TYPE_CONTINUOUS)
-                {
-                    params.set_BB_INPUT_TYPE(i, NOMAD::bb_input_type::CONTINUOUS);
-                }
-                else if (_ParamaterTypeVec[i] == NOMAD_VARIABLE_TYPE_BINARY)
-                {
-                    params.set_BB_INPUT_TYPE(i, NOMAD::bb_input_type::BINARY);
-                }
-                else
-                {
-                    throw std::invalid_argument("Invalid parameter type");
-                }
-            }
-        }
-
-        // Display
-        params.set_DISPLAY_STATS("bbe ( sol ) obj");
-
-        // Set the bounds and initial values of variables
-        NOMAD::Point x0(_NumVars);
-        NOMAD::Point lb(_NumVars);
-        NOMAD::Point ub(_NumVars);
-
-        for (int i = 0; i < _NumVars; i++)
-        {
-            x0[i] = _InitialVarsVec[i];
-
-            if (_LowerBoundIsGivenVec[i])
-            {
-                lb[i] = _LowerBoundValueVec[i];
-            }
-
-            if (_UpperBoundIsGivenVec[i])
-            {
-                ub[i] = _UpperBoundValueVec[i];
-            }
-        }
-
-        params.set_X0(x0);
-        params.set_LOWER_BOUND(lb);
-        params.set_UPPER_BOUND(ub);
-
-        // Set max iterations
-        params.set_MAX_BB_EVAL(_NumIterations);
-        
-        // Display
-        params.set_DISPLAY_DEGREE(2);
-
-        // Output file
-        if (_OutputPath)
-        {
-            params.set_SOLUTION_FILE(_OutputPath);
-        }
-
-        // Parameters validation
-        params.check();
-
-        // Custom evaluator creation
-        NomadSingleObjEvaluator evaluator (params, _SingleObjEvaluator, this);
-
-        // Algorithm creation and execution
-        NOMAD::Mads mads (params, &evaluator);
-        mads.run();
-
-        // Get the best feasible solution
-        for (int i = 0; i < _NumVars; i++) 
-        {
-            _FinalVariables[i] = mads.get_best_feasible()->value(i);
-        }
+        throw std::exception("Evaluator is not set.");
     }
-    catch (exception& e)
+    if (_EvaluatorType == EvaluatorType::SINGLE_OBJECTIVE && _NumObjFunctions != 1)
     {
-        std::cerr << "\nNOMAD has been interrupted (" << e.what() << ")\n\n";
+        throw std::exception("Number of objective functions must be equal to 1 for single-objective optimization.");
     }
-
-    NOMAD::Slave::stop_slaves(out);
-    NOMAD::end();
-
-}
-
-void NomadCore::OptimizeMultiObj( void )
-{
-    if (_NumVars <= 0)
+    else if (_EvaluatorType == EvaluatorType::MULTI_OBJECTIVE && _NumObjFunctions <= 1)
     {
-        throw std::exception("Number of variables must be greater than 0.");
-    }
-
-    if (_NumObjFunctions <= 1)
-    {
-        throw std::exception("Number of objective functions must be greater than 1.");
+        throw std::exception("Number of objective functions must be greater than 1 for multi-objective optimization.");
     }
 
     // Display
-    NOMAD::Display out (std::cout);
+    NOMAD::Display out(std::cout);
     out.precision(NOMAD::DISPLAY_PRECISION_STD);
     try
     {
@@ -302,7 +212,7 @@ void NomadCore::OptimizeMultiObj( void )
         NOMAD::begin(0, NULL);
 
         // Paramater creation
-        NOMAD::Parameters params (out);
+        NOMAD::Parameters params(out);
 
         // Set the number of variables
         params.set_DIMENSION(_NumVars);
@@ -387,7 +297,14 @@ void NomadCore::OptimizeMultiObj( void )
         params.set_UPPER_BOUND(ub);
 
         // Set max iterations
-        params.set_MULTI_OVERALL_BB_EVAL(_NumIterations);
+        if (_EvaluatorType == EvaluatorType::SINGLE_OBJECTIVE)
+        {
+            params.set_MAX_BB_EVAL(_NumIterations);
+        }
+        else if (_EvaluatorType == EvaluatorType::MULTI_OBJECTIVE)
+        {
+            params.set_MULTI_OVERALL_BB_EVAL(_NumIterations);
+        }
 
         // Display
         params.set_DISPLAY_DEGREE(2);
@@ -400,11 +317,51 @@ void NomadCore::OptimizeMultiObj( void )
         params.check();
 
         // Custom evaluator creation
-        NomadMultiObjEvaluator evaluator (params, _MultiObjEvaluator, this);
+        NOMAD::Evaluator* evaluator = nullptr;
+        if (_EvaluatorType == EvaluatorType::SINGLE_OBJECTIVE)
+        {
+            if (_EvaluatorPointerType == EvaluatorPointerType::RAW)
+            {
+                evaluator = new NomadSingleObjEvaluator(params, _SingleObjEvaluatorPtr, this);
+            }
+            else if (_EvaluatorPointerType == EvaluatorPointerType::SMART)
+            {
+                evaluator = new NomadSingleObjEvaluator(params, _SingleObjEvaluatorSmrtPtr, this);
+            }
+            else
+            {
+                throw std::exception("Invalid evaluator pointer type.");
+            }
+        }
+        else if (_EvaluatorType == EvaluatorType::MULTI_OBJECTIVE)
+        {
+            if (_EvaluatorPointerType == EvaluatorPointerType::RAW)
+            {
+                evaluator = new NomadMultiObjEvaluator(params, _MultiObjEvaluatorPtr, this);
+            }
+            else if (_EvaluatorPointerType == EvaluatorPointerType::SMART)
+            {
+                evaluator = new NomadMultiObjEvaluator(params, _MultiObjEvaluatorSmrtPtr, this);
+            }
+            else
+            {
+                throw std::exception("Invalid evaluator pointer type.");
+            }
+        }
 
         // Algorithm creation and execution
-        NOMAD::Mads mads (params, &evaluator);
-        mads.multi_run();
+        NOMAD::Mads mads(params, evaluator);
+
+        if (_EvaluatorType == EvaluatorType::SINGLE_OBJECTIVE)
+        {
+            mads.run();
+        }
+        else if (_EvaluatorType == EvaluatorType::MULTI_OBJECTIVE)
+        {
+            mads.multi_run();
+        }
+
+        delete evaluator;
 
         // Get the best feasible solution
         for (int i = 0; i < _NumVars; i++)
@@ -426,9 +383,20 @@ void NomadCore::OptimizeMultiObj( void )
 
     NOMAD::Slave::stop_slaves(out);
     NOMAD::end();
+
 }
 
 std::vector<double> NomadCore::GetResults( void )
 {
     return _FinalVariables;
+}
+
+EvaluatorType NomadCore::GetEvaluatorType( void )
+{
+    return _EvaluatorType;
+}
+
+EvaluatorPointerType NomadCore::GetEvaluatorPointerType( void )
+{
+    return _EvaluatorPointerType;
 }

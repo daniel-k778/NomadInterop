@@ -90,10 +90,10 @@ auto main() -> int {
 
     // Set the evaluator
     myEvaluator* myEval = new myEvaluator();
-    nomadCore->SetSingleObjEvaluator(myEval);
+    nomadCore->SetEvaluator(myEval);
 
     // Optimize the problem
-    nomadCore->OptimizeSingleObj();
+    nomadCore->Optimize();
 
     delete nomadCore;
     delete myEval;

@@ -90,21 +90,21 @@ auto main() -> int {
     }
 
     // Set the number of iterations
-    nomadCore->SetNumberOfIterations(100);
+    nomadCore->SetNumberOfIterations(500);
 
     // Set the number of extreme and progressive barrier constraints
     nomadCore->SetNumberEBConstraints(2);
     nomadCore->SetNumberPBConstraints(3);
 
+    // Set the evaluator
+    myEvaluator* myEval = new myEvaluator();
+    nomadCore->SetEvaluator(myEval);
+
     // Set the number of objective functions
     nomadCore->SetNumberObjFunctions(2);
 
-    // Set the evaluator
-    myEvaluator* myEval = new myEvaluator();
-    nomadCore->SetMultiObjEvaluator(myEval);
-
     // Run the optimization
-    nomadCore->OptimizeMultiObj();
+    nomadCore->Optimize();
 
     delete nomadCore;
     delete myEval;

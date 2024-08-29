@@ -185,18 +185,13 @@ namespace NomadInteropCS
             {
                 throw new InvalidOperationException("Evaluator must be set before optimization can be performed.");
             }
-            if (_EvaluatorType == NomadEvaluatorType.SingleObjective)
+            if (_EvaluatorType == NomadEvaluatorType.Multiobjective && !_NumObjFunctionsSet)
             {
-                NomadCore.OptimizeSingleObj(_NomadCore);
+               throw new InvalidOperationException("Number of objective functions must be set before optimization can be performed.");
             }
-            else if (_EvaluatorType == NomadEvaluatorType.Multiobjective)
-            {
-                if (!_NumObjFunctionsSet)
-                {
-                    throw new InvalidOperationException("Number of objective functions must be set before optimization can be performed.");
-                }
-                NomadCore.OptimizeMultiObj(_NomadCore);
-            }
+
+            NomadCore.Optimize(_NomadCore);
+
             _SolveCalled = true;
         }
         

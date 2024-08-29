@@ -1,29 +1,52 @@
 #include "NomadEvaluator.hpp"
 
-NomadSingleObjEvaluator::NomadSingleObjEvaluator( const NOMAD::Parameters& p, BaseSingleObjEvaluator* Evaluator, NomadCore* nomadCore ) : NOMAD::Evaluator( p )
+NomadSingleObjEvaluator::NomadSingleObjEvaluator( const NOMAD::Parameters& p, BaseSingleObjEvaluator* evaluator, NomadCore* nomadCore ) : NOMAD::Evaluator( p )
 {
-    this->_SingleObjEvaluator = Evaluator;
+    this->_SingleObjEvaluatorPtr = evaluator;
     this->_NomadCore = nomadCore;
     this->_Params = &p;
 
     // Initialize the evaluator
     static auto numConstraints = _NomadCore->GetNumberEBConstraints() + _NomadCore->GetNumberPBConstraints();
-    _SingleObjEvaluator->Initialize(numConstraints);
+    _SingleObjEvaluatorPtr->Initialize(numConstraints);
+}
+
+NomadSingleObjEvaluator::NomadSingleObjEvaluator(const NOMAD::Parameters& p, std::shared_ptr<BaseSingleObjEvaluator> evaluator, NomadCore* nomadCore) : NOMAD::Evaluator(p)
+{
+    this->_SingleObjEvaluatorSmrtPtr = evaluator;
+    this->_NomadCore = nomadCore;
+    this->_Params = &p;
+
+    // Initialize the evaluator
+    static auto numConstraints = _NomadCore->GetNumberEBConstraints() + _NomadCore->GetNumberPBConstraints();
+
+    EvaluatorPointerType evalPtrType = _NomadCore->GetEvaluatorPointerType();
+
+    if (evalPtrType == EvaluatorPointerType::RAW)
+    {
+        _SingleObjEvaluatorPtr->Initialize(numConstraints);
+    }
+    else if (evalPtrType == EvaluatorPointerType::SMART)
+    {
+        _SingleObjEvaluatorSmrtPtr->Initialize(numConstraints);
+    }
+    else
+    {
+        throw std::runtime_error("Invalid evaluator pointer type.");
+    }
 }
 
 NomadSingleObjEvaluator::~NomadSingleObjEvaluator( void )
 {
-    //if (_SingleObjEvaluator)
-    //{
-    //    delete _SingleObjEvaluator;
-    //    _SingleObjEvaluator = nullptr;
-    //}
+
 }
 
 bool NomadSingleObjEvaluator::eval_x( NOMAD::Eval_Point& x, const NOMAD::Double& h_max, bool& count_eval ) const
 {
     // This function is called by NOMAD to evaluate the objective function and constraints
     // The function returns true if the evaluation succeeded, and false otherwise
+
+    EvaluatorPointerType evalPtrType = _NomadCore->GetEvaluatorPointerType();
 
     static auto numVars = _NomadCore->GetNumberOfVariables();
     double* paramsPtr = new double[numVars];
@@ -35,13 +58,40 @@ bool NomadSingleObjEvaluator::eval_x( NOMAD::Eval_Point& x, const NOMAD::Double&
     }
 
     // Evaluate the objective function and constraints
-    _SingleObjEvaluator->Evaluate(paramsPtr, numVars);
+    double objFuncValue;
+    if (evalPtrType == EvaluatorPointerType::RAW)
+    {
+        _SingleObjEvaluatorPtr->Evaluate(paramsPtr, numVars);
+        objFuncValue = _SingleObjEvaluatorPtr->GetObjectiveFunction();
+    }
+    else if (evalPtrType == EvaluatorPointerType::SMART)
+    {
+        _SingleObjEvaluatorSmrtPtr->Evaluate(paramsPtr, numVars);
+        objFuncValue = _SingleObjEvaluatorSmrtPtr->GetObjectiveFunction();
+    }
+    else
+    {
+        throw std::runtime_error("Invalid evaluator pointer type.");
+    }
 
     // Set the objective function value
-    x.set_bb_output(0, _SingleObjEvaluator->GetObjectiveFunction());
+    x.set_bb_output(0, objFuncValue);
 
     // Get the constraints array
-    auto evalConstraintsArr = _SingleObjEvaluator->GetConstraints();
+    std::vector<double> evalConstraintsArr;
+    if (evalPtrType == EvaluatorPointerType::RAW)
+    {
+        evalConstraintsArr = _SingleObjEvaluatorPtr->GetConstraints();
+    }
+    else if (evalPtrType == EvaluatorPointerType::SMART)
+    {
+        evalConstraintsArr = _SingleObjEvaluatorSmrtPtr->GetConstraints();
+    }
+    else
+    {
+        throw std::runtime_error("Invalid evaluator pointer type.");
+    }
+
     static auto numConstraints = _NomadCore->GetNumberEBConstraints() + _NomadCore->GetNumberPBConstraints();
 
     if (evalConstraintsArr.size() == numConstraints)
@@ -60,43 +110,70 @@ bool NomadSingleObjEvaluator::eval_x( NOMAD::Eval_Point& x, const NOMAD::Double&
     delete[] paramsPtr;
 
     // Return the evaluation status
-    if (_SingleObjEvaluator->GetObjectiveFunctionStatus())
+    if (evalPtrType == EvaluatorPointerType::RAW)
     {
-        count_eval = true; // the evaluation succeeded
+        count_eval = _SingleObjEvaluatorPtr->GetObjectiveFunctionStatus();
+    }
+    else if (evalPtrType == EvaluatorPointerType::SMART)
+    {
+        count_eval = _SingleObjEvaluatorSmrtPtr->GetObjectiveFunctionStatus();
     }
     else
     {
-        count_eval = false; // the evaluation failed
+        throw std::runtime_error("Invalid evaluator pointer type.");
     }
 
     return true;
 }
 
-NomadMultiObjEvaluator::NomadMultiObjEvaluator( const NOMAD::Parameters& p, BaseMultiObjEvaluator* Evaluator, NomadCore* nomadCore ) : NOMAD::Multi_Obj_Evaluator( p )
+NomadMultiObjEvaluator::NomadMultiObjEvaluator( const NOMAD::Parameters& p, BaseMultiObjEvaluator* evaluator, NomadCore* nomadCore ) : NOMAD::Multi_Obj_Evaluator( p )
 {
-    this->_MultiObjEvaluator = Evaluator;
+    this->_MultiObjEvaluatorPtr = evaluator;
     this->_NomadCore = nomadCore;
     this->_Params = &p;
 
     // Initialize the evaluator
     static auto numConstraints = _NomadCore->GetNumberEBConstraints() + _NomadCore->GetNumberPBConstraints();
     static auto numObjFunctions = _NomadCore->GetNumberObjFunctions();
-    _MultiObjEvaluator->Initialize(numConstraints, numObjFunctions);
+    _MultiObjEvaluatorPtr->Initialize(numConstraints, numObjFunctions);
+}
+
+NomadMultiObjEvaluator::NomadMultiObjEvaluator(const NOMAD::Parameters& p, std::shared_ptr<BaseMultiObjEvaluator> evaluator, NomadCore* nomadCore) : NOMAD::Multi_Obj_Evaluator(p)
+{
+    this->_MultiObjEvaluatorSmrtPtr = evaluator;
+    this->_NomadCore = nomadCore;
+    this->_Params = &p;
+
+    // Initialize the evaluator
+    static auto numConstraints = _NomadCore->GetNumberEBConstraints() + _NomadCore->GetNumberPBConstraints();
+    static auto numObjFunctions = _NomadCore->GetNumberObjFunctions();
+
+    EvaluatorPointerType evalPtrType = _NomadCore->GetEvaluatorPointerType();
+    if (evalPtrType == EvaluatorPointerType::RAW)
+    {
+        _MultiObjEvaluatorPtr->Initialize(numConstraints, numObjFunctions);
+    }
+    else if (evalPtrType == EvaluatorPointerType::SMART)
+    {
+        _MultiObjEvaluatorSmrtPtr->Initialize(numConstraints, numObjFunctions);
+    }
+    else
+    {
+        throw std::runtime_error("Invalid evaluator pointer type.");
+    }
 }
 
 NomadMultiObjEvaluator::~NomadMultiObjEvaluator( void )
 {
-    //if (_MultiObjEvaluator)
-    //{
-    //    delete _MultiObjEvaluator;
-    //    _MultiObjEvaluator = nullptr;
-    //}
+
 }
 
 bool NomadMultiObjEvaluator::eval_x( NOMAD::Eval_Point& x, const NOMAD::Double& h_max, bool& count_eval ) const
 {
     // This function is called by NOMAD to evaluate the objective function and constraints
     // The function returns true if the evaluation succeeded, and false otherwise
+
+    auto evalPtrType = _NomadCore->GetEvaluatorPointerType();
 
     static auto numVars = _NomadCore->GetNumberOfVariables();
     double* paramsPtr = new double[numVars];
@@ -108,11 +185,36 @@ bool NomadMultiObjEvaluator::eval_x( NOMAD::Eval_Point& x, const NOMAD::Double& 
     }
 
     // Evaluate the objective function
-    _MultiObjEvaluator->Evaluate(paramsPtr, numVars);
+    if (evalPtrType == EvaluatorPointerType::RAW)
+    {
+        _MultiObjEvaluatorPtr->Evaluate(paramsPtr, numVars);
+    }
+    else if (evalPtrType == EvaluatorPointerType::SMART)
+    {
+        _MultiObjEvaluatorSmrtPtr->Evaluate(paramsPtr, numVars);
+    }
+    else
+    {
+        throw std::runtime_error("Invalid evaluator pointer type.");
+    }
 
     // Get the objective functions and constraints arrays
-    auto evalObjFunctionsArr = _MultiObjEvaluator->GetObjectiveFunction();
-    auto evalConstraintsArr = _MultiObjEvaluator->GetConstraints();
+    std::vector<double> evalObjFunctionsArr;
+    std::vector<double> evalConstraintsArr;
+    if (evalPtrType == EvaluatorPointerType::RAW)
+    {
+        evalObjFunctionsArr = _MultiObjEvaluatorPtr->GetObjectiveFunction();
+        evalConstraintsArr = _MultiObjEvaluatorPtr->GetConstraints();
+    }
+    else if (evalPtrType == EvaluatorPointerType::SMART)
+    {
+        evalObjFunctionsArr = _MultiObjEvaluatorSmrtPtr->GetObjectiveFunction();
+        evalConstraintsArr = _MultiObjEvaluatorSmrtPtr->GetConstraints();
+    }
+    else
+    {
+        throw std::runtime_error("Invalid evaluator pointer type.");
+    }
     static auto numConstraints = _NomadCore->GetNumberEBConstraints() + _NomadCore->GetNumberPBConstraints();
     static auto numObjFunctions = _NomadCore->GetNumberObjFunctions();
 
@@ -145,14 +247,18 @@ bool NomadMultiObjEvaluator::eval_x( NOMAD::Eval_Point& x, const NOMAD::Double& 
     delete[] paramsPtr;
 
     // Return the evaluation status
-    if (_MultiObjEvaluator->GetObjectiveFunctionStatus())
+    if (evalPtrType == EvaluatorPointerType::RAW)
     {
-        count_eval = true;
-        return true;       // the evaluation succeeded
+        count_eval = _MultiObjEvaluatorPtr->GetObjectiveFunctionStatus();
+    }
+    else if (evalPtrType == EvaluatorPointerType::SMART)
+    {
+        count_eval = _MultiObjEvaluatorSmrtPtr->GetObjectiveFunctionStatus();
     }
     else
     {
-        count_eval = false;
-        return false;       // the evaluation failed
+        throw std::runtime_error("Invalid evaluator pointer type.");
     }
+
+    return true;
 }
