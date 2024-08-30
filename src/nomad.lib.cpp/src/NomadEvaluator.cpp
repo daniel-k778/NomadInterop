@@ -11,7 +11,7 @@ NomadSingleObjEvaluator::NomadSingleObjEvaluator( const NOMAD::Parameters& p, Ba
     _SingleObjEvaluatorPtr->Initialize(numConstraints);
 }
 
-NomadSingleObjEvaluator::NomadSingleObjEvaluator(const NOMAD::Parameters& p, std::shared_ptr<BaseSingleObjEvaluator> evaluator, NomadCore* nomadCore) : NOMAD::Evaluator(p)
+NomadSingleObjEvaluator::NomadSingleObjEvaluator( const NOMAD::Parameters& p, std::shared_ptr<BaseSingleObjEvaluator> evaluator, NomadCore* nomadCore ) : NOMAD::Evaluator( p )
 {
     this->_SingleObjEvaluatorSmrtPtr = evaluator;
     this->_NomadCore = nomadCore;
@@ -138,7 +138,7 @@ NomadMultiObjEvaluator::NomadMultiObjEvaluator( const NOMAD::Parameters& p, Base
     _MultiObjEvaluatorPtr->Initialize(numConstraints, numObjFunctions);
 }
 
-NomadMultiObjEvaluator::NomadMultiObjEvaluator(const NOMAD::Parameters& p, std::shared_ptr<BaseMultiObjEvaluator> evaluator, NomadCore* nomadCore) : NOMAD::Multi_Obj_Evaluator(p)
+NomadMultiObjEvaluator::NomadMultiObjEvaluator( const NOMAD::Parameters& p, std::shared_ptr<BaseMultiObjEvaluator> evaluator, NomadCore* nomadCore ) : NOMAD::Multi_Obj_Evaluator( p )
 {
     this->_MultiObjEvaluatorSmrtPtr = evaluator;
     this->_NomadCore = nomadCore;

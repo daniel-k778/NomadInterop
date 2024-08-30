@@ -180,7 +180,7 @@ int NomadCore::GetNumberObjFunctions( void )
     return _NumObjFunctions;
 }
 
-void NomadCore::Optimize(void)
+void NomadCore::Optimize( void )
 {
     if (_NumVars <= 0)
     {

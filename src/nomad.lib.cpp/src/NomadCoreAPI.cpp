@@ -119,24 +119,24 @@ extern "C"
 
     void SetSingleObjEvaluator( NomadCore* nomadCore, EvaluateDelegate evaluator, GetSingleObjFunctionDelegate getObjectiveFunction, GetConstraintsDelegate getConstraints, SingleObjInitDelegate initialize, GetObjectiveFunctionStatusDelegate getObjectiveFunctionStatus )
     {
-        auto ewr = std::make_shared<SingleObjEvaluatorWrapper>();
-        ewr->_Evaluate = evaluator;
-        ewr->_GetObjectiveFunction = getObjectiveFunction;
-        ewr->_GetObjectiveFunctionStatus = getObjectiveFunctionStatus;
-        ewr->_GetConstraints = getConstraints;
-        ewr->_Initialize = initialize;
-        nomadCore->SetEvaluator(ewr);
+        auto wptr = std::make_shared<SingleObjEvaluatorWrapper>();
+        wptr->_Evaluate = evaluator;
+        wptr->_GetObjectiveFunction = getObjectiveFunction;
+        wptr->_GetObjectiveFunctionStatus = getObjectiveFunctionStatus;
+        wptr->_GetConstraints = getConstraints;
+        wptr->_Initialize = initialize;
+        nomadCore->SetEvaluator(wptr);
     }
 
     void SetMultiObjEvaluator( NomadCore* nomadCore, EvaluateDelegate evaluator, GetMultiObjFunctionDelegate getObjectiveFunction, GetConstraintsDelegate getConstraints, MultiObjInitDelegate initialize, GetObjectiveFunctionStatusDelegate getObjectiveFunctionStatus )
     {
-        auto ewr = std::make_shared<MultiObjEvaluatorWrapper>();
-        ewr->_Evaluate = evaluator;
-        ewr->_GetObjectiveFunction = getObjectiveFunction;
-        ewr->_GetObjectiveFunctionStatus = getObjectiveFunctionStatus;
-        ewr->_GetConstraints = getConstraints;
-        ewr->_Initialize = initialize;
-        nomadCore->SetEvaluator(ewr);
+        auto wptr = std::make_shared<MultiObjEvaluatorWrapper>();
+        wptr->_Evaluate = evaluator;
+        wptr->_GetObjectiveFunction = getObjectiveFunction;
+        wptr->_GetObjectiveFunctionStatus = getObjectiveFunctionStatus;
+        wptr->_GetConstraints = getConstraints;
+        wptr->_Initialize = initialize;
+        nomadCore->SetEvaluator(wptr);
     }
 
     void SetNumberObjFunctions( NomadCore* nomadCore, int numObjFunctions )
@@ -149,7 +149,7 @@ extern "C"
         nomadCore->Optimize();
     }
 
-    double* GetResults(NomadCore* nomadCore, int* size)
+    double* GetResults( NomadCore* nomadCore, int* size )
     {
         // This is a workaround to avoid copying the vector to a C array.
         // We use a static vector to hold the results so that we can return a pointer to the internal data.
