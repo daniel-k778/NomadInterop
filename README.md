@@ -19,6 +19,7 @@ NomadInterop is a **powerful and easy-to-use** wrapper for the [Nomad optimizer]
 - nomadlibx64cpp.dll
 - BaseEvaluator.hpp
 - NomadCore.hpp
+- Defines.hpp
 
 ### C#
 
