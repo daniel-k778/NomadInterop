@@ -115,7 +115,7 @@ namespace cs_multi_obj
             // Set the number of objective functions
             nomad.SetNumberObjFunctions(2);
 
-            // Optimize the single-objective function
+            // Optimize the multi-objective function
             nomad.Optimize();
 
             // Get the results

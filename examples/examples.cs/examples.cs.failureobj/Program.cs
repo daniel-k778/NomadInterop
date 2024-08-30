@@ -32,7 +32,7 @@ namespace cs_failure_obj
 
         public void Evaluate(IntPtr x, int numVars)
         {
-            // Required method for implementing the IMultiObjEvaluator interface.
+            // Required method for implementing the ISingleObjEvaluator interface.
             // Evaluates the objective functions and constraints
 
             double[] xArray = new double[numVars];
