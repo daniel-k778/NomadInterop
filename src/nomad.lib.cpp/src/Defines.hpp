@@ -1,8 +1,7 @@
 /**
- \file   NomadCore.hpp
- \brief  DLL exports for NOMAD core functions and class definitions (headers)
+ \file   Defines.hpp
+ \brief  Nomad defines
  \date   2024-07-29
- \see    NomadCore.cpp
  */
 
 #ifndef __DEFINES_H__
