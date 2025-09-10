@@ -1,6 +1,6 @@
 # NomadInterop
 
-NomadInterop is a **powerful and easy-to-use** wrapper for the [Nomad optimizer](https://www.gerad.ca/NOMAD/), designed to streamline the integration of Nomad's core functions into your C++ and C# projects. Unlike the original Nomad library, which primarily supports C++, NomadInterop allows developers to utilize the optimizer's capabilities in **both C++ and C#**, making it a **versatile tool for multi-language projects.**
+NomadInterop is a wrapper for the [Nomad optimizer](https://www.gerad.ca/NOMAD/), designed to streamline the integration of Nomad's core functions into your C++ and C# projects. This allows developers to utilize the optimizer's capabilities in **both C++ and C#**, making it a versatile tool for multi-language projects.
 
 - Integrate Nomad's optimization functions in both C++ and C# environments.
 - Access Nomad's powerful optimization features with a straightforward and intuitive API.
